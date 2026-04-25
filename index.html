@@ -75,7 +75,7 @@
   .header-sub { color: var(--warm-gray); font-size: 0.95rem; max-width: 500px; }
 
   .controls {
-    max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem;
+    max-width: 100%; margin: 0 auto; padding: 1.5rem 2rem;
     display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
     position: sticky; top: 0; z-index: 900;
     background: var(--paper); border-bottom: 1px solid var(--light-line);
@@ -104,20 +104,24 @@
   .result-count { font-size: 0.78rem; color: var(--warm-gray); font-weight: 500; white-space: nowrap; margin-left: auto; }
 
   .main-layout {
-    max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem 3rem;
-    display: grid; grid-template-columns: 1fr 440px; gap: 1.5rem; align-items: start;
+    max-width: 100%; margin: 0 auto; padding: 1.5rem 2rem 1.5rem;
+    display: grid; grid-template-columns: 1fr 460px; gap: 1.5rem; align-items: start;
+    min-height: calc(100vh - 160px);
+    box-sizing: border-box;
+  }
+  @media (min-width: 1400px) {
+    .main-layout { padding: 1.5rem 3rem 1.5rem; }
   }
   @media (max-width: 1000px) {
-    .main-layout { grid-template-columns: 1fr; }
+    .main-layout { grid-template-columns: 1fr; min-height: unset; }
     .map-panel { order: -1; }
   }
-
   .table-panel {
     background: var(--card-bg); border-radius: var(--radius);
     box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--light-line);
     position: relative; z-index: 1; isolation: isolate;
   }
-  .table-scroll { max-height: 750px; overflow-y: auto; }
+  .table-scroll { max-height: calc(100vh - 200px); overflow-y: auto; }
   .table-scroll::-webkit-scrollbar { width: 6px; }
   .table-scroll::-webkit-scrollbar-track { background: transparent; }
   .table-scroll::-webkit-scrollbar-thumb { background: var(--light-line); border-radius: 3px; }
@@ -137,6 +141,9 @@
   }
   tbody tr:hover { background: #f5f2ee; }
   tbody tr.selected { background: #eef3ec; }
+  tbody tr.today-row { background: #fff8e8; border-left: 3px solid #e67e22; }
+  tbody tr.today-row td:first-child { padding-left: 13px; }
+  tbody tr.today-row .month { color: #e67e22; }
   td { padding: 12px 16px; font-size: 0.84rem; vertical-align: top; }
   .fest-name { font-weight: 600; color: var(--ink); margin-bottom: 2px; }
   .fest-desc {
@@ -188,16 +195,16 @@
   @media (min-width: 1001px) {
     .map-panel { position: sticky; top: 80px; }
   }
+  .map-container {
+    position: relative; width: 100%; height: calc(100vh - 320px); min-height: 420px; max-height: 700px;
+    background: #f0ece6; overflow: hidden;
+  }
   .map-header {
     padding: 12px 16px; font-size: 0.72rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm-gray);
     border-bottom: 1px solid var(--light-line); display: flex; align-items: center; gap: 8px;
   }
   .map-header .live-dot { width: 7px; height: 7px; background: var(--sage); border-radius: 50%; }
-  .map-container {
-    position: relative; width: 100%; height: 420px;
-    background: #f0ece6; overflow: hidden;
-  }
   .map-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
   .map-tooltip {
     position: absolute; background: var(--card-bg); border-radius: 8px;
@@ -576,6 +583,12 @@ function renderDots(){
     const dotR=isMobile?7:5.5, selR=isMobile?11:9;
     h+='<circle class="map-dot" cx="'+p.x+'" cy="'+p.y+'" r="'+(isSel?selR:dotR)+'" fill="'+tcolor(f.theme)+'" stroke="'+(isSel?'#1a1a2e':'rgba(255,255,255,0.85)')+'" stroke-width="'+(isSel?3:1.5)+'" opacity="'+(inF?1:0.12)+'" data-name="'+f.name.replace(/"/g,'&quot;')+'"/>';
   });
+  /* Raleigh acorn marker */
+  const rp=geo(35.7796,-78.6382);
+  const isMobile=window.innerWidth<=600;
+  const acornSize=isMobile?36:33;
+  h+='<text x="'+rp.x+'" y="'+rp.y+'" text-anchor="middle" dominant-baseline="middle" font-size="'+acornSize+'" style="pointer-events:none;user-select:none;" opacity="0.92">🌰</text>';
+  h+='<text x="'+rp.x+'" y="'+(rp.y+acornSize*0.72)+'" text-anchor="middle" font-size="7.5" font-weight="700" fill="#1a1a2e" font-family="DM Sans,sans-serif" style="pointer-events:none;letter-spacing:0.04em;" opacity="0.75">RALEIGH</text>';
   dg.innerHTML=h;
   dg.querySelectorAll('.map-dot').forEach(dot=>{
     dot.addEventListener('mouseenter',dotHover);
@@ -693,6 +706,23 @@ document.querySelectorAll('thead th').forEach(th=>{
 });
 
 initMap();render();
+
+/* Auto-scroll to first festival on or after today */
+(function scrollToToday(){
+  const today=new Date();
+  today.setHours(0,0,0,0);
+  const data=getFiltered();
+  const todayFest=data.find(f=>{ const d=pd(f.date); return d>=today; });
+  if(!todayFest) return;
+  // Highlight without selecting (so map card doesn't pop open)
+  const rows=document.querySelectorAll('#festBody tr');
+  rows.forEach(tr=>{
+    if(tr.dataset.fname===todayFest.name){
+      tr.classList.add('today-row');
+      setTimeout(()=>tr.scrollIntoView({behavior:'smooth',block:'center'}),300);
+    }
+  });
+})();
 
 /* Dismiss tooltip on tap outside map dots (iOS) */
 document.getElementById('mapContainer').addEventListener('click',function(e){
