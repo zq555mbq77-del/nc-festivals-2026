@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>NC Festivals 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #faf8f5;
+    --accent: #c0392b;
+    --accent-light: #e74c3c;
+    --sage: #5b7553;
+    --sage-light: #8fad85;
+    --warm-gray: #a09890;
+    --light-line: #e8e2da;
+    --card-bg: #ffffff;
+    --shadow: 0 2px 20px rgba(26,26,46,0.08);
+    --radius: 10px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -10%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(192,57,43,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -40%; left: 10%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(91,117,83,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-inner { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+  .header-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 100px; padding: 5px 14px;
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--sage-light); margin-bottom: 1rem;
+  }
+  .header-badge .dot {
+    width: 6px; height: 6px; background: var(--sage-light);
+    border-radius: 50%; animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400; line-height: 1.15;
+    letter-spacing: -0.02em; margin-bottom: 0.4rem;
+  }
+  h1 span { color: var(--accent-light); }
+  .header-sub { color: var(--warm-gray); font-size: 0.95rem; max-width: 500px; }
+
+  .controls {
+    max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem;
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    position: sticky; top: 0; z-index: 900;
+    background: var(--paper); border-bottom: 1px solid var(--light-line);
+  }
+  .search-box { flex: 1; min-width: 220px; position: relative; }
+  .search-box svg {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    width: 16px; height: 16px; color: var(--warm-gray);
+  }
+  .search-box input {
+    width: 100%; padding: 10px 14px 10px 40px;
+    border: 1.5px solid var(--light-line); border-radius: var(--radius);
+    font-family: inherit; font-size: 0.88rem;
+    background: var(--card-bg); color: var(--ink); transition: border-color 0.2s;
+  }
+  .search-box input:focus { outline: none; border-color: var(--sage); }
+  .search-box input::placeholder { color: var(--warm-gray); }
+  .filter-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 8px 16px; border: 1.5px solid var(--light-line); border-radius: 100px;
+    background: var(--card-bg); font-family: inherit; font-size: 0.78rem; font-weight: 600;
+    color: var(--ink); cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--sage); color: var(--sage); }
+  .filter-btn.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .result-count { font-size: 0.78rem; color: var(--warm-gray); font-weight: 500; white-space: nowrap; margin-left: auto; }
+
+  .main-layout {
+    max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem 3rem;
+    display: grid; grid-template-columns: 1fr 440px; gap: 1.5rem; align-items: start;
+  }
+  @media (max-width: 1000px) {
+    .main-layout { grid-template-columns: 1fr; }
+    .map-panel { order: -1; }
+  }
+
+  .table-panel {
+    background: var(--card-bg); border-radius: var(--radius);
+    box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--light-line);
+    position: relative; z-index: 1; isolation: isolate;
+  }
+  .table-scroll { max-height: 750px; overflow-y: auto; }
+  .table-scroll::-webkit-scrollbar { width: 6px; }
+  .table-scroll::-webkit-scrollbar-track { background: transparent; }
+  .table-scroll::-webkit-scrollbar-thumb { background: var(--light-line); border-radius: 3px; }
+  table { width: 100%; border-collapse: collapse; }
+  thead { position: sticky; top: 0; z-index: 10; }
+  thead th {
+    background: var(--ink); color: var(--paper); padding: 12px 16px; text-align: left;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    white-space: nowrap; cursor: pointer; user-select: none; transition: background 0.15s;
+  }
+  thead th:hover { background: #252542; }
+  thead th .sort-arrow { margin-left: 4px; opacity: 0.5; font-size: 0.65rem; }
+  thead th.sorted .sort-arrow { opacity: 1; color: var(--accent-light); }
+  tbody tr {
+    border-bottom: 1px solid var(--light-line);
+    cursor: pointer; transition: background 0.15s;
+  }
+  tbody tr:hover { background: #f5f2ee; }
+  tbody tr.selected { background: #eef3ec; }
+  td { padding: 12px 16px; font-size: 0.84rem; vertical-align: top; }
+  .fest-name { font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .fest-desc {
+    color: var(--warm-gray); font-size: 0.78rem; line-height: 1.45;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .fest-loc-inline { display: none; }
+  .fest-date { white-space: nowrap; font-weight: 500; font-size: 0.82rem; }
+  .fest-date .month { color: var(--accent); font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .fest-location { font-size: 0.82rem; }
+  .theme-tag {
+    display: inline-block; padding: 3px 10px; border-radius: 100px;
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.03em; white-space: nowrap;
+  }
+  .theme-music { background: #fce4ec; color: #c0392b; }
+  .theme-food { background: #fff3e0; color: #e67e22; }
+  .theme-cultural { background: #e8eaf6; color: #3f51b5; }
+  .theme-arts { background: #f3e5f5; color: #8e24aa; }
+  .theme-seasonal { background: #e0f2f1; color: #00796b; }
+  .theme-heritage { background: #efebe9; color: #5d4037; }
+  .theme-nature { background: #e8f5e9; color: #2e7d32; }
+  .theme-sports { background: #e3f2fd; color: #1565c0; }
+  .train-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 8px; border-radius: 100px; font-size: 0.64rem; font-weight: 600;
+    background: #e8f5e9; color: #2e7d32; white-space: nowrap; margin-top: 3px;
+    letter-spacing: 0.02em;
+  }
+  .train-badge svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .no-results { padding: 3rem 2rem; text-align: center; color: var(--warm-gray); }
+  .fest-link {
+    display: inline-flex; align-items: center; gap: 4px;
+    color: var(--sage); font-size: 0.72rem; font-weight: 600;
+    text-decoration: none; margin-top: 3px; letter-spacing: 0.01em;
+    transition: color 0.15s;
+  }
+  .fest-link:hover { color: var(--sage-light); text-decoration: underline; }
+  .fest-link svg { width: 10px; height: 10px; flex-shrink: 0; opacity: 0.8; }
+  @media (max-width: 600px) {
+    .fest-link { font-size: 0.65rem; }
+    .fest-link svg { width: 9px; height: 9px; }
+  }
+
+  .map-panel {
+    position: relative; border-radius: var(--radius); overflow: hidden;
+    box-shadow: var(--shadow); border: 1px solid var(--light-line); background: var(--card-bg);
+    z-index: 0; isolation: isolate; align-self: start;
+  }
+  @media (min-width: 1001px) {
+    .map-panel { position: sticky; top: 80px; }
+  }
+  .map-header {
+    padding: 12px 16px; font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm-gray);
+    border-bottom: 1px solid var(--light-line); display: flex; align-items: center; gap: 8px;
+  }
+  .map-header .live-dot { width: 7px; height: 7px; background: var(--sage); border-radius: 50%; }
+  .map-container {
+    position: relative; width: 100%; height: 420px;
+    background: #f0ece6; overflow: hidden;
+  }
+  .map-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+  .map-tooltip {
+    position: absolute; background: var(--card-bg); border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.18); padding: 10px 14px;
+    pointer-events: none; z-index: 100; min-width: 140px; max-width: 220px;
+    opacity: 0; transform: translateY(4px); transition: opacity 0.2s, transform 0.2s;
+    word-wrap: break-word; overflow-wrap: break-word;
+  }
+  .map-tooltip.visible { opacity: 1; transform: translateY(0); }
+  .map-tooltip .tt-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 3px; }
+  .map-tooltip .tt-date { font-size: 0.76rem; color: var(--accent); font-weight: 600; margin-bottom: 2px; }
+  .map-tooltip .tt-loc { font-size: 0.74rem; color: var(--warm-gray); }
+  .selected-card {
+    padding: 14px 16px; border-top: 1px solid var(--light-line);
+    background: #f9f7f4; display: none;
+  }
+  .selected-card.visible { display: block; }
+  .selected-card .sc-name { font-weight: 700; font-size: 0.88rem; margin-bottom: 2px; }
+  .selected-card .sc-meta { font-size: 0.78rem; color: var(--accent); font-weight: 600; margin-bottom: 4px; }
+  .selected-card .sc-desc { font-size: 0.78rem; color: var(--warm-gray); line-height: 1.5; }
+  .map-info {
+    padding: 10px 16px; border-top: 1px solid var(--light-line);
+    font-size: 0.76rem; color: var(--warm-gray); display: flex; align-items: center; gap: 6px;
+  }
+  .map-dot { cursor: pointer; }
+  .map-dot:hover { filter: brightness(0.85); }
+  .map-legend {
+    position: absolute; bottom: 12px; left: 12px;
+    background: rgba(255,255,255,0.92); border-radius: 8px; padding: 10px 14px;
+    font-size: 0.65rem; display: flex; flex-wrap: wrap; gap: 8px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08); z-index: 50;
+  }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  tbody tr { animation: fadeIn 0.3s ease-out both; }
+
+  /* ── iPhone & Mobile Core Fixes ── */
+  * { -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .table-scroll { -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+  .search-box input { font-size: 16px; } /* Prevents iOS auto-zoom on focus */
+
+  /* ── Mobile (<= 600px) ── */
+  @media (max-width: 600px) {
+    /* Header */
+    header {
+      padding: 1.75rem 1rem 1.25rem;
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+    }
+    h1 { font-size: 1.5rem; }
+    .header-sub { font-size: 0.82rem; }
+
+    /* Sticky controls bar */
+    .controls {
+      padding: 0.75rem 1rem;
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+      gap: 8px;
+      position: sticky; top: 0; z-index: 900;
+      /* Full-width background behind sticky bar */
+      margin-left: 0; margin-right: 0;
+    }
+
+    /* Search full-width on its own row */
+    .search-box { min-width: 100%; flex: 1 1 100%; order: 0; }
+    .search-box input { padding: 10px 14px 10px 38px; }
+
+    /* Horizontally scrolling filter pills */
+    .filter-group {
+      display: flex; gap: 6px;
+      flex-wrap: nowrap;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
+      width: 100%; order: 1;
+      padding-bottom: 2px;
+      -ms-overflow-style: none; scrollbar-width: none;
+    }
+    .filter-group::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      padding: 8px 14px; font-size: 0.75rem;
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      min-height: 36px;
+    }
+    .result-count { margin-left: 0; width: 100%; text-align: right; font-size: 0.72rem; order: 2; }
+
+    /* Main layout */
+    .main-layout {
+      padding: 0.75rem;
+      padding-left: max(0.75rem, env(safe-area-inset-left));
+      padding-right: max(0.75rem, env(safe-area-inset-right));
+      padding-bottom: max(2rem, env(safe-area-inset-bottom));
+      gap: 0.75rem;
+    }
+
+    /* Map */
+    .map-panel { position: relative; }
+    .map-container { height: 260px; }
+    .map-legend { font-size: 0.55rem; gap: 5px; padding: 6px 8px; bottom: 6px; left: 6px; }
+    .legend-dot { width: 6px; height: 6px; }
+    .map-info { font-size: 0.68rem; padding: 8px 10px; flex-wrap: wrap; }
+    .selected-card { padding: 10px 12px; }
+    .selected-card .sc-name { font-size: 0.82rem; }
+    .selected-card .sc-meta { font-size: 0.72rem; }
+    .selected-card .sc-desc { font-size: 0.72rem; }
+
+    /* Table */
+    .table-panel { border-radius: 8px; }
+    .table-scroll {
+      max-height: 65vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    table { width: 100%; table-layout: fixed; }
+    thead th { padding: 8px 10px; font-size: 0.62rem; letter-spacing: 0.06em; }
+    thead th .sort-arrow { font-size: 0.55rem; }
+    td { padding: 10px; font-size: 0.8rem; }
+
+    /* Column widths: Date | Festival+Loc | Theme */
+    th[data-col="date"], td:first-child { width: 72px; }
+    th[data-col="theme"], td:last-child { width: 68px; }
+
+    .fest-name { font-size: 0.82rem; word-wrap: break-word; overflow-wrap: break-word; }
+    .fest-desc { font-size: 0.72rem; -webkit-line-clamp: 1; line-height: 1.4; }
+    .fest-date { font-size: 0.75rem; white-space: nowrap; }
+    .fest-date .month { font-size: 0.65rem; }
+    .fest-location { font-size: 0.75rem; }
+    .theme-tag { font-size: 0.6rem; padding: 2px 7px; }
+    .train-badge { font-size: 0.58rem; padding: 1px 6px; margin-top: 2px; }
+    .train-badge svg { width: 10px; height: 10px; }
+
+    /* Hide location column, show inline in name cell */
+    th[data-col="location"], td.fest-location { display: none; }
+    .fest-loc-inline {
+      display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+      font-size: 0.72rem; color: var(--warm-gray); margin-top: 1px;
+    }
+  }
+
+  /* ── Extra-small phones (iPhone SE, 320-375px) ── */
+  @media (max-width: 375px) {
+    h1 { font-size: 1.3rem; }
+    header { padding: 1.5rem 0.75rem 1rem; }
+    .controls { padding: 0.6rem 0.75rem; }
+    .main-layout { padding: 0.5rem; padding-bottom: 2rem; }
+    .map-container { height: 220px; }
+    .map-legend { display: none; }
+    td { padding: 8px 6px; }
+    thead th { padding: 8px 6px; }
+    .fest-name { font-size: 0.78rem; }
+    .fest-desc { display: none; }
+    .fest-date { font-size: 0.7rem; }
+    .theme-tag { font-size: 0.56rem; padding: 2px 6px; }
+    th[data-col="date"], td:first-child { width: 62px; }
+    th[data-col="theme"], td:last-child { width: 58px; }
+  }
+
+  /* ── Landscape on mobile ── */
+  @media (orientation: landscape) and (max-height: 500px) {
+    header { padding-left: max(1.25rem, env(safe-area-inset-left)); padding-right: max(1.25rem, env(safe-area-inset-right)); }
+    .controls { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); }
+    .main-layout { padding-left: max(0.75rem, env(safe-area-inset-left)); padding-right: max(0.75rem, env(safe-area-inset-right)); }
+    .map-container { height: 200px; }
+    .table-scroll { max-height: 50vh; }
+  }
+
+  /* ── iOS Safari specific ── */
+  @supports (-webkit-touch-callout: none) {
+    .controls {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(250,248,245,0.92);
+    }
+    .map-panel { -webkit-transform: translateZ(0); transform: translateZ(0); }
+    tbody tr { -webkit-user-select: none; user-select: none; }
+    .table-scroll { -webkit-overflow-scrolling: touch; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-badge"><span class="dot"></span> Live Directory</div>
+    <h1>North Carolina <span>Festivals</span> — 2026</h1>
+    <p class="header-sub">A curated guide to the best festivals across the Tar Heel State. Search, filter, and map your next adventure.</p>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="search-box">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="searchInput" placeholder="Search festivals, cities, themes…">
+  </div>
+  <div class="filter-group" id="themeFilters">
+    <button class="filter-btn active" data-theme="all">All</button>
+    <button class="filter-btn" data-theme="Music">Music</button>
+    <button class="filter-btn" data-theme="Food & Drink">Food</button>
+    <button class="filter-btn" data-theme="Cultural">Cultural</button>
+    <button class="filter-btn" data-theme="Arts">Arts</button>
+    <button class="filter-btn" data-theme="Heritage">Heritage</button>
+    <button class="filter-btn" data-theme="Nature">Nature</button>
+    <button class="filter-btn" data-theme="Seasonal">Seasonal</button>
+  </div>
+  <span class="result-count" id="resultCount"></span>
+</div>
+
+<div class="main-layout">
+  <div class="table-panel">
+    <div class="table-scroll">
+      <table>
+        <thead><tr>
+          <th data-col="date" class="sorted">Date <span class="sort-arrow">▲</span></th>
+          <th data-col="name">Festival <span class="sort-arrow">▲</span></th>
+          <th data-col="location">Location <span class="sort-arrow">▲</span></th>
+          <th data-col="theme">Theme <span class="sort-arrow">▲</span></th>
+        </tr></thead>
+        <tbody id="festBody"></tbody>
+      </table>
+      <div class="no-results" id="noResults" style="display:none;"><p>No festivals match your search.</p></div>
+    </div>
+  </div>
+
+  <div class="map-panel">
+    <div class="map-header"><span class="live-dot"></span> Festival Map</div>
+    <div class="map-container" id="mapContainer">
+      <svg class="map-svg" id="mapSvg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="map-tooltip" id="mapTooltip">
+        <div class="tt-name"></div>
+        <div class="tt-date"></div>
+        <div class="tt-loc"></div>
+      </div>
+      <div class="map-legend" id="mapLegend"></div>
+    </div>
+    <div class="selected-card" id="selectedCard">
+      <div class="sc-name"></div>
+      <div class="sc-meta"></div>
+      <div class="sc-desc"></div>
+      <div class="sc-link"></div>
+    </div>
+    <div class="map-info">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Click a row or dot to see details · <span style="color:var(--sage)">🚆</span> = Amtrak from Raleigh
+    </div>
+  </div>
+</div>
+
+<script>
+const festivals = [
+  { name:"NC Jazz Festival", date:"2026-02-07", endDate:"Feb 8", location:"Wilmington", lat:34.2257, lng:-77.9447, theme:"Music", url:"https://ncjazzfestival.org/", desc:"46th annual festival featuring world-class traditional jazz musicians including headliner Gregg Gelb, Emily Asher, and more." },
+  { name:"Carolina Chocolate Festival", date:"2026-02-07", endDate:"Feb 8", location:"Morehead City", lat:34.7229, lng:-76.7260, theme:"Food & Drink", url:"https://carolinachocolatefestival.com/", desc:"Annual celebration of all things chocolate on the Crystal Coast, featuring tastings, vendors, live music, and chocolate-inspired creations." },
+  { name:"NC First in Freedom Festival", date:"2026-02-21", endDate:"Feb 28", location:"Eastern NC / Moores Creek", lat:34.458, lng:-78.109, theme:"Heritage", url:"https://www.nps.gov/mocr/index.htm", desc:"Week-long celebration of eastern NC\u2019s role in the American Revolution, marking the 250th anniversary of the Battle of Moores Creek Bridge." },
+  { name:"Raleigh St. Patrick's Parade", date:"2026-03-14", endDate:null, location:"Raleigh", lat:35.7796, lng:-78.6382, theme:"Cultural", url:"https://www.raleighirishclub.org/", desc:"Annual St. Patrick\u2019s Day parade and festival through downtown Raleigh with Irish music, dancers, floats, food, and family activities." },
+  { name:"Art in Bloom", date:"2026-03-18", endDate:"Mar 22", location:"Raleigh", lat:35.8097, lng:-78.702, theme:"Arts", url:"https://ncartmuseum.org/events/art-in-bloom/", desc:"Five-day festival of art and flowers at the NC Museum of Art with 50+ floral interpretations by world-class designers." },
+  { name:"Dix Park Music Festival", date:"2026-05-01", endDate:null, location:"Raleigh", lat:35.7796, lng:-78.6382, theme:"Music", url:"https://dreamvillefest.com/", desc:"Live Nation\u2019s successor to Dreamville at Dorothea Dix Park \u2014 4-year deal signed for 2026\u20132029. As of April 2026, no date or lineup has been announced. Easter conflicted with the traditional first-weekend-of-April slot. Watch the official site for updates." },
+  { name:"NC Azalea Festival", date:"2026-04-08", endDate:"Apr 12", location:"Wilmington", lat:34.2357, lng:-77.9547, theme:"Seasonal", url:"https://ncazaleafestival.org/", desc:"Annual spring celebration in historic Wilmington featuring a parade, live entertainment, garden tours, and street fair." },
+  { name:"Pimento Cheese Festival", date:"2026-04-11", endDate:null, location:"Cary", lat:35.7913, lng:-78.7811, theme:"Food & Drink", url:"https://www.pimentocheesefestival.com/", desc:"Free event at Downtown Cary Park celebrating the South\u2019s best delicacy with food trucks, sculpting contests, and live music." },
+  { name:"Grifton Shad Festival", date:"2026-04-17", endDate:"Apr 19", location:"Grifton", lat:35.3727, lng:-77.4372, theme:"Heritage", url:"https://griftonshadfestival.com/", desc:"54th annual festival with live music, carnival, art show, classic car cruise-in, street food, and parade." },
+  { name:"Carolina BBQ Festival", date:"2026-04-17", endDate:"Apr 18", location:"Charlotte", lat:35.2271, lng:-80.8431, theme:"Food & Drink", url:"https://carolinabbqfest.org/", desc:"Two-day celebration of Carolina-style BBQ with top pitmasters, live music, craft beer, and cooking competitions in uptown Charlotte." },
+  { name:"Loch Norman Highland Games", date:"2026-04-18", endDate:"Apr 19", location:"Huntersville", lat:35.4126, lng:-80.8429, theme:"Cultural", url:"https://lochnorman.com/", desc:"32nd annual Scottish festival at Historic Rural Hill on Lake Norman with Highland athletics, bagpipe bands, Celtic music, caber toss, whisky tastings, clan societies, and a giant kids\u2019 zone." },
+  { name:"Haliwa-Saponi Powwow", date:"2026-04-17", endDate:"Apr 19", location:"Hollister", lat:36.249, lng:-77.8529, theme:"Cultural", url:"https://haliwa-saponi.com/", desc:"Annual tribal powwow celebrating Haliwa-Saponi heritage with traditional dance, drumming, crafts, and indigenous cuisine." },
+  { name:"NC \u2018Cuegrass Festival", date:"2026-04-18", endDate:null, location:"Raleigh", lat:35.7796, lng:-78.6382, theme:"Music", url:"https://downtownraleigh.org/do/nc-cuegrass-festival", desc:"16th annual jam-packed day of barbecue, local brews, and bluegrass on Fayetteville Street in downtown Raleigh." },
+  { name:"MerleFest", date:"2026-04-23", endDate:"Apr 26", location:"Wilkesboro", lat:36.1457, lng:-81.1601, theme:"Music", url:"https://merlefest.org/", desc:"38th annual homecoming of bluegrass, folk, and Americana at Wilkes Community College. 2026 headliners include Alison Krauss & Union Station feat. Jerry Douglas, Old Crow Medicine Show, Blackberry Smoke, Charles Wesley Godwin, Molly Tuttle, and more across 12 stages." },
+  { name:"Brewgaloo", date:"2026-04-24", endDate:"Apr 25", location:"Raleigh", lat:35.7896, lng:-78.6482, theme:"Food & Drink", url:"https://shoplocalraleigh.org/brewgaloo/", desc:"100+ NC breweries, live music, food trucks, and local vendors in a massive downtown Raleigh street festival." },
+  { name:"Festival of Legends", date:"2026-04-25", endDate:"Apr 26", location:"Holly Springs", lat:35.6513, lng:-78.8336, theme:"Heritage", url:"https://www.festivaloflegends.us/", desc:"Renaissance-style festival with jousting, medieval reenactments, live entertainment, artisan vendors, and period food." },
+  { name:"NC Pickle Festival", date:"2026-04-25", endDate:null, location:"Mount Olive", lat:35.1968, lng:-78.0664, theme:"Food & Drink", url:"https://ncpicklefest.org/", desc:"Celebration of the beloved pickle in its hometown, featuring pickle-themed food, music, crafts, games, and the famous pickle-eating contest." },
+  { name:"Fayetteville Dogwood Festival", date:"2026-04-24", endDate:"Apr 26", location:"Fayetteville", lat:35.0527, lng:-78.8784, theme:"Seasonal", url:"https://thedogwoodfestival.com/", desc:"One of the Southeast\u2019s top festivals celebrating spring with live music, amusement rides, a street fair, and the city\u2019s famous blooming dogwoods." },
+  { name:"Tuck Fest", date:"2026-04-24", endDate:"Apr 26", location:"Charlotte", lat:35.2271, lng:-80.8431, theme:"Sports", url:"https://www.usnwc.org/events/tuckfest/", desc:"Outdoor adventure and music festival at the U.S. National Whitewater Center featuring paddling, biking, climbing, live music, and craft beer." },
+  { name:"Greening Up the Mountains", date:"2026-04-25", endDate:null, location:"Sylva", lat:35.3734, lng:-83.2260, theme:"Nature", url:"https://www.downtownsylva.org/", desc:"Annual spring celebration of the greening of the Smoky Mountains with live music, local craft vendors, food trucks, and kids\u2019 activities in downtown Sylva." },
+  { name:"NC Strawberry Festival", date:"2026-04-30", endDate:"May 2", location:"Chadbourn", lat:34.3221, lng:-78.8269, theme:"Food & Drink", url:"https://ncstrawberryfestival.com/", desc:"100th anniversary celebration of the strawberry harvest in the strawberry capital of the world. Main events Apr 30\u2013May 2: Chicken Bog Supper, Evening of Encounters, parade, pageant, rides, and strawberry treats." },
+  { name:"Apex PeakFest", date:"2026-05-02", endDate:null, location:"Apex", lat:35.7327, lng:-78.8503, theme:"Seasonal", url:"https://www.apexnc.org/peakfest", desc:"Downtown Apex\u2019s signature community festival with live music stages, 200+ craft vendors, food trucks, kids\u2019 zone, and street-fair atmosphere." },
+  { name:"Ham and Yam Festival", date:"2026-05-02", endDate:null, location:"Smithfield", lat:35.5090, lng:-78.3386, theme:"Food & Drink", url:"https://www.facebook.com/HamandYamFestival/", desc:"Free annual celebration of Johnston County\u2019s signature ham and sweet potato harvest in downtown Smithfield, with live music, arts and crafts, food, and kids\u2019 activities." },
+  { name:"Burlington Carousel Festival", date:"2026-05-02", endDate:"May 3", location:"Burlington", lat:36.0957, lng:-79.4378, theme:"Heritage", url:"https://www.burlingtonnc.gov/carousel", desc:"Weekend celebration of Burlington\u2019s historic 1906 Dentzel carousel with rides, live music, food vendors, and kids\u2019 activities in City Park." },
+  { name:"Waynesville Ramp Festival", date:"2026-05-03", endDate:null, location:"Waynesville", lat:35.4887, lng:-82.9887, theme:"Food & Drink", url:"https://www.waynesvillenc.gov/", desc:"Annual mountain celebration of the wild ramp (leek) with traditional Appalachian food, live music, and local crafts." },
+  { name:"Shakori Hills Grassroots Festival", date:"2026-05-07", endDate:"May 10", location:"Pittsboro", lat:35.744, lng:-79.23, theme:"Music", url:"https://shakorihills.org/", desc:"Multi-day music and dance festival on a farm featuring roots, world, and folk music with camping and family activities." },
+  { name:"Matthews Summerfest", date:"2026-05-08", endDate:"May 9", location:"Matthews", lat:35.1168, lng:-80.7237, theme:"Seasonal", url:"https://matthewsalive.org/summerfest/", desc:"Weekend community celebration with live entertainment, carnival rides, food vendors, and artisan market." },
+  { name:"Artsplosure", date:"2026-05-16", endDate:"May 17", location:"Raleigh", lat:35.7796, lng:-78.6382, theme:"Arts", url:"https://www.artsplosure.org/", desc:"Raleigh\u2019s premier outdoor arts festival on Fayetteville Street, showcasing visual artists, live music, interactive installations, and community performances." },
+  { name:"Got to Be NC Festival", date:"2026-05-15", endDate:"May 17", location:"Raleigh", lat:35.7847, lng:-78.7117, theme:"Food & Drink", url:"https://www.ncagr.gov/divisions/ncstatefair/got-be-nc-festival", desc:"Free 3-day celebration of all things North Carolina at the State Fairgrounds. Hosted by the NC Dept. of Agriculture with local food and drink vendors, carnival rides, live music, farm animals, and tractor parades." },
+  { name:"Cheerwine Festival", date:"2026-05-16", endDate:null, location:"Salisbury", lat:35.671, lng:-80.4742, theme:"Food & Drink", url:"https://www.cheerwine.com/festival/", desc:"Annual celebration of the iconic cherry-flavored soda in its hometown. Free, family-friendly festival with Cheerwine-inspired food, live music, arts & crafts, and all the Cheerwine you can drink." },
+  { name:"NC Fossil Festival", date:"2026-05-23", endDate:"May 24", location:"Aurora", lat:35.3057, lng:-76.7882, theme:"Nature", url:"https://ncfossilfestival.com/", desc:"Celebration of the region\u2019s rich fossil heritage with fossil hunts, educational exhibits, guest speakers, and kids\u2019 activities." },
+  { name:"Bear Shadow Music Festival", date:"2026-05-29", endDate:"May 31", location:"Highlands", lat:35.0527, lng:-83.1974, theme:"Music", url:"https://www.bearshadowfest.com/", desc:"5th annual 3-day music festival on the Highlands-Cashiers Plateau with Grammy-worthy live performances, guided hikes, fly fishing, and mountain scenery." },
+  { name:"Taste of Charlotte", date:"2026-06-05", endDate:"Jun 7", location:"Charlotte", lat:35.2371, lng:-80.8331, theme:"Food & Drink", url:"https://www.tasteofcharlotte.com/", desc:"The Queen City\u2019s premier food festival \u2014 sample dishes from top Charlotte restaurants alongside live music." },
+  { name:"High Country Jazz Festival", date:"2026-06-10", endDate:"Jun 14", location:"Boone", lat:36.2168, lng:-81.6746, theme:"Music", url:"https://highcountryjazz.com/", desc:"5th annual jazz festival expanding into Blowing Rock in 2026, presenting world-class jazz across multiple venues including the Appalachian Theatre. 2026 headliners include Spyro Gyra, Wycliff Gordon, and Emmet Cohen Trio." },
+  { name:"Charlie Poole Music Festival", date:"2026-06-12", endDate:"Jun 13", location:"Wentworth", lat:36.3985, lng:-79.7614, theme:"Music", url:"https://www.charliepoolefest.com/", desc:"Annual celebration of NC string band legend Charlie Poole, honoring roots music with 20+ musicians\u2019 competitions and stage shows. Free, family-friendly festival in Rockingham County." },
+  { name:"Ocrafolk Festival", date:"2026-06-05", endDate:"Jun 7", location:"Ocracoke", lat:35.1149, lng:-75.981, theme:"Music", url:"https://ocracokefestival.com/", desc:"Intimate island music festival on Ocracoke with acoustic performances, storytelling, local crafts, and coastal culture." },
+  { name:"National Black Bear Festival", date:"2026-06-05", endDate:"Jun 6", location:"Plymouth", lat:35.8666, lng:-76.7477, theme:"Nature", url:"https://plymouthnc.com/black-bear-festival/", desc:"Award-winning 12th annual festival on the Roanoke River celebrating NC\u2019s coastal giant black bears with wildlife tours, helicopter rides, river cruises, fireworks, and educational exhibits." },
+  { name:"Livermush Festival", date:"2026-06-06", endDate:null, location:"Marion", lat:35.6843, lng:-82.0093, theme:"Food & Drink", url:"https://www.cityofmarion.net/livermush-festival", desc:"18th annual celebration of the beloved WNC delicacy in downtown Marion with livermush food trucks, hog callin\u2019 and pig squealin\u2019 contests, live music, and kids\u2019 activities." },
+  { name:"Carolina Beach Music Festival", date:"2026-06-06", endDate:null, location:"Carolina Beach", lat:34.0352, lng:-77.8936, theme:"Music", url:"https://carolinabeach.org/beach-music-festival/", desc:"Beachfront celebration of Carolina shag and beach music with major acts performing right on the sand." },
+  { name:"Raleigh Intl Food Festival", date:"2026-06-06", endDate:null, location:"Raleigh", lat:35.7696, lng:-78.6282, theme:"Food & Drink", url:"https://www.raleighfoodfestival.com/", desc:"A global culinary journey through downtown Raleigh with cuisine from around the world and cultural performances." },
+  { name:"Trails & Trains Festival", date:"2026-06-06", endDate:null, location:"Old Fort", lat:35.6276, lng:-82.1732, theme:"Heritage", url:"https://www.oldforttrailsandtrains.com/", desc:"Celebration of Old Fort\u2019s railroad heritage and ties to Pisgah National Forest with live entertainment, historical exhibits, train memorabilia, and mountain crafts." },
+  { name:"Boonerang Music & Arts Fest", date:"2026-06-18", endDate:"Jun 21", location:"Boone", lat:36.2168, lng:-81.6746, theme:"Music", url:"https://www.visitboone.com/events/boonerang/", desc:"Multi-day music and arts festival in the Blue Ridge Mountains featuring emerging and established artists across multiple stages, with craft vendors and food." },
+  { name:"NC Blueberry Festival", date:"2026-06-20", endDate:null, location:"Burgaw", lat:34.5521, lng:-77.9261, theme:"Food & Drink", url:"https://www.ncblueberryfestival.com/", desc:"Annual celebration of the blueberry harvest in Pender County with blueberry treats, live music, vendors, kids\u2019 activities, and a pancake breakfast." },
+  { name:"Lumbee Homecoming", date:"2026-06-23", endDate:"Jul 5", location:"Pembroke", lat:34.6804, lng:-79.1948, theme:"Cultural", url:"https://www.lumbeetribe.com/homecoming", desc:"Multi-week celebration of Lumbee Tribe heritage and culture \u2014 one of the largest Native American gatherings in the eastern U.S. with a powwow, parade, pageant, and family reunion events." },
+  { name:"NC 4th of July Festival", date:"2026-07-02", endDate:"Jul 4", location:"Southport", lat:33.9218, lng:-78.0197, theme:"Seasonal", url:"https://nc4thofjuly.com/", desc:"Multi-day patriotic celebration in historic Southport with a parade, live music, fireworks over the waterfront, arts and crafts, and community events." },
+  { name:"Festival for the Eno", date:"2026-09-12", endDate:null, location:"Durham", lat:35.9984, lng:-78.9003, theme:"Music", url:"https://www.enoriver.org/festival-for-the-eno/", desc:"60th Anniversary special event \u2014 no longer at West Point on the Eno. This year: a free afternoon community celebration at DPlex Plaza, plus an evening benefit concert at the Carolina Theatre. The traditional festival returns in Spring 2027." },
+  { name:"Cary Independence Day", date:"2026-07-04", endDate:null, location:"Cary", lat:35.7813, lng:-78.7738, theme:"Seasonal", url:"https://www.cary.nc.gov/recreation/events/independence-day", desc:"Patriotic celebration at Koka Booth Amphitheatre with the Cary Town Band, NC Symphony, and fireworks." },
+  { name:"Folkmoot", date:"2026-07-16", endDate:"Jul 26", location:"Waynesville", lat:35.4887, lng:-83.0087, theme:"Cultural", url:"https://www.folkmoot.org/", desc:"NC\u2019s official State International Festival \u2014 two weeks of international folk dance and music featuring performers from around the world in the Blue Ridge Mountains." },
+  { name:"GalaxyCon Raleigh", date:"2026-07-23", endDate:"Jul 26", location:"Raleigh", lat:35.7996, lng:-78.6582, theme:"Cultural", url:"https://galaxycon.com/raleigh/", desc:"Four-day pop culture festival with celebrity guests, comic creators, cosplayers, panels, and interactive exhibits." },
+  { name:"Aurora\u2019s Salute to 250 Years", date:"2026-07-25", endDate:null, location:"Aurora", lat:35.3057, lng:-76.7882, theme:"Heritage", url:"https://www.america250nc.org/", desc:"\u201CSmall Town, Big Celebration\u201D \u2014 Aurora\u2019s commemoration of the United States Semiquincentennial (America 250), marking 250 years since the signing of the Declaration of Independence. Features local history exhibits from the Aurora Historical Society, live music, and community festivities." },
+  { name:"MLS All-Star Game Festival", date:"2026-07-29", endDate:null, location:"Charlotte", lat:35.2171, lng:-80.8531, theme:"Sports", url:"https://www.mlssoccer.com/all-star/", desc:"Major League Soccer\u2019s marquee all-star event at Bank of America Stadium with surrounding fan festivities." },
+  { name:"Watermelon Festival", date:"2026-08-01", endDate:null, location:"Outer Banks", lat:36.066, lng:-75.6726, theme:"Seasonal", url:"https://kittyhawk.com/watermelon-festival/", desc:"20th annual summer celebration by Kitty Hawk Kites \u2014 watermelon competitions, crafts, food trucks, and rock climbing." },
+  { name:"African American Heritage Fest", date:"2026-08-15", endDate:"Aug 16", location:"Raleigh", lat:35.7746, lng:-78.6382, theme:"Cultural", url:"https://www.artsplosure.org/africanamerican", desc:"17th annual free festival celebrating African American culture through theatre, music, visual art, dance, and vendors." },
+  { name:"WNC Bigfoot Festival", date:"2026-08-29", endDate:null, location:"Marion", lat:35.6843, lng:-82.0093, theme:"Cultural", url:"https://www.wncbigfootfestival.com/", desc:"The Southeast\u2019s premier Bigfoot event in downtown Marion with educational panels, a Bigfoot Calling Contest, live music, vendors, and family-friendly fun." },
+  { name:"Uwharrie Bigfoot Festival", date:"2026-09-04", endDate:"Sep 6", location:"New London", lat:35.4282, lng:-80.2048, theme:"Cultural", url:"https://www.eventeny.com/events/uwharrie-bigfoot-festival-2026-20149/", desc:"2nd annual 3-day Bigfoot and cryptid culture festival — now at Camp Barnhardt in New London, NC — with live music, kids zone, Bigfoot researchers, monster trucks, and vendors." },
+  { name:"LEAF Festival", date:"2026-09-04", endDate:"Sep 6", location:"Mill Spring", lat:35.3249, lng:-82.1565, theme:"Music", url:"https://theleaf.org/", desc:"Arts and music festival in the Blue Ridge foothills with multiple stages, workshops, and camping." },
+  { name:"NC Apple Festival", date:"2026-09-05", endDate:"Sep 7", location:"Hendersonville", lat:35.3187, lng:-82.4612, theme:"Food & Drink", url:"https://ncapplefestival.org/", desc:"Labor Day weekend celebration of Henderson County\u2019s apple industry with orchards, crafts, and live music." },
+  { name:"NC Folk Festival", date:"2026-09-18", endDate:"Sep 20", location:"Greensboro", lat:36.0726, lng:-79.792, theme:"Cultural", url:"https://www.ncfolkfestival.com/", desc:"Free 3-day downtown Greensboro festival celebrating musical traditions with an eclectic mix of funk, folk, soul, indie, roots, Latin, and more. 350,000+ attendees, 40+ artists across 5 stages." },
+  { name:"BugFest", date:"2026-09-12", endDate:null, location:"Raleigh", lat:35.7796, lng:-78.6382, theme:"Nature", url:"https://naturalsciences.org/bugfest/", desc:"The largest single-day bug celebration in the U.S. at the NC Museum of Natural Sciences with 100+ exhibits, games, crafts, and encounters with entomologists." },
+  { name:"Biltmore Championship", date:"2026-09-17", endDate:"Sep 20", location:"Arden", lat:35.4703, lng:-82.5515, theme:"Sports", url:"https://www.biltmorechampionship.com/", desc:"Professional golf competition at The Cliffs at Walnut Cove in the scenic Blue Ridge region." },
+  { name:"Boone Songwriters Festival", date:"2026-09-24", endDate:"Sep 26", location:"Boone", lat:36.2168, lng:-81.6746, theme:"Music", url:"https://boonesongwritersfestival.com/", desc:"Intimate festival celebrating songwriters with acoustic performances in the Blue Ridge Mountains." },
+  { name:"Benson Mule Days", date:"2026-09-24", endDate:"Sep 27", location:"Benson", lat:35.3824, lng:-78.5486, theme:"Heritage", url:"https://bensonmuledays.com/", desc:"75+ year tradition and one of NC\u2019s most beloved festivals with mule competitions, rodeos, the state\u2019s largest parade, carnival rides, and country concerts." },
+  { name:"Mayberry Days", date:"2026-09-21", endDate:"Sep 27", location:"Mount Airy", lat:36.4993, lng:-80.6073, theme:"Heritage", url:"https://www.surryarts.org/mayberrydays/", desc:"Week-long celebration of The Andy Griffith Show\u2019s legacy in Andy\u2019s real hometown, with live concerts, comedy shows, guest appearances, golf tournament, and Mayberry-themed activities across multiple venues." },
+  { name:"NHRA Nationals", date:"2026-09-25", endDate:"Sep 27", location:"Richmond County", lat:34.9936, lng:-79.7481, theme:"Sports", url:"https://www.rockinghamdragway.com/", desc:"High-speed drag racing at Rockingham Dragway featuring top fuel and funny car competitions." },
+  { name:"Hopscotch Music Festival", date:"2026-09-04", endDate:"Sep 6", location:"Raleigh", lat:35.7846, lng:-78.6432, theme:"Music", url:"https://hopscotchmusicfest.com/", desc:"16th annual independent music festival across 10+ downtown Raleigh venues with 120+ performers spanning indie, hip-hop, experimental, folk, and more." },
+  { name:"Shakori Hills Fall Festival", date:"2026-10-01", endDate:"Oct 4", location:"Pittsboro", lat:35.754, lng:-79.24, theme:"Music", url:"https://shakorihills.org/", desc:"Fall edition of the Grassroots Festival with music, dance, camping, and harvest season celebrations." },
+  { name:"Raleigh Wide Open Music Festival", date:"2026-10-01", endDate:"Oct 3", location:"Raleigh", lat:35.7796, lng:-78.6382, theme:"Music", url:"https://pinecone.org/event/raleigh-wide-open/", desc:"Free 3-day bluegrass, Americana, and folk festival on Fayetteville Street in downtown Raleigh, produced by PineCone. 2nd annual \u2014 drew 155,000 in 2025. Multiple stages, art market, food trucks, and beer garden. The spiritual successor to IBMA Bluegrass Live!" },
+  { name:"Cherokee Indian Fair", date:"2026-10-06", endDate:"Oct 10", location:"Cherokee", lat:35.4774, lng:-83.3148, theme:"Cultural", url:"https://visitcherokeenc.com/play/events/cherokee-indian-fair/", desc:"Annual celebration of Eastern Band of Cherokee heritage with stickball games, traditional dance, arts and crafts, carnival rides, food, and pageants." },
+  { name:"Autumn Leaves Festival", date:"2026-10-09", endDate:"Oct 11", location:"Mount Airy", lat:36.4993, lng:-80.6073, theme:"Seasonal", url:"https://www.autumnleavesfestival.com/", desc:"Beloved fall festival in the hometown of Andy Griffith with 300+ craft vendors, live music, clogging, food, and Mayberry-themed activities drawing 200,000+ visitors." },
+  { name:"La Fiesta del Pueblo", date:"2026-10-11", endDate:null, location:"Apex", lat:35.7327, lng:-78.8503, theme:"Cultural", url:"https://lafiestadelpueblo.org/", desc:"The Triangle\u2019s largest Latin American cultural festival with live music, dance performances, artisan vendors, food trucks, and family activities." },
+  { name:"NC State Fair", date:"2026-10-15", endDate:"Oct 25", location:"Raleigh", lat:35.7847, lng:-78.7117, theme:"Seasonal", url:"https://www.ncstatefair.org/", desc:"The state\u2019s largest annual event \u2014 11 days of rides, livestock shows, concerts, and legendary fair food." },
+  { name:"Valle Country Fair", date:"2026-10-17", endDate:"Oct 18", location:"Valle Crucis", lat:36.21, lng:-81.7786, theme:"Heritage", url:"https://www.vallecountryfair.com/", desc:"Celebration of agricultural heritage in the mountains with rides, bluegrass, treats, and artisanal crafts." },
+  { name:"Woolly Worm Festival", date:"2026-10-17", endDate:"Oct 18", location:"Banner Elk", lat:36.1632, lng:-81.8715, theme:"Nature", url:"https://woollyworm.com/", desc:"Annual fall tradition where woolly worms predict winter weather! Races, crafts, food, and live music." },
+  { name:"Mush, Music & Mutts", date:"2026-10-18", endDate:null, location:"Shelby", lat:35.2924, lng:-81.5356, theme:"Food & Drink", url:"https://www.uptownshelby.org/mushmusicmutts/", desc:"NC\u2019s official Fall Liver Mush Festival in Uptown Shelby with a livermush eating contest, recipe cookoff, pet costume parade, live music, and 80+ vendors." },
+  { name:"NC Seafood Festival", date:"2026-10-02", endDate:"Oct 4", location:"Morehead City", lat:34.7229, lng:-76.7260, theme:"Food & Drink", url:"https://www.ncseafoodfestival.org/", desc:"40th annual free 3-day festival on the Morehead City waterfront \u2014 NC\u2019s largest festival \u2014 with fresh local seafood, 200+ vendors, live music, cooking demos, boat show, and fireworks drawing 200,000+ visitors." },
+  { name:"The Barbecue Festival", date:"2026-10-24", endDate:null, location:"Lexington", lat:35.824, lng:-80.2534, theme:"Food & Drink", url:"https://www.thebarbecuefestival.com/", desc:"One of NC\u2019s most famous food festivals celebrating Lexington-style barbecue with pitmasters, cooking demos, competitions, live music, and 100,000+ attendees." },
+  { name:"HBCU Battle of the Bands", date:"2026-11-07", endDate:null, location:"Greensboro", lat:36.0726, lng:-79.792, theme:"Cultural", url:"https://www.hbcubattleofthebands.com/", desc:"Electrifying showcase of HBCU marching band culture at First Horizon Coliseum celebrating Black excellence." },
+  { name:"Carolina Renaissance Festival", date:"2026-10-03", endDate:"Nov 22", location:"Huntersville", lat:35.4106, lng:-80.8429, theme:"Heritage", url:"https://www.carolina.renfestinfo.com/", desc:"8-weekend immersive Renaissance faire at the wooded Village of Fairhaven. Jousting knights, falconry, 16 live entertainment stages, 140+ artisan vendors, themed food, and costumed characters. Saturdays and Sundays Oct 3 \u2013 Nov 22, 2026." },
+  { name:"NC Whirligig Festival", date:"2026-10-31", endDate:"Nov 1", location:"Wilson", lat:35.7213, lng:-77.9153, theme:"Arts", url:"https://www.ncwhirligigfestival.com/", desc:"Annual celebration of Wilson\u2019s famous whirligig sculptures with live music, artisan vendors, food trucks, and the iconic kinetic art displays created by folk artist Vollis Simpson." },
+  { name:"Beaufort Pirate Invasion", date:"2026-11-13", endDate:"Nov 14", location:"Beaufort", lat:34.7182, lng:-76.6638, theme:"Heritage", url:"https://beaufortpirateinvasion.com/", desc:"Coastal historical festival celebrating Beaufort\u2019s pirate heritage with reenactments, music, and maritime culture." },
+  { name:"Chinese Lantern Festival", date:"2026-11-20", endDate:"Jan 2027", location:"Cary", lat:35.757, lng:-78.7838, theme:"Cultural", url:"https://chinalanternfestival.com/cary/", desc:"Hundreds of larger-than-life illuminated lanterns at Koka Booth Amphitheatre \u2014 the area\u2019s top holiday event." },
+  { name:"Raleigh Christmas Parade", date:"2026-11-21", endDate:null, location:"Raleigh", lat:35.7796, lng:-78.6382, theme:"Seasonal", url:"https://raleighchristmasparade.com/", desc:"82nd annual parade \u2014 the largest between Atlanta and D.C. with bands, balloons, and 60,000 spectators." },
+  { name:"Winterfest German Christmas", date:"2026-12-04", endDate:"Dec 6", location:"Spencer", lat:35.6925, lng:-80.4345, theme:"Seasonal", url:"https://www.nctransportationmuseum.org/", desc:"Traditional German-style Weihnachtsmarkt with handmade gifts, authentic food, mulled wine, and holiday performances." },
+];
+
+/* ── NC Map Geometry ── */
+const NC = { latMin:33.85, latMax:36.60, lngMin:-84.35, lngMax:-75.40 };
+
+/* ── Amtrak stations reachable from Raleigh Union Station ── */
+const amtrakCities = new Set(['Raleigh','Cary','Durham','Burlington','Greensboro','High Point','Salisbury','Kannapolis','Charlotte','Selma','Wilson','Rocky Mount','Spencer','Fayetteville']);
+const SW=800, SH=400, SP=40;
+function geo(lat,lng){
+  return { x: SP+((lng-NC.lngMin)/(NC.lngMax-NC.lngMin))*(SW-2*SP), y: SP+((NC.latMax-lat)/(NC.latMax-NC.latMin))*(SH-2*SP) };
+}
+const ncPoly=[[-84.32,35.22],[-84.09,35],[-83.62,34.99],[-83.11,35],[-82.78,35.09],[-82.39,35.22],[-82.04,35.19],[-81.73,35.18],[-81.36,35.16],[-81.04,35.15],[-80.93,35.11],[-80.78,34.82],[-80.56,34.56],[-80.07,34.6],[-79.67,34.8],[-79.12,34.35],[-78.58,33.88],[-78.07,33.92],[-77.94,34.06],[-77.89,34.07],[-77.73,34.05],[-77.62,34.29],[-77.39,34.51],[-77.09,34.68],[-76.76,34.73],[-76.49,34.62],[-76.31,34.67],[-76.05,34.68],[-75.85,34.95],[-75.68,35.24],[-75.54,35.55],[-75.47,35.77],[-75.75,35.9],[-75.96,36.19],[-75.87,36.29],[-76.01,36.36],[-76.36,36.55],[-76.92,36.54],[-77.77,36.55],[-78.46,36.54],[-79.14,36.54],[-79.51,36.54],[-80.03,36.55],[-80.44,36.55],[-80.84,36.56],[-81.1,36.56],[-81.68,36.59],[-81.93,36.59],[-82.03,36.13],[-82.18,36.15],[-82.41,36.07],[-82.63,36.06],[-82.78,35.96],[-82.9,35.94],[-83.16,35.76],[-83.5,35.56],[-83.95,35.52],[-84.02,35.41],[-84.24,35.24],[-84.32,35.22]];
+
+/* ── State ── */
+let selectedFest=null, activeTheme='all', searchTerm='', sortCol='date', sortAsc=true;
+const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function pd(d){return new Date(d+'T00:00:00')}
+function fdr(f){const d=pd(f.date);return f.endDate?MN[d.getMonth()]+' '+d.getDate()+' \u2013 '+f.endDate:MN[d.getMonth()]+' '+d.getDate()}
+function tc(t){return'theme-'+({Music:'music','Food & Drink':'food',Cultural:'cultural',Arts:'arts',Seasonal:'seasonal',Heritage:'heritage',Nature:'nature',Sports:'sports'}[t]||'cultural')}
+function tcolor(t){return{Music:'#c0392b','Food & Drink':'#e67e22',Cultural:'#3f51b5',Arts:'#8e24aa',Seasonal:'#00796b',Heritage:'#795548',Nature:'#2e7d32',Sports:'#1565c0'}[t]||'#666'}
+
+function initMap(){
+  const svg=document.getElementById('mapSvg');
+  const pts=ncPoly.map(([lng,lat])=>{const p=geo(lat,lng);return p.x+','+p.y}).join(' ');
+  svg.innerHTML='<defs><linearGradient id="ncG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e8e2da"/><stop offset="100%" stop-color="#ddd6cc"/></linearGradient><filter id="sh"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter></defs><polygon points="'+pts+'" fill="url(#ncG)" stroke="#c8bfb3" stroke-width="1.5" filter="url(#sh)"/><g id="dotGroup"></g>';
+  const themes=['Music','Food & Drink','Cultural','Arts','Heritage','Nature','Seasonal','Sports'];
+  document.getElementById('mapLegend').innerHTML=themes.map(t=>'<div class="legend-item"><span class="legend-dot" style="background:'+tcolor(t)+'"></span>'+t+'</div>').join('');
+  renderDots();
+}
+
+function renderDots(){
+  const dg=document.getElementById('dotGroup');
+  const filtered=getFiltered();
+  const fN=new Set(filtered.map(f=>f.name));
+  const sorted=[...festivals].sort((a,b)=>{
+    if(selectedFest){if(a.name===selectedFest.name)return 1;if(b.name===selectedFest.name)return -1}return 0;
+  });
+  let h='';
+  sorted.forEach(f=>{
+    const p=geo(f.lat,f.lng),inF=fN.has(f.name),isSel=selectedFest&&selectedFest.name===f.name;
+    const isMobile=window.innerWidth<=600;
+    const dotR=isMobile?7:5.5, selR=isMobile?11:9;
+    h+='<circle class="map-dot" cx="'+p.x+'" cy="'+p.y+'" r="'+(isSel?selR:dotR)+'" fill="'+tcolor(f.theme)+'" stroke="'+(isSel?'#1a1a2e':'rgba(255,255,255,0.85)')+'" stroke-width="'+(isSel?3:1.5)+'" opacity="'+(inF?1:0.12)+'" data-name="'+f.name.replace(/"/g,'&quot;')+'"/>';
+  });
+  dg.innerHTML=h;
+  dg.querySelectorAll('.map-dot').forEach(dot=>{
+    dot.addEventListener('mouseenter',dotHover);
+    dot.addEventListener('mouseleave',dotLeave);
+    dot.addEventListener('click',dotClick);
+    dot.addEventListener('touchstart',dotTouch,{passive:true});
+  });
+}
+
+/* Touch handling for iOS */
+let lastTouchedDot=null;
+function dotTouch(e){
+  const t=e.target||e.touches[0]?.target;
+  if(!t)return;
+  const f=festivals.find(x=>x.name===t.dataset.name);if(!f)return;
+  if(lastTouchedDot===f.name){selectFestival(f);lastTouchedDot=null;return;}
+  lastTouchedDot=f.name;
+  const tt=document.getElementById('mapTooltip'),ct=document.getElementById('mapContainer'),sv=document.getElementById('mapSvg'),sr=sv.getBoundingClientRect();
+  const cx=+t.getAttribute('cx'),cy=+t.getAttribute('cy');
+  const scX=sr.width/SW,scY=sr.height/SH;
+  const cw=ct.offsetWidth,ch=ct.offsetHeight;
+  let tx=cx*scX+14,ty=cy*scY-10;
+  if(tx+180>cw)tx=Math.max(5,cx*scX-190);
+  if(tx<5)tx=5;
+  if(ty<5)ty=5;
+  if(ty+80>ch)ty=ch-85;
+  tt.querySelector('.tt-name').textContent=f.name;
+  tt.querySelector('.tt-date').textContent=fdr(f);
+  tt.querySelector('.tt-loc').textContent=f.location;
+  tt.style.left=tx+'px';tt.style.top=ty+'px';tt.classList.add('visible');
+  setTimeout(()=>{tt.classList.remove('visible')},2500);
+}
+
+function dotHover(e){
+  const f=festivals.find(x=>x.name===e.target.dataset.name);if(!f)return;
+  const tt=document.getElementById('mapTooltip'),ct=document.getElementById('mapContainer'),sv=document.getElementById('mapSvg'),sr=sv.getBoundingClientRect();
+  const cx=+e.target.getAttribute('cx'),cy=+e.target.getAttribute('cy');
+  const scX=sr.width/SW,scY=sr.height/SH;
+  const cw=ct.offsetWidth,ch=ct.offsetHeight;
+  let tx=cx*scX+14,ty=cy*scY-10;
+  if(tx+180>cw)tx=Math.max(5,cx*scX-190);
+  if(tx<5)tx=5;
+  if(ty<5)ty=5;
+  if(ty+80>ch)ty=ch-85;
+  tt.querySelector('.tt-name').textContent=f.name;
+  tt.querySelector('.tt-date').textContent=fdr(f);
+  tt.querySelector('.tt-loc').textContent=f.location;
+  tt.style.left=tx+'px';tt.style.top=ty+'px';tt.classList.add('visible');
+}
+function dotLeave(){document.getElementById('mapTooltip').classList.remove('visible')}
+function dotClick(e){const f=festivals.find(x=>x.name===e.target.dataset.name);if(f)selectFestival(f)}
+
+function getFiltered(){
+  let d=[...festivals];
+  if(activeTheme!=='all')d=d.filter(f=>f.theme===activeTheme);
+  if(searchTerm){const q=searchTerm.toLowerCase();d=d.filter(f=>f.name.toLowerCase().includes(q)||f.location.toLowerCase().includes(q)||f.theme.toLowerCase().includes(q)||f.desc.toLowerCase().includes(q))}
+  d.sort((a,b)=>{let va,vb;if(sortCol==='date'){va=a.date;vb=b.date}else if(sortCol==='name'){va=a.name.toLowerCase();vb=b.name.toLowerCase()}else if(sortCol==='location'){va=a.location.toLowerCase();vb=b.location.toLowerCase()}else{va=a.theme;vb=b.theme}if(va<vb)return sortAsc?-1:1;if(va>vb)return sortAsc?1:-1;return 0});
+  return d;
+}
+
+function render(){
+  const data=getFiltered(),tbody=document.getElementById('festBody'),noRes=document.getElementById('noResults');
+  document.getElementById('resultCount').textContent=data.length+' festival'+(data.length!==1?'s':'');
+  if(!data.length){tbody.innerHTML='';noRes.style.display='block';renderDots();updateCard();return}
+  noRes.style.display='none';
+  tbody.innerHTML=data.map((f,i)=>{
+    const d=pd(f.date),isSel=selectedFest&&selectedFest.name===f.name;
+    const linkHtml=f.url?'<a class="fest-link" href="'+f.url+'" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>':'';
+    const trainIcon=amtrakCities.has(f.location)?'<span class="train-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/><path d="M8 19l-2 3"/><path d="M16 19l2 3"/></svg>Amtrak</span>':'';
+    return '<tr class="'+(isSel?'selected':'')+'" style="animation-delay:'+i*0.02+'s" data-fname="'+f.name.replace(/"/g,'&quot;')+'"><td class="fest-date"><div class="month">'+MN[d.getMonth()]+'</div>'+fdr(f)+'</td><td><div class="fest-name">'+f.name+'</div><span class="fest-loc-inline">'+f.location+' '+trainIcon+'</span><div class="fest-desc">'+f.desc+'</div>'+linkHtml+'</td><td class="fest-location">'+f.location+trainIcon+'</td><td><span class="theme-tag '+tc(f.theme)+'">'+f.theme+'</span></td></tr>';
+  }).join('');
+  tbody.querySelectorAll('tr').forEach(tr=>{
+    tr.addEventListener('click',function(){
+      const f=festivals.find(x=>x.name===this.dataset.fname);
+      if(f)selectFestival(f);
+    });
+  });
+  renderDots();updateCard();
+}
+
+function selectFestival(f){
+  selectedFest=f;render();
+  const sel=document.querySelector('tr.selected');
+  if(sel)sel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function updateCard(){
+  const c=document.getElementById('selectedCard');
+  if(selectedFest){
+    const trainNote=amtrakCities.has(selectedFest.location)?' · 🚆 Amtrak from Raleigh':'';
+    const linkHtml=selectedFest.url?'<a class="fest-link" href="'+selectedFest.url+'" target="_blank" rel="noopener" style="margin-top:6px;display:inline-flex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;margin-right:4px"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Visit Website</a>':'';
+    c.querySelector('.sc-name').textContent=selectedFest.name;
+    c.querySelector('.sc-meta').innerHTML=fdr(selectedFest)+'  \u00b7  '+selectedFest.location+trainNote;
+    c.querySelector('.sc-desc').textContent=selectedFest.desc;
+    c.querySelector('.sc-link').innerHTML=linkHtml;
+    c.classList.add('visible');
+  }else c.classList.remove('visible');
+}
+
+document.getElementById('searchInput').addEventListener('input',e=>{searchTerm=e.target.value;render()});
+document.getElementById('themeFilters').addEventListener('click',e=>{
+  const btn=e.target.closest('.filter-btn');if(!btn)return;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');activeTheme=btn.dataset.theme;render();
+});
+document.querySelectorAll('thead th').forEach(th=>{
+  th.addEventListener('click',()=>{
+    const col=th.dataset.col;
+    if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=true}
+    document.querySelectorAll('thead th').forEach(t=>t.classList.remove('sorted'));
+    th.classList.add('sorted');
+    th.querySelector('.sort-arrow').textContent=sortAsc?'\u25B2':'\u25BC';
+    render();
+  });
+});
+
+initMap();render();
+
+/* Dismiss tooltip on tap outside map dots (iOS) */
+document.getElementById('mapContainer').addEventListener('click',function(e){
+  if(!e.target.classList.contains('map-dot')){
+    document.getElementById('mapTooltip').classList.remove('visible');
+    lastTouchedDot=null;
+  }
+});
+
+/* Re-render dots on orientation change */
+window.addEventListener('orientationchange',function(){setTimeout(renderDots,100)});
+window.addEventListener('resize',function(){clearTimeout(window._rr);window._rr=setTimeout(renderDots,150)});
+</script>
+</body>
+</html>

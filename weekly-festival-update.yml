@@ -1,0 +1,101 @@
+name: Weekly Festival Update
+
+on:
+  schedule:
+    # Every Thursday at 9:00 AM Eastern (13:00 UTC)
+    - cron: "0 13 * * 4"
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-festivals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run festival update script
+        id: update
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python update_festivals.py
+
+      - name: Check if updates were found
+        id: check
+        run: |
+          NEW=$(jq '.new_festivals | length' festival_update_report.json)
+          CHANGED=$(jq '.date_changes | length' festival_update_report.json)
+          SUMMARY=$(jq -r '.summary' festival_update_report.json)
+          echo "new_count=$NEW" >> $GITHUB_OUTPUT
+          echo "changed_count=$CHANGED" >> $GITHUB_OUTPUT
+          echo "summary=$SUMMARY" >> $GITHUB_OUTPUT
+          echo "Found $NEW new festivals, $CHANGED date changes."
+
+      - name: Build PR body
+        if: steps.check.outputs.new_count != '0' || steps.check.outputs.changed_count != '0'
+        id: pr_body
+        run: |
+          python3 - <<'EOF'
+          import json, os
+
+          with open("festival_update_report.json") as f:
+              report = json.load(f)
+
+          lines = ["## 🎉 Weekly NC Festival Update\n"]
+          lines.append(f"**Generated:** {report['generated_at']}\n")
+          lines.append(f"**Summary:** {report['summary']}\n")
+
+          new_fests = report.get("new_festivals", [])
+          if new_fests:
+              lines.append(f"\n### ✅ {len(new_fests)} New Festival(s) Found\n")
+              for f in new_fests:
+                  conf = {"high": "🟢", "medium": "🟡", "low": "🔴"}.get(f.get("confidence",""), "⚪")
+                  lines.append(f"- **{f['name']}** — {f['date']} | {f['location']} | {f.get('theme','')} {conf}")
+                  lines.append(f"  - {f.get('desc','')}")
+                  lines.append(f"  - Source: {f.get('source','')}")
+                  lines.append(f"  - URL: {f.get('url','')}\n")
+
+          changes = report.get("date_changes", [])
+          if changes:
+              lines.append(f"\n### 📅 {len(changes)} Date Change(s)\n")
+              for c in changes:
+                  lines.append(f"- **{c['name']}**: {c['old_date']} → {c['new_date']}")
+                  lines.append(f"  - {c.get('note','')}")
+                  lines.append(f"  - Source: {c.get('source','')}\n")
+
+          lines.append("\n---")
+          lines.append("**Review carefully before merging.** Low-confidence entries (🔴) should be manually verified.")
+          lines.append("\nTo apply these changes, merge this PR. The `apply_updates.py` script will patch the HTML automatically.")
+
+          body = "\n".join(lines)
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              # Write multiline output safely
+              f.write("pr_body<<PREOF\n")
+              f.write(body + "\n")
+              f.write("PREOF\n")
+          EOF
+
+      - name: Create Pull Request
+        if: steps.check.outputs.new_count != '0' || steps.check.outputs.changed_count != '0'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: weekly festival data update ${{ steps.check.outputs.new_count }} new, ${{ steps.check.outputs.changed_count }} changed"
+          branch: "festival-update-${{ github.run_id }}"
+          title: "🎪 Festival Update: ${{ steps.check.outputs.new_count }} new, ${{ steps.check.outputs.changed_count }} changed"
+          body: ${{ steps.pr_body.outputs.pr_body }}
+          labels: "festival-update,automated"
+
+      - name: No updates found
+        if: steps.check.outputs.new_count == '0' && steps.check.outputs.changed_count == '0'
+        run: |
+          echo "✅ No new festivals or changes found this week. No PR created."
+          echo "Summary: ${{ steps.check.outputs.summary }}"
