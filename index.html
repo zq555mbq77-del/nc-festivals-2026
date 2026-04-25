@@ -3,515 +3,389 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>NC Festivals 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a1a2e;
-    --paper: #faf8f5;
-    --accent: #c0392b;
-    --accent-light: #e74c3c;
-    --sage: #5b7553;
-    --sage-light: #8fad85;
-    --warm-gray: #a09890;
-    --light-line: #e8e2da;
-    --card-bg: #ffffff;
-    --shadow: 0 2px 20px rgba(26,26,46,0.08);
-    --radius: 10px;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--paper);
-    color: var(--ink);
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-  header {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 2.5rem 2rem 2rem;
-    position: relative;
-    overflow: hidden;
-  }
-  header::before {
-    content: '';
-    position: absolute;
-    top: -50%; right: -10%;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(192,57,43,0.15) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  header::after {
-    content: '';
-    position: absolute;
-    bottom: -40%; left: 10%;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(91,117,83,0.12) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .header-inner { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
-  .header-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 100px; padding: 5px 14px;
-    font-size: 0.72rem; font-weight: 600;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--sage-light); margin-bottom: 1rem;
-  }
-  .header-badge .dot {
-    width: 6px; height: 6px; background: var(--sage-light);
-    border-radius: 50%; animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    font-weight: 400; line-height: 1.15;
-    letter-spacing: -0.02em; margin-bottom: 0.4rem;
-  }
-  h1 span { color: var(--accent-light); }
-  .header-sub { color: var(--warm-gray); font-size: 0.95rem; max-width: 500px; }
+:root {
+  --ink: #1a1a2e; --paper: #faf8f5; --accent: #c0392b; --accent-light: #e74c3c;
+  --sage: #5b7553; --sage-light: #8fad85; --warm-gray: #a09890;
+  --light-line: #e8e2da; --card-bg: #ffffff;
+  --shadow: 0 2px 20px rgba(26,26,46,0.08); --radius: 10px;
+  --header-h: 0px; --controls-h: 0px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;min-height:100vh;
+  padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
 
-  .controls {
-    max-width: 100%; margin: 0 auto; padding: 1.5rem 2rem;
-    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
-    position: sticky; top: 0; z-index: 900;
-    background: var(--paper); border-bottom: 1px solid var(--light-line);
-  }
-  .search-box { flex: 1; min-width: 220px; position: relative; }
-  .search-box svg {
-    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-    width: 16px; height: 16px; color: var(--warm-gray);
-  }
-  .search-box input {
-    width: 100%; padding: 10px 14px 10px 40px;
-    border: 1.5px solid var(--light-line); border-radius: var(--radius);
-    font-family: inherit; font-size: 0.88rem;
-    background: var(--card-bg); color: var(--ink); transition: border-color 0.2s;
-  }
-  .search-box input:focus { outline: none; border-color: var(--sage); }
-  .search-box input::placeholder { color: var(--warm-gray); }
-  .filter-group { display: flex; gap: 8px; flex-wrap: wrap; }
-  .filter-btn {
-    padding: 8px 16px; border: 1.5px solid var(--light-line); border-radius: 100px;
-    background: var(--card-bg); font-family: inherit; font-size: 0.78rem; font-weight: 600;
-    color: var(--ink); cursor: pointer; transition: all 0.2s; white-space: nowrap;
-  }
-  .filter-btn:hover { border-color: var(--sage); color: var(--sage); }
-  .filter-btn.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
-  .result-count { font-size: 0.78rem; color: var(--warm-gray); font-weight: 500; white-space: nowrap; margin-left: auto; }
+/* ── Header ── */
+header{background:var(--ink);color:var(--paper);padding:1.2rem 1.5rem 1rem;position:relative;overflow:hidden}
+header::before{content:'';position:absolute;top:-50%;right:-10%;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(192,57,43,.15) 0%,transparent 70%);pointer-events:none}
+.header-inner{max-width:1400px;margin:0 auto;position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.header-text h1{font-family:"DM Serif Display",serif;font-size:clamp(1.3rem,3vw,2rem);font-weight:400;line-height:1.2;letter-spacing:-.02em}
+h1 span{color:var(--accent-light)}
+.header-sub{color:var(--warm-gray);font-size:0.78rem;margin-top:2px}
+.header-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:3px 10px;
+  font-size:0.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sage-light);margin-bottom:6px}
+.header-badge .dot{width:5px;height:5px;background:var(--sage-light);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.header-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.suggest-link{color:var(--sage-light);font-size:.7rem;font-weight:600;text-decoration:none;
+  border:1px solid rgba(143,173,133,.3);border-radius:100px;padding:4px 10px;white-space:nowrap;
+  transition:all .2s}
+.suggest-link:hover{background:rgba(143,173,133,.15);border-color:var(--sage-light)}
+.festival-count-badge{color:rgba(255,255,255,.4);font-size:.68rem}
 
-  .main-layout {
-    max-width: 100%; margin: 0 auto; padding: 1.5rem 2rem 1.5rem;
-    display: flex; flex-direction: row; gap: 0; align-items: start;
-    min-height: calc(100vh - 160px);
-    box-sizing: border-box;
-  }
-  @media (min-width: 1400px) {
-    .main-layout { padding: 1.5rem 3rem 1.5rem; }
-  }
-  @media (max-width: 1000px) {
-    .main-layout { flex-direction: column; min-height: unset; }
-    .map-panel { order: -1; width: 100% !important; }
-    .panel-resizer { display: none; }
-  }
-  .table-panel {
-    flex: 1 1 0; min-width: 280px;
-    background: var(--card-bg); border-radius: var(--radius);
-    box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--light-line);
-    position: relative; z-index: 1; isolation: isolate;
-  }
-  .map-panel {
-    flex: 0 0 460px; width: 460px; min-width: 220px;
-    border-radius: var(--radius); overflow: hidden;
-    box-shadow: var(--shadow); border: 1px solid var(--light-line); background: var(--card-bg);
-    z-index: 0; isolation: isolate; align-self: start;
-  }
-  .panel-resizer {
-    flex: 0 0 18px; width: 18px; cursor: col-resize;
-    display: flex; align-items: stretch; justify-content: center;
-    margin: 0 2px; position: relative; z-index: 10;
-    user-select: none; -webkit-user-select: none;
-    border-radius: 6px; transition: background 0.2s;
-  }
-  .panel-resizer:hover, .panel-resizer.dragging {
-    background: rgba(91,117,83,0.08);
-  }
-  .panel-resizer::before {
-    content: '';
-    width: 4px; background: var(--light-line);
-    border-radius: 4px; transition: background 0.2s, width 0.15s;
-    margin: 12px 0;
-  }
-  .panel-resizer:hover::before,
-  .panel-resizer.dragging::before {
-    background: var(--sage); width: 5px;
-  }
-  .panel-resizer::after {
-    content: '⋮⋮';
-    position: absolute; top: 50%; transform: translateY(-50%);
-    font-size: 13px; color: var(--warm-gray); letter-spacing: -2px;
-    pointer-events: none; transition: color 0.2s;
-  }
-  .panel-resizer:hover::after,
-  .panel-resizer.dragging::after { color: var(--sage); }
-  .table-scroll { max-height: calc(100vh - 200px); overflow-y: auto; }
-  .table-scroll::-webkit-scrollbar { width: 6px; }
-  .table-scroll::-webkit-scrollbar-track { background: transparent; }
-  .table-scroll::-webkit-scrollbar-thumb { background: var(--light-line); border-radius: 3px; }
-  table { width: 100%; border-collapse: collapse; }
-  thead { position: sticky; top: 0; z-index: 10; }
-  thead th {
-    background: var(--ink); color: var(--paper); padding: 12px 16px; text-align: left;
-    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    white-space: nowrap; cursor: pointer; user-select: none; transition: background 0.15s;
-  }
-  thead th:hover { background: #252542; }
-  thead th .sort-arrow { margin-left: 4px; opacity: 0.5; font-size: 0.65rem; }
-  thead th.sorted .sort-arrow { opacity: 1; color: var(--accent-light); }
-  tbody tr {
-    border-bottom: 1px solid var(--light-line);
-    cursor: pointer; transition: background 0.15s;
-  }
-  tbody tr:hover { background: #f5f2ee; }
-  tbody tr.selected { background: #eef3ec; }
-  tbody tr.today-row { background: #fff8e8; border-left: 3px solid #e67e22; }
-  tbody tr.today-row td:first-child { padding-left: 13px; }
-  tbody tr.today-row .month { color: #e67e22; }
-  tr.filter-row td { background: #f3f0eb; padding: 6px 8px; border-bottom: 2px solid var(--light-line); }
-  .col-filter {
-    width: 100%; font-family: inherit; font-size: 0.75rem; color: var(--ink);
-    background: var(--card-bg); border: 1.5px solid var(--light-line);
-    border-radius: 6px; padding: 5px 8px; outline: none; transition: border-color 0.2s;
-  }
-  .col-filter:focus { border-color: var(--sage); }
-  select.col-filter { cursor: pointer; }
-  td { padding: 12px 16px; font-size: 0.84rem; vertical-align: top; }
-  .fest-name { font-weight: 600; color: var(--ink); margin-bottom: 2px; }
-  .fest-desc {
-    color: var(--warm-gray); font-size: 0.78rem; line-height: 1.45;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-  }
-  .fest-loc-inline { display: none; }
-  .fest-date { white-space: nowrap; font-weight: 500; font-size: 0.82rem; }
-  .fest-date .month { color: var(--accent); font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
-  .fest-location { font-size: 0.82rem; }
-  .theme-tag {
-    display: inline-block; padding: 3px 10px; border-radius: 100px;
-    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.03em; white-space: nowrap;
-  }
-  .theme-music { background: #fce4ec; color: #c0392b; }
-  .theme-food { background: #fff3e0; color: #e67e22; }
-  .theme-cultural { background: #e8eaf6; color: #3f51b5; }
-  .theme-arts { background: #f3e5f5; color: #8e24aa; }
-  .theme-seasonal { background: #e0f2f1; color: #00796b; }
-  .theme-heritage { background: #efebe9; color: #5d4037; }
-  .theme-nature { background: #e8f5e9; color: #2e7d32; }
-  .theme-sports { background: #e3f2fd; color: #1565c0; }
-  .train-badge {
-    display: inline-flex; align-items: center; gap: 3px;
-    padding: 2px 8px; border-radius: 100px; font-size: 0.64rem; font-weight: 600;
-    background: #e8f5e9; color: #2e7d32; white-space: nowrap; margin-top: 3px;
-    letter-spacing: 0.02em; cursor: pointer; position: relative;
-  }
-  .train-badge svg { width: 12px; height: 12px; flex-shrink: 0; }
-  .amtrak-tooltip {
-    position: fixed; z-index: 9999;
-    background: var(--ink); color: var(--paper);
-    border-radius: 10px; padding: 12px 14px;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.22);
-    min-width: 220px; max-width: 280px;
-    pointer-events: none;
-    opacity: 0; transform: translateY(6px);
-    transition: opacity 0.18s, transform 0.18s;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .amtrak-tooltip.visible { opacity: 1; transform: translateY(0); }
-  .amtrak-tooltip .at-header {
-    display: flex; align-items: center; gap: 7px;
-    margin-bottom: 8px; padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-  }
-  .amtrak-tooltip .at-station { font-weight: 700; font-size: 0.85rem; line-height: 1.3; }
-  .amtrak-tooltip .at-time {
-    font-size: 0.78rem; color: #a8d5a2; font-weight: 600; margin-bottom: 6px;
-  }
-  .amtrak-tooltip .at-routes { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
-  .amtrak-tooltip .at-route {
-    font-size: 0.66rem; font-weight: 700; padding: 2px 8px;
-    border-radius: 100px; letter-spacing: 0.03em;
-  }
-  .at-route.carolinian { background: #1565c0; color: #fff; }
-  .at-route.piedmont   { background: #c0392b; color: #fff; }
-  .at-route.silver-star { background: #6a1b9a; color: #fff; }
-  .at-route.crescent   { background: #e65100; color: #fff; }
-  .at-route.palmetto   { background: #00695c; color: #fff; }
-  .amtrak-tooltip .at-note { font-size: 0.72rem; color: rgba(255,255,255,0.6); line-height: 1.4; }
-  .no-results { padding: 3rem 2rem; text-align: center; color: var(--warm-gray); }
-  .fest-link {
-    display: inline-flex; align-items: center; gap: 4px;
-    color: var(--sage); font-size: 0.72rem; font-weight: 600;
-    text-decoration: none; margin-top: 3px; letter-spacing: 0.01em;
-    transition: color 0.15s;
-  }
-  .fest-link:hover { color: var(--sage-light); text-decoration: underline; }
-  .fest-link svg { width: 10px; height: 10px; flex-shrink: 0; opacity: 0.8; }
-  @media (max-width: 600px) {
-    .fest-link { font-size: 0.65rem; }
-    .fest-link svg { width: 9px; height: 9px; }
-  }
+/* ── Controls ── */
+.controls{max-width:100%;padding:.8rem 1rem;display:flex;flex-direction:column;gap:8px;
+  position:sticky;top:0;z-index:900;background:var(--paper);border-bottom:1px solid var(--light-line)}
+@supports(-webkit-touch-callout:none){
+  .controls{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(250,248,245,.94)}
+}
+.controls-row1{display:flex;gap:8px;align-items:center}
+.search-box{flex:1;position:relative}
+.search-box svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--warm-gray)}
+.search-box input{width:100%;padding:9px 12px 9px 34px;border:1.5px solid var(--light-line);border-radius:var(--radius);
+  font-family:inherit;font-size:16px;background:var(--card-bg);color:var(--ink);transition:border-color .2s}
+.search-box input:focus{outline:none;border-color:var(--sage)}
+.search-box input::placeholder{color:var(--warm-gray)}
 
-  @media (min-width: 1001px) {
-    .map-panel { position: sticky; top: 80px; }
-  }
-  .map-container {
-    position: relative; width: 100%; height: calc(100vh - 320px); min-height: 420px; max-height: 700px;
-    background: #faf8f5; overflow: hidden;
-  }
-  .map-header {
-    padding: 12px 16px; font-size: 0.72rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.1em; color: var(--warm-gray);
-    border-bottom: 1px solid var(--light-line); display: flex; align-items: center; gap: 8px;
-  }
-  .map-header .live-dot { width: 7px; height: 7px; background: var(--sage); border-radius: 50%; }
-  .map-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-  .map-tooltip {
-    position: absolute; background: var(--card-bg); border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.18); padding: 10px 14px;
-    pointer-events: none; z-index: 100; min-width: 140px; max-width: 220px;
-    opacity: 0; transform: translateY(4px); transition: opacity 0.2s, transform 0.2s;
-    word-wrap: break-word; overflow-wrap: break-word;
-  }
-  .map-tooltip.visible { opacity: 1; transform: translateY(0); }
-  .map-tooltip .tt-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 3px; }
-  .map-tooltip .tt-date { font-size: 0.76rem; color: var(--accent); font-weight: 600; margin-bottom: 2px; }
-  .map-tooltip .tt-loc { font-size: 0.74rem; color: var(--warm-gray); }
-  .selected-card {
-    padding: 14px 16px; border-top: 1px solid var(--light-line);
-    background: #f9f7f4; display: none;
-  }
-  .selected-card.visible { display: block; }
-  .selected-card .sc-name { font-weight: 700; font-size: 0.88rem; margin-bottom: 2px; }
-  .selected-card .sc-meta { font-size: 0.78rem; color: var(--accent); font-weight: 600; margin-bottom: 4px; }
-  .selected-card .sc-desc { font-size: 0.78rem; color: var(--warm-gray); line-height: 1.5; }
-  .map-info {
-    padding: 10px 16px; border-top: 1px solid var(--light-line);
-    font-size: 0.76rem; color: var(--warm-gray); display: flex; align-items: center; gap: 6px;
-  }
-  .map-dot { cursor: pointer; }
-  .map-dot:hover { filter: brightness(0.85); }
-  .zoom-controls {
-    position: absolute; top: 10px; right: 10px;
-    display: flex; flex-direction: column; gap: 4px; z-index: 60;
-  }
-  .zoom-btn {
-    width: 30px; height: 30px; background: var(--card-bg);
-    border: 1.5px solid var(--light-line); border-radius: 7px;
-    font-size: 1rem; font-weight: 700; color: var(--ink);
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.1); transition: all 0.15s;
-    line-height: 1; padding: 0;
-  }
-  .zoom-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-  .zoom-level-badge {
-    position: absolute; top: 10px; left: 10px;
-    background: rgba(255,255,255,0.88); border: 1px solid var(--light-line);
-    border-radius: 6px; padding: 3px 8px; font-size: 0.65rem; font-weight: 700;
-    color: var(--warm-gray); z-index: 60; letter-spacing: 0.04em;
-    display: none;
-  }
-  .map-legend {
-    position: absolute; bottom: 12px; left: 12px;
-    background: rgba(255,255,255,0.92); border-radius: 8px; padding: 10px 14px;
-    font-size: 0.65rem; display: flex; flex-wrap: wrap; gap: 8px;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.08); z-index: 50;
-  }
-  .legend-item { display: flex; align-items: center; gap: 4px; }
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  tbody tr { animation: fadeIn 0.3s ease-out both; }
+.controls-row2{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;padding-bottom:2px}
+.controls-row2::-webkit-scrollbar{display:none}
+.controls-row3{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;padding-bottom:2px;align-items:center}
+.controls-row3::-webkit-scrollbar{display:none}
 
-  /* ── iPhone & Mobile Core Fixes ── */
-  * { -webkit-tap-highlight-color: transparent; }
-  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-  body {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-  .table-scroll { -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
-  .search-box input { font-size: 16px; } /* Prevents iOS auto-zoom on focus */
+.filter-btn{padding:7px 14px;border:1.5px solid var(--light-line);border-radius:100px;
+  background:var(--card-bg);font-family:inherit;font-size:.74rem;font-weight:600;
+  color:var(--ink);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;min-height:34px}
+.filter-btn:hover{border-color:var(--sage);color:var(--sage)}
+.filter-btn.active{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.filter-btn.active:hover{background:#252542}
+.filter-btn .count{font-size:.62rem;opacity:.7;margin-left:2px}
 
-  /* ── Mobile (<= 600px) ── */
-  @media (max-width: 600px) {
-    /* Header */
-    header {
-      padding: 1.75rem 1rem 1.25rem;
-      padding-left: max(1rem, env(safe-area-inset-left));
-      padding-right: max(1rem, env(safe-area-inset-right));
-    }
-    h1 { font-size: 1.5rem; }
-    .header-sub { font-size: 0.82rem; }
+.quick-btn{padding:7px 12px;border:1.5px solid var(--light-line);border-radius:100px;
+  background:var(--card-bg);font-family:inherit;font-size:.74rem;font-weight:600;
+  color:var(--ink);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;min-height:34px}
+.quick-btn:hover{border-color:var(--accent);color:var(--accent)}
+.quick-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
 
-    /* Sticky controls bar */
-    .controls {
-      padding: 0.75rem 1rem;
-      padding-left: max(1rem, env(safe-area-inset-left));
-      padding-right: max(1rem, env(safe-area-inset-right));
-      gap: 8px;
-      position: sticky; top: 0; z-index: 900;
-      /* Full-width background behind sticky bar */
-      margin-left: 0; margin-right: 0;
-    }
+.near-me-btn{padding:7px 12px;border:1.5px solid var(--light-line);border-radius:100px;
+  background:var(--card-bg);font-family:inherit;font-size:.74rem;font-weight:600;
+  color:var(--ink);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;
+  display:flex;align-items:center;gap:5px;min-height:34px}
+.near-me-btn.active{background:#1565c0;border-color:#1565c0;color:#fff}
+.near-me-btn svg{width:13px;height:13px;flex-shrink:0}
 
-    /* Search full-width on its own row */
-    .search-box { min-width: 100%; flex: 1 1 100%; order: 0; }
-    .search-box input { padding: 10px 14px 10px 38px; }
+.clear-btn{padding:7px 12px;border:1.5px solid var(--accent-light);border-radius:100px;
+  background:transparent;font-family:inherit;font-size:.74rem;font-weight:600;
+  color:var(--accent);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;min-height:34px}
+.clear-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 
-    /* Horizontally scrolling filter pills */
-    .filter-group {
-      display: flex; gap: 6px;
-      flex-wrap: nowrap;
-      overflow-x: auto; -webkit-overflow-scrolling: touch;
-      scroll-snap-type: x proximity;
-      width: 100%; order: 1;
-      padding-bottom: 2px;
-      -ms-overflow-style: none; scrollbar-width: none;
-    }
-    .filter-group::-webkit-scrollbar { display: none; }
-    .filter-btn {
-      padding: 8px 14px; font-size: 0.75rem;
-      flex: 0 0 auto;
-      scroll-snap-align: start;
-      min-height: 36px;
-    }
-    .result-count { margin-left: 0; width: 100%; text-align: right; font-size: 0.72rem; order: 2; }
+.result-count{font-size:.72rem;color:var(--warm-gray);font-weight:500;white-space:nowrap;margin-left:auto;flex-shrink:0}
+.hide-past-btn{padding:6px 10px;border:1.5px solid var(--light-line);border-radius:100px;
+  background:var(--card-bg);font-family:inherit;font-size:.72rem;font-weight:600;
+  color:var(--warm-gray);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.hide-past-btn.active{background:var(--sage);border-color:var(--sage);color:#fff}
 
-    /* Main layout */
-    .main-layout {
-      padding: 0.75rem;
-      padding-left: max(0.75rem, env(safe-area-inset-left));
-      padding-right: max(0.75rem, env(safe-area-inset-right));
-      padding-bottom: max(2rem, env(safe-area-inset-bottom));
-      gap: 0.75rem;
-    }
+/* ── Main Layout ── */
+.main-layout{max-width:100%;padding:0;display:flex;flex-direction:column;gap:0;box-sizing:border-box}
+@media(min-width:1001px){
+  .main-layout{flex-direction:row;padding:1.2rem 1.5rem;gap:0;align-items:start;min-height:calc(100vh - 160px)}
+}
 
-    /* Map */
-    .map-panel { position: relative; }
-    .map-container { height: 260px; }
-    .map-legend { font-size: 0.55rem; gap: 5px; padding: 6px 8px; bottom: 6px; left: 6px; }
-    .legend-dot { width: 6px; height: 6px; }
-    .map-info { font-size: 0.68rem; padding: 8px 10px; flex-wrap: wrap; }
-    .selected-card { padding: 10px 12px; }
-    .selected-card .sc-name { font-size: 0.82rem; }
-    .selected-card .sc-meta { font-size: 0.72rem; }
-    .selected-card .sc-desc { font-size: 0.72rem; }
+/* ── Table Panel ── */
+.table-panel{background:var(--card-bg);overflow:hidden;border:1px solid var(--light-line);
+  box-shadow:var(--shadow);flex:1 1 0;min-width:280px}
+@media(min-width:1001px){.table-panel{border-radius:var(--radius)}}
+.table-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+@media(max-width:1000px){.table-scroll{max-height:55vh}}
+@media(min-width:1001px){.table-scroll{max-height:calc(100vh - 200px)}}
+.table-scroll::-webkit-scrollbar{width:5px}
+.table-scroll::-webkit-scrollbar-thumb{background:var(--light-line);border-radius:3px}
 
-    /* Table */
-    .table-panel { border-radius: 8px; }
-    .table-scroll {
-      max-height: 65vh;
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
-    table { width: 100%; table-layout: fixed; }
-    thead th { padding: 8px 10px; font-size: 0.62rem; letter-spacing: 0.06em; }
-    thead th .sort-arrow { font-size: 0.55rem; }
-    td { padding: 10px; font-size: 0.8rem; }
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+thead{position:sticky;top:0;z-index:10}
+thead th{background:var(--ink);color:var(--paper);padding:10px 12px;text-align:left;
+  font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;user-select:none;transition:background .15s;white-space:nowrap}
+thead th:hover{background:#252542}
+thead th .sort-arrow{margin-left:3px;opacity:.5;font-size:.6rem}
+thead th.sorted .sort-arrow{opacity:1;color:var(--accent-light)}
+tr.filter-row td{background:#f3f0eb;padding:5px 6px;border-bottom:2px solid var(--light-line)}
+.col-filter{width:100%;font-family:inherit;font-size:.73rem;color:var(--ink);
+  background:var(--card-bg);border:1.5px solid var(--light-line);
+  border-radius:6px;padding:5px 6px;outline:none;transition:border-color .2s}
+.col-filter:focus{border-color:var(--sage)}
+select.col-filter{cursor:pointer}
 
-    /* Column widths: Date | Festival+Loc | Theme */
-    th[data-col="date"], td:first-child { width: 72px; }
-    th[data-col="theme"], td:last-child { width: 68px; }
+tbody tr{border-bottom:1px solid var(--light-line);cursor:pointer;transition:background .15s}
+tbody tr:hover{background:#f5f2ee}
+tbody tr.selected{background:#eef3ec}
+tbody tr.today-row{background:#fff8e8;border-left:3px solid #e67e22}
+tbody tr.past-fest{opacity:.45}
+tbody tr.past-fest .fest-name{text-decoration:line-through;text-decoration-color:rgba(160,152,144,.5)}
+td{padding:10px 12px;font-size:.83rem;vertical-align:top}
 
-    .fest-name { font-size: 0.82rem; word-wrap: break-word; overflow-wrap: break-word; }
-    .fest-desc { font-size: 0.72rem; -webkit-line-clamp: 1; line-height: 1.4; }
-    .fest-date { font-size: 0.75rem; white-space: nowrap; }
-    .fest-date .month { font-size: 0.65rem; }
-    .fest-location { font-size: 0.75rem; }
-    .theme-tag { font-size: 0.6rem; padding: 2px 7px; }
-    .train-badge { font-size: 0.58rem; padding: 1px 6px; margin-top: 2px; }
-    .train-badge svg { width: 10px; height: 10px; }
+.fest-name{font-weight:600;color:var(--ink);margin-bottom:2px;word-wrap:break-word}
+.fest-meta{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:3px}
+.fest-desc{color:var(--warm-gray);font-size:.76rem;line-height:1.45;margin-top:3px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  transition:all .2s}
+.fest-desc.expanded{display:block;-webkit-line-clamp:unset}
+.expand-btn{font-size:.68rem;color:var(--sage);cursor:pointer;font-weight:600;
+  background:none;border:none;font-family:inherit;padding:2px 0;display:block;margin-top:2px}
+.fest-loc-inline{display:none}
+.fest-date{white-space:nowrap;font-weight:500;font-size:.8rem}
+.fest-date .month{color:var(--accent);font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}
+.fest-location{font-size:.8rem}
+.past-label{font-size:.6rem;font-weight:700;color:var(--warm-gray);
+  background:#f0ece6;border-radius:100px;padding:1px 7px;letter-spacing:.04em}
 
-    /* Hide location column, show inline in name cell */
-    th[data-col="location"], td.fest-location { display: none; }
-    .fest-loc-inline {
-      display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
-      font-size: 0.72rem; color: var(--warm-gray); margin-top: 1px;
-    }
-  }
+.theme-tag{display:inline-block;padding:3px 9px;border-radius:100px;
+  font-size:.65rem;font-weight:600;letter-spacing:.03em;white-space:nowrap}
+.theme-music{background:#fce4ec;color:#c0392b}
+.theme-food{background:#fff3e0;color:#e67e22}
+.theme-cultural{background:#e8eaf6;color:#3f51b5}
+.theme-arts{background:#f3e5f5;color:#8e24aa}
+.theme-seasonal{background:#e0f2f1;color:#00796b}
+.theme-heritage{background:#efebe9;color:#5d4037}
+.theme-nature{background:#e8f5e9;color:#2e7d32}
+.theme-sports{background:#e3f2fd;color:#1565c0}
 
-  /* ── Extra-small phones (iPhone SE, 320-375px) ── */
-  @media (max-width: 375px) {
-    h1 { font-size: 1.3rem; }
-    header { padding: 1.5rem 0.75rem 1rem; }
-    .controls { padding: 0.6rem 0.75rem; }
-    .main-layout { padding: 0.5rem; padding-bottom: 2rem; }
-    .map-container { height: 220px; }
-    .map-legend { display: none; }
-    td { padding: 8px 6px; }
-    thead th { padding: 8px 6px; }
-    .fest-name { font-size: 0.78rem; }
-    .fest-desc { display: none; }
-    .fest-date { font-size: 0.7rem; }
-    .theme-tag { font-size: 0.56rem; padding: 2px 6px; }
-    th[data-col="date"], td:first-child { width: 62px; }
-    th[data-col="theme"], td:last-child { width: 58px; }
-  }
+.train-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:100px;
+  font-size:.62rem;font-weight:600;background:#e8f5e9;color:#2e7d32;white-space:nowrap;
+  letter-spacing:.02em;cursor:pointer;position:relative}
+.train-badge svg{width:11px;height:11px;flex-shrink:0}
 
-  /* ── Landscape on mobile ── */
-  @media (orientation: landscape) and (max-height: 500px) {
-    header { padding-left: max(1.25rem, env(safe-area-inset-left)); padding-right: max(1.25rem, env(safe-area-inset-right)); }
-    .controls { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); }
-    .main-layout { padding-left: max(0.75rem, env(safe-area-inset-left)); padding-right: max(0.75rem, env(safe-area-inset-right)); }
-    .map-container { height: 200px; }
-    .table-scroll { max-height: 50vh; }
-  }
+/* Row action buttons */
+.row-actions{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
+.fav-btn,.cal-btn,.fest-link{display:inline-flex;align-items:center;gap:3px;
+  padding:3px 9px;border-radius:100px;font-size:.65rem;font-weight:600;
+  border:1.5px solid var(--light-line);background:var(--card-bg);
+  cursor:pointer;font-family:inherit;transition:all .2s;text-decoration:none;color:var(--ink)}
+.fav-btn:hover{border-color:#e91e63;color:#e91e63}
+.fav-btn.active{background:#fce4ec;border-color:#e91e63;color:#e91e63}
+.fav-btn svg{width:12px;height:12px}
+.cal-btn:hover{border-color:var(--sage);color:var(--sage)}
+.cal-btn svg{width:12px;height:12px}
+.fest-link:hover{border-color:var(--sage);color:var(--sage)}
+.fest-link svg{width:11px;height:11px}
+.dist-badge{font-size:.62rem;color:var(--warm-gray);font-weight:500;
+  padding:3px 8px;border-radius:100px;background:#f0ece6;white-space:nowrap}
 
-  /* ── iOS Safari specific ── */
-  @supports (-webkit-touch-callout: none) {
-    .controls {
-      -webkit-backdrop-filter: blur(12px);
-      backdrop-filter: blur(12px);
-      background: rgba(250,248,245,0.92);
-    }
-    .map-panel { -webkit-transform: translateZ(0); transform: translateZ(0); }
-    tbody tr { -webkit-user-select: none; user-select: none; }
-    .table-scroll { -webkit-overflow-scrolling: touch; }
-  }
+.no-results{padding:3rem 2rem;text-align:center;color:var(--warm-gray)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+tbody tr{animation:fadeIn .25s ease-out both}
+
+/* ── Resizer (desktop only) ── */
+.panel-resizer{flex:0 0 14px;width:14px;cursor:col-resize;display:none;
+  align-items:stretch;justify-content:center;margin:0 2px;position:relative;z-index:10;
+  user-select:none;-webkit-user-select:none;border-radius:6px;transition:background .2s}
+@media(min-width:1001px){.panel-resizer{display:flex}}
+.panel-resizer:hover,.panel-resizer.dragging{background:rgba(91,117,83,.08)}
+.panel-resizer::before{content:'';width:4px;background:var(--light-line);
+  border-radius:4px;transition:background .2s,width .15s;margin:12px 0}
+.panel-resizer:hover::before,.panel-resizer.dragging::before{background:var(--sage);width:5px}
+.panel-resizer::after{content:'⋮⋮';position:absolute;top:50%;transform:translateY(-50%);
+  font-size:12px;color:var(--warm-gray);letter-spacing:-2px;pointer-events:none;transition:color .2s}
+.panel-resizer:hover::after,.panel-resizer.dragging::after{color:var(--sage)}
+
+/* ── Map Panel ── */
+.map-panel{background:var(--card-bg);border:1px solid var(--light-line);box-shadow:var(--shadow);
+  flex:0 0 420px;width:420px;min-width:200px}
+@media(min-width:1001px){.map-panel{border-radius:var(--radius);position:sticky;top:72px;align-self:start}}
+@media(max-width:1000px){.map-panel{width:100%!important;flex:none}}
+
+.map-toggle-bar{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-bottom:1px solid var(--light-line);cursor:pointer;
+  background:var(--card-bg)}
+@media(min-width:1001px){.map-toggle-bar{cursor:default}}
+.map-toggle-bar .mtb-left{display:flex;align-items:center;gap:8px;
+  font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--warm-gray)}
+.live-dot{width:7px;height:7px;background:var(--sage);border-radius:50%}
+.map-chevron{font-size:1rem;color:var(--warm-gray);transition:transform .2s;line-height:1}
+.map-body{display:none}
+@media(min-width:1001px){.map-body{display:block!important}}
+.map-body.open{display:block}
+
+.map-container{position:relative;width:100%;height:320px;background:#faf8f5;overflow:hidden}
+@media(min-width:1001px){.map-container{height:calc(100vh - 360px);min-height:340px;max-height:600px}}
+.map-svg{position:absolute;top:0;left:0;width:100%;height:100%;cursor:grab}
+.map-tooltip{position:absolute;background:var(--card-bg);border-radius:8px;
+  box-shadow:0 4px 20px rgba(0,0,0,.18);padding:9px 12px;pointer-events:none;
+  z-index:100;min-width:130px;max-width:200px;opacity:0;transform:translateY(4px);
+  transition:opacity .2s,transform .2s;word-wrap:break-word}
+.map-tooltip.visible{opacity:1;transform:translateY(0)}
+.map-tooltip .tt-name{font-weight:700;font-size:.82rem;margin-bottom:2px}
+.map-tooltip .tt-date{font-size:.74rem;color:var(--accent);font-weight:600;margin-bottom:2px}
+.map-tooltip .tt-loc{font-size:.72rem;color:var(--warm-gray)}
+
+.map-legend{position:absolute;bottom:8px;left:8px;background:rgba(255,255,255,.92);
+  border-radius:7px;padding:7px 10px;font-size:.62rem;display:flex;flex-wrap:wrap;
+  gap:5px;box-shadow:0 1px 8px rgba(0,0,0,.08);z-index:50;max-width:220px}
+.legend-item{display:flex;align-items:center;gap:3px;cursor:pointer;padding:1px 4px;
+  border-radius:4px;transition:background .15s;font-weight:500}
+.legend-item:hover{background:rgba(0,0,0,.06)}
+.legend-item.active-filter{background:rgba(0,0,0,.1);font-weight:700}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+.zoom-controls{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:3px;z-index:60}
+.zoom-btn{width:28px;height:28px;background:var(--card-bg);border:1.5px solid var(--light-line);
+  border-radius:7px;font-size:.95rem;font-weight:700;color:var(--ink);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 1px 5px rgba(0,0,0,.1);
+  transition:all .15s;line-height:1;padding:0}
+.zoom-btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+.selected-card{padding:12px 14px;border-top:1px solid var(--light-line);
+  background:#f9f7f4;display:none}
+.selected-card.visible{display:block}
+.sc-name{font-weight:700;font-size:.86rem;margin-bottom:2px}
+.sc-meta{font-size:.76rem;color:var(--accent);font-weight:600;margin-bottom:4px}
+.sc-desc{font-size:.75rem;color:var(--warm-gray);line-height:1.5;margin-bottom:6px}
+.sc-actions{display:flex;gap:6px;flex-wrap:wrap}
+
+.map-info{padding:8px 14px;border-top:1px solid var(--light-line);
+  font-size:.72rem;color:var(--warm-gray);display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.map-dot{cursor:pointer}
+.map-dot:hover{filter:brightness(.85)}
+
+/* ── Amtrak Tooltip ── */
+.amtrak-tooltip{position:fixed;z-index:9999;background:var(--ink);color:var(--paper);
+  border-radius:10px;padding:11px 13px;box-shadow:0 6px 24px rgba(0,0,0,.22);
+  min-width:230px;max-width:290px;pointer-events:none;
+  opacity:0;transform:translateY(6px);transition:opacity .18s,transform .18s;font-family:"DM Sans",sans-serif}
+.amtrak-tooltip.visible{opacity:1;transform:translateY(0)}
+.at-header{display:flex;align-items:center;gap:7px;margin-bottom:7px;padding-bottom:7px;
+  border-bottom:1px solid rgba(255,255,255,.12)}
+.at-station{font-weight:700;font-size:.83rem;line-height:1.3}
+.at-time{font-size:.76rem;color:#a8d5a2;font-weight:600;margin-bottom:5px}
+.at-routes{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.at-route{font-size:.64rem;font-weight:700;padding:2px 8px;border-radius:100px;letter-spacing:.03em}
+.at-route.carolinian{background:#1565c0;color:#fff}
+.at-route.piedmont{background:#c0392b;color:#fff}
+.at-route.silver-star{background:#6a1b9a;color:#fff}
+.at-route.crescent{background:#e65100;color:#fff}
+.at-route.palmetto{background:#00695c;color:#fff}
+.at-walk{font-size:.73rem;color:#a8d5a2;line-height:1.4;margin-bottom:5px;
+  padding:5px 8px;background:rgba(255,255,255,.06);border-radius:6px}
+.at-note{font-size:.7rem;color:rgba(255,255,255,.6);line-height:1.4}
+
+/* ── Favorites View ── */
+.favs-panel{display:none;padding:12px;background:#fff9f0;border-bottom:2px solid #f0e0c0}
+.favs-panel.visible{display:block}
+.favs-panel h3{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--warm-gray);margin-bottom:8px}
+.fav-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;
+  background:var(--card-bg);border:1.5px solid #e91e63;border-radius:100px;
+  font-size:.72rem;font-weight:600;color:var(--ink);margin:2px;cursor:pointer}
+.fav-chip .remove{color:#e91e63;font-size:.8rem;line-height:1}
+.empty-favs{font-size:.76rem;color:var(--warm-gray);font-style:italic}
+
+/* ── Share Toast ── */
+.share-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:#fff;padding:9px 18px;border-radius:100px;
+  font-size:.78rem;font-weight:600;opacity:0;transition:all .3s;z-index:9999;white-space:nowrap;pointer-events:none}
+.share-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── Mobile ── */
+@media(max-width:600px){
+  header{padding:1rem 1rem .8rem;
+    padding-left:max(1rem,env(safe-area-inset-left));
+    padding-right:max(1rem,env(safe-area-inset-right))}
+  .header-inner{flex-wrap:wrap}
+  .header-actions{flex-direction:row;align-items:center}
+  .controls{padding:.65rem .9rem;
+    padding-left:max(.9rem,env(safe-area-inset-left));
+    padding-right:max(.9rem,env(safe-area-inset-right))}
+  .main-layout{padding:0;
+    padding-bottom:max(1rem,env(safe-area-inset-bottom))}
+  td{padding:9px 10px}
+  thead th{padding:8px 10px;font-size:.62rem}
+  .fest-name{font-size:.8rem}
+  .fest-desc{font-size:.72rem;-webkit-line-clamp:1}
+  .fest-date{font-size:.74rem}
+  .theme-tag{font-size:.6rem;padding:2px 7px}
+  .train-badge{font-size:.58rem;padding:1px 6px}
+  .row-actions{gap:4px}
+  .fav-btn,.cal-btn,.fest-link{font-size:.6rem;padding:2px 7px}
+  th[data-col="location"],td.fest-location{display:none}
+  .fest-loc-inline{display:flex;align-items:center;gap:4px;flex-wrap:wrap;
+    font-size:.7rem;color:var(--warm-gray);margin-top:1px}
+  th[data-col="date"],td:first-child{width:66px}
+  th[data-col="theme"],td:last-child{width:64px}
+  tr.filter-row{display:none}
+}
+@media(max-width:375px){
+  .fest-desc{display:none}
+  .row-actions{display:none}
+  header{padding:.9rem .75rem .7rem}
+}
+@media(orientation:landscape) and (max-height:500px){
+  .map-container{height:200px}
+  .table-scroll{max-height:45vh}
+}
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <div class="header-badge"><span class="dot"></span> Live Directory</div>
-    <h1>North Carolina <span>Festivals</span> — 2026</h1>
-    <p class="header-sub">A curated guide to the best festivals across the Tar Heel State. Search, filter, and map your next adventure.</p>
+    <div class="header-text">
+      <div class="header-badge"><span class="dot"></span> Live Directory</div>
+      <h1>NC <span>Festivals</span> 2026</h1>
+      <p class="header-sub">90+ festivals across the Tar Heel State</p>
+    </div>
+    <div class="header-actions">
+      <a href="mailto:ncfestivalguide@gmail.com?subject=Festival+Suggestion&body=Festival+Name:%0ADate:%0ALocation:%0AWebsite:%0ADescription:" class="suggest-link">+ Suggest a Festival</a>
+      <button onclick="shareApp()" class="suggest-link" style="cursor:pointer;border:none;background:rgba(143,173,133,.15)">⬆ Share</button>
+    </div>
   </div>
 </header>
 
-<div class="controls">
-  <div class="search-box">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="searchInput" placeholder="Search festivals, cities, themes…">
+<div class="controls" id="controls">
+  <div class="controls-row1">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Search festivals, cities, themes…">
+    </div>
+    <button class="near-me-btn" id="nearMeBtn" onclick="toggleNearMe()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>Near Me
+    </button>
   </div>
-  <div class="filter-group" id="themeFilters">
-    <button class="filter-btn active" data-theme="all">All</button>
-    <button class="filter-btn" data-theme="Music">Music</button>
-    <button class="filter-btn" data-theme="Food & Drink">Food</button>
-    <button class="filter-btn" data-theme="Cultural">Cultural</button>
-    <button class="filter-btn" data-theme="Arts">Arts</button>
-    <button class="filter-btn" data-theme="Heritage">Heritage</button>
-    <button class="filter-btn" data-theme="Nature">Nature</button>
-    <button class="filter-btn" data-theme="Seasonal">Seasonal</button>
+  <div class="controls-row2" id="themeFilters">
+    <button class="filter-btn active" data-theme="all">All <span class="count" id="cnt-all"></span></button>
+    <button class="filter-btn" data-theme="Music">🎵 Music <span class="count" id="cnt-Music"></span></button>
+    <button class="filter-btn" data-theme="Food & Drink">🍺 Food <span class="count" id="cnt-Food"></span></button>
+    <button class="filter-btn" data-theme="Cultural">🌍 Cultural <span class="count" id="cnt-Cultural"></span></button>
+    <button class="filter-btn" data-theme="Arts">🎨 Arts <span class="count" id="cnt-Arts"></span></button>
+    <button class="filter-btn" data-theme="Heritage">🏛 Heritage <span class="count" id="cnt-Heritage"></span></button>
+    <button class="filter-btn" data-theme="Nature">🌿 Nature <span class="count" id="cnt-Nature"></span></button>
+    <button class="filter-btn" data-theme="Seasonal">🌸 Seasonal <span class="count" id="cnt-Seasonal"></span></button>
+    <button class="filter-btn" data-theme="Sports">⚡ Sports <span class="count" id="cnt-Sports"></span></button>
   </div>
-  <span class="result-count" id="resultCount"></span>
+  <div class="controls-row3">
+    <button class="quick-btn" id="qWeekend" onclick="setQuick('weekend')">📅 This Weekend</button>
+    <button class="quick-btn" id="qMonth" onclick="setQuick('month')">🗓 This Month</button>
+    <button class="quick-btn" id="qFavs" onclick="setQuick('favs')">❤️ Favorites</button>
+    <button class="filter-btn" id="regionBtn" data-region="all" onclick="cycleRegion()">📍 All Regions</button>
+    <button class="hide-past-btn" id="hidePastBtn" onclick="toggleHidePast()">Hide Past</button>
+    <button class="clear-btn" id="clearBtn" onclick="clearAllFilters()" style="display:none">✕ Clear All</button>
+    <span class="result-count" id="resultCount"></span>
+  </div>
 </div>
+
+<div id="favsPanel" class="favs-panel"></div>
 
 <div class="main-layout">
   <div class="table-panel">
-    <div class="table-scroll">
+    <div class="table-scroll" id="tableScroll">
       <table>
         <thead>
           <tr>
@@ -521,53 +395,62 @@
             <th data-col="theme">Theme <span class="sort-arrow">▲</span></th>
           </tr>
           <tr class="filter-row">
-            <td><select id="colFilterMonth" class="col-filter"><option value="">All Months</option><option>Apr</option><option>May</option><option>Jun</option><option>Jul</option><option>Aug</option><option>Sep</option><option>Oct</option><option>Nov</option><option>Dec</option></select></td>
-            <td><input type="text" id="colFilterName" class="col-filter" placeholder="Search name…"></td>
-            <td><input type="text" id="colFilterLocation" class="col-filter" placeholder="Search city…"></td>
-            <td><select id="colFilterTheme" class="col-filter"><option value="">All Themes</option><option>Music</option><option>Food & Drink</option><option>Cultural</option><option>Arts</option><option>Heritage</option><option>Nature</option><option>Seasonal</option><option>Sports</option></select></td>
+            <td><select id="colFilterMonth" class="col-filter"><option value="">All</option><option>Apr</option><option>May</option><option>Jun</option><option>Jul</option><option>Aug</option><option>Sep</option><option>Oct</option><option>Nov</option><option>Dec</option></select></td>
+            <td><input type="text" id="colFilterName" class="col-filter" placeholder="Name…"></td>
+            <td><input type="text" id="colFilterLocation" class="col-filter" placeholder="City…"></td>
+            <td><select id="colFilterTheme" class="col-filter"><option value="">All</option><option>Music</option><option>Food & Drink</option><option>Cultural</option><option>Arts</option><option>Heritage</option><option>Nature</option><option>Seasonal</option><option>Sports</option></select></td>
           </tr>
         </thead>
         <tbody id="festBody"></tbody>
       </table>
-      <div class="no-results" id="noResults" style="display:none;"><p>No festivals match your search.</p></div>
+      <div class="no-results" id="noResults" style="display:none"><p>No festivals match your search.</p></div>
     </div>
   </div>
 
   <div class="panel-resizer" id="panelResizer"></div>
 
-  <div class="map-panel">
-    <div class="map-header"><span class="live-dot"></span> Festival Map</div>
-    <div class="map-container" id="mapContainer">
-      <svg class="map-svg" id="mapSvg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet" style="cursor:grab"></svg>
-      <div class="map-tooltip" id="mapTooltip">
-        <div class="tt-name"></div>
-        <div class="tt-date"></div>
-        <div class="tt-loc"></div>
-      </div>
-      <div class="map-legend" id="mapLegend"></div>
-      <div class="zoom-controls">
-        <button class="zoom-btn" id="zoomIn" title="Zoom in">+</button>
-        <button class="zoom-btn" id="zoomReset" title="Reset zoom">⌂</button>
-        <button class="zoom-btn" id="zoomOut" title="Zoom out">−</button>
-      </div>
+  <div class="map-panel" id="mapPanel">
+    <div class="map-toggle-bar" id="mapToggleBar" onclick="toggleMap()">
+      <div class="mtb-left"><span class="live-dot"></span> Festival Map</div>
+      <span class="map-chevron" id="mapChevron">▲</span>
     </div>
-    <div class="selected-card" id="selectedCard">
-      <div class="sc-name"></div>
-      <div class="sc-meta"></div>
-      <div class="sc-desc"></div>
-      <div class="sc-link"></div>
-    </div>
-    <div class="map-info">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      Click a row or dot to see details · <span style="color:var(--sage)">🚆</span> = Amtrak from Raleigh
+    <div class="map-body" id="mapBody">
+      <div class="map-container" id="mapContainer">
+        <svg class="map-svg" id="mapSvg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="map-tooltip" id="mapTooltip">
+          <div class="tt-name"></div>
+          <div class="tt-date"></div>
+          <div class="tt-loc"></div>
+        </div>
+        <div class="map-legend" id="mapLegend"></div>
+        <div class="zoom-controls">
+          <button class="zoom-btn" id="zoomIn" title="Zoom in">+</button>
+          <button class="zoom-btn" id="zoomReset" title="Reset">⌂</button>
+          <button class="zoom-btn" id="zoomOut" title="Zoom out">−</button>
+        </div>
+      </div>
+      <div class="selected-card" id="selectedCard">
+        <div class="sc-name"></div>
+        <div class="sc-meta"></div>
+        <div class="sc-desc"></div>
+        <div class="sc-actions"></div>
+      </div>
+      <div class="map-info">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Tap a dot or row · <span style="color:var(--sage)">🚆</span> = Amtrak · Legend filters map
+      </div>
     </div>
   </div>
 </div>
 
-<script>
-const festivals = [
+<div class="share-toast" id="shareToast">Link copied to clipboard!</div>
+<div class="amtrak-tooltip" id="amtrakTooltip"></div>
 
-  { name:"Dix Park Music Festival", date:"2026-05-01", endDate:null, location:"Raleigh", lat:35.7796, lng:-78.6382, theme:"Music", url:"https://dreamvillefest.com/", desc:"Live Nation\u2019s successor to Dreamville at Dorothea Dix Park \u2014 4-year deal signed for 2026\u20132029. As of April 2026, no date or lineup has been announced. Easter conflicted with the traditional first-weekend-of-April slot. Watch the official site for updates." },
+<script>
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+
+const festivals = [
+{ name:"Dix Park Music Festival", date:"2026-05-01", endDate:null, location:"Raleigh", lat:35.7796, lng:-78.6382, theme:"Music", url:"https://dreamvillefest.com/", desc:"Live Nation\u2019s successor to Dreamville at Dorothea Dix Park \u2014 4-year deal signed for 2026\u20132029. As of April 2026, no date or lineup has been announced. Easter conflicted with the traditional first-weekend-of-April slot. Watch the official site for updates." },
   { name:"NC Azalea Festival", date:"2026-04-08", endDate:"Apr 12", location:"Wilmington", lat:34.2357, lng:-77.9547, theme:"Seasonal", url:"https://ncazaleafestival.org/", desc:"Annual spring celebration in historic Wilmington featuring a parade, live entertainment, garden tours, and street fair." },
   { name:"Pimento Cheese Festival", date:"2026-04-11", endDate:null, location:"Cary", lat:35.7913, lng:-78.7811, theme:"Food & Drink", url:"https://www.pimentocheesefestival.com/", desc:"Free event at Downtown Cary Park celebrating the South\u2019s best delicacy with food trucks, sculpting contests, and live music." },
   { name:"Grifton Shad Festival", date:"2026-04-17", endDate:"Apr 19", location:"Grifton", lat:35.3727, lng:-77.4372, theme:"Heritage", url:"https://www.griftonshadfestival.com/", desc:"54th annual festival with live music, carnival, art show, classic car cruise-in, street food, and parade." },
@@ -659,70 +542,8 @@ const festivals = [
   { name:"Winterfest German Christmas", date:"2026-12-04", endDate:"Dec 6", location:"Spencer", lat:35.6925, lng:-80.4345, theme:"Seasonal", url:"https://www.nctransportationmuseum.org/", desc:"Traditional German-style Weihnachtsmarkt with handmade gifts, authentic food, mulled wine, and holiday performances." },
 ];
 
-/* ── NC Map Geometry ── */
-const NC = { latMin:33.85, latMax:36.60, lngMin:-84.35, lngMax:-75.40 };
-
-/* ── Amtrak stations reachable from Raleigh Union Station ── */
-const amtrakCities = new Set(['Raleigh','Cary','Durham','Burlington','Greensboro','High Point','Salisbury','Kannapolis','Charlotte','Selma','Wilson','Rocky Mount','Spencer','Fayetteville']);
-
-const amtrakInfo = {
-  'Raleigh':     { station:'Raleigh Union Station', time:'Home base', routes:['carolinian','piedmont','silver-star'], routeNames:['Carolinian','Piedmont','Silver Star'], note:'Main hub — multiple daily departures north & south' },
-  'Cary':        { station:'Cary Station', time:'~10 min from Raleigh', routes:['carolinian','piedmont'], routeNames:['Carolinian','Piedmont'], note:'Westbound toward Charlotte on the Piedmont corridor' },
-  'Durham':      { station:'Durham Station', time:'~20 min from Raleigh', routes:['carolinian','piedmont'], routeNames:['Carolinian','Piedmont'], note:'Westbound toward Charlotte; easy walk from downtown' },
-  'Burlington':  { station:'Burlington Station', time:'~50 min from Raleigh', routes:['carolinian','piedmont'], routeNames:['Carolinian','Piedmont'], note:'Westbound on the Piedmont corridor' },
-  'Greensboro':  { station:'Greensboro Station', time:'~1h 20min from Raleigh', routes:['carolinian','piedmont','crescent'], routeNames:['Carolinian','Piedmont','Crescent'], note:'Major hub — Crescent (NYC→New Orleans) also stops here' },
-  'High Point':  { station:'High Point Station', time:'~1h 35min from Raleigh', routes:['carolinian','piedmont'], routeNames:['Carolinian','Piedmont'], note:'Furniture capital of the world — westbound' },
-  'Salisbury':   { station:'Salisbury Station', time:'~2h from Raleigh', routes:['carolinian','piedmont','crescent'], routeNames:['Carolinian','Piedmont','Crescent'], note:'Beautiful historic depot; Crescent also stops here' },
-  'Kannapolis':  { station:'Kannapolis Station', time:'~2h 15min from Raleigh', routes:['carolinian','piedmont'], routeNames:['Carolinian','Piedmont'], note:'Near the NASCAR Hall of Fame area' },
-  'Charlotte':   { station:'Charlotte Amtrak Station', time:'~2h 45min from Raleigh', routes:['carolinian','piedmont','crescent'], routeNames:['Carolinian','Piedmont','Crescent'], note:'Southern terminus of Piedmont; up to 5 trains daily' },
-  'Spencer':     { station:'Via Salisbury Station', time:'~2h from Raleigh', routes:['carolinian','piedmont'], routeNames:['Carolinian','Piedmont'], note:'Alight at Salisbury (~2 miles); home of NC Transportation Museum' },
-  'Selma':       { station:'Selma Station', time:'~35 min from Raleigh', routes:['carolinian','silver-star'], routeNames:['Carolinian','Silver Star'], note:'Southbound corridor toward Fayetteville & beyond' },
-  'Wilson':      { station:'Wilson Station', time:'~45 min from Raleigh', routes:['carolinian','silver-star'], routeNames:['Carolinian','Silver Star'], note:'Northbound toward Rocky Mount, DC & New York' },
-  'Rocky Mount': { station:'Rocky Mount Station', time:'~1h from Raleigh', routes:['carolinian','silver-star','palmetto'], routeNames:['Carolinian','Silver Star','Palmetto'], note:'3 routes stop here — good connection point north' },
-  'Fayetteville':{ station:'Fayetteville Station', time:'~1h 10min from Raleigh', routes:['silver-star'], routeNames:['Silver Star'], note:'One train daily each direction (NYC↔Miami route)' },
-};
-
-/* Amtrak tooltip */
-let amtrakTT=null;
-function getAmtrakTT(){
-  if(!amtrakTT){
-    amtrakTT=document.createElement('div');
-    amtrakTT.className='amtrak-tooltip';
-    amtrakTT.id='amtrakTooltip';
-    document.body.appendChild(amtrakTT);
-  }
-  return amtrakTT;
-}
-function showAmtrakTT(city, anchorEl){
-  const info=amtrakInfo[city]; if(!info)return;
-  const tt=getAmtrakTT();
-  const routePills=info.routes.map((r,i)=>`<span class="at-route ${r}">${info.routeNames[i]}</span>`).join('');
-  tt.innerHTML=`
-    <div class="at-header">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a8d5a2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/><path d="M8 19l-2 3"/><path d="M16 19l2 3"/></svg>
-      <span class="at-station">${info.station}</span>
-    </div>
-    <div class="at-time">🕐 ${info.time}</div>
-    <div class="at-routes">${routePills}</div>
-    <div class="at-note">${info.note}</div>`;
-  // Position near the badge
-  const r=anchorEl.getBoundingClientRect();
-  const ttW=260;
-  let left=r.left;
-  let top=r.bottom+6;
-  if(left+ttW>window.innerWidth-10) left=window.innerWidth-ttW-10;
-  if(left<10) left=10;
-  if(top+160>window.innerHeight) top=r.top-160;
-  tt.style.left=left+'px'; tt.style.top=top+'px';
-  tt.classList.add('visible');
-}
-function hideAmtrakTT(){ getAmtrakTT().classList.remove('visible'); }
-const SW=800, SH=400, SP=40;
-function geo(lat,lng){
-  return { x: SP+((lng-NC.lngMin)/(NC.lngMax-NC.lngMin))*(SW-2*SP), y: SP+((NC.latMax-lat)/(NC.latMax-NC.latMin))*(SH-2*SP) };
-}
 const ncPoly=[
-  // Western mountain border
+// Western mountain border
   [-84.321,35.211],[-84.29,35.20],[-84.225,35.266],[-84.099,34.988],[-84.004,34.988],
   [-83.956,35.002],[-83.619,34.992],[-83.498,34.992],[-83.339,34.993],[-83.109,35.001],
   [-82.977,35.073],[-82.782,35.085],[-82.648,35.107],[-82.391,35.218],[-82.216,35.199],
@@ -753,524 +574,641 @@ const ncPoly=[
   [-82.780,35.960],[-82.904,35.944],[-83.161,35.763],[-83.497,35.563],
   [-83.947,35.521],[-84.018,35.407],[-84.099,35.273],[-84.224,35.241],[-84.321,35.211]
 ];
-
-// Outer Banks as separate polygon
 const outerBanks=[
-  [-75.752,35.898],[-75.533,35.961],[-75.463,35.897],[-75.468,35.771],
+[-75.752,35.898],[-75.533,35.961],[-75.463,35.897],[-75.468,35.771],
   [-75.547,35.538],[-75.590,35.38],[-75.620,35.26],[-75.700,35.20],
   [-75.753,34.900],[-75.820,34.830],[-75.87,34.78],[-75.84,34.90],
   [-75.790,35.05],[-75.710,35.18],[-75.640,35.36],[-75.590,35.55],
   [-75.520,35.74],[-75.490,35.86],[-75.570,35.93],[-75.680,35.92],[-75.752,35.898]
 ];
 
+const amtrakCities=new Set(["Raleigh","Cary","Durham","Burlington","Greensboro","High Point","Salisbury","Kannapolis","Charlotte","Selma","Wilson","Rocky Mount","Spencer","Fayetteville"]);
+const amtrakInfo={
+'Raleigh':     { station:'Raleigh Union Station', time:'Home base', routes:['carolinian','piedmont','silver-star'], routeNames:['Carolinian','Piedmont','Silver Star'], walk:'🚶 Downtown festivals (Fayetteville St, Moore Square) are a 5–10 min walk. Dix Park is ~1.5 mi / 10 min Uber. State Fairgrounds ~3 mi.', note:'Main hub — multiple daily departures north & south' },
+  'Cary':        { station:'Cary Station', time:'~10 min from Raleigh', routes:['carolinian','piedmont'], routeNames:['Carolinian','Piedmont'], walk:'🚶 Downtown Cary Park (PeakFest, Spring Daze, Pimento Cheese) is a 5 min walk (~0.4 mi). Koka Booth Amphitheatre ~2 mi / short rideshare.', note:'Westbound toward Charlotte on the Piedmont corridor' },
+  'Durham':      { station:'Durham Station', time:'~20 min from Raleigh', routes:['carolinian','piedmont'], routeNames:['Carolinian','Piedmont'], walk:'🚶 Durham Central Park ~8 min walk (0.5 mi). American Tobacco Campus ~5 min walk. Old North Durham Park ~15 min walk (1 mi).', note:'Westbound toward Charlotte; easy walk from downtown' },
+  'Burlington':  { station:'Burlington Station', time:'~50 min from Raleigh', routes:['carolinian','piedmont'], routeNames:['Carolinian','Piedmont'], walk:'🚶 City Park (Carousel Festival) is ~12 min walk (0.6 mi). Downtown Burlington ~10 min walk.', note:'Westbound on the Piedmont corridor' },
+  'Greensboro':  { station:'Greensboro Station', time:'~1h 20min from Raleigh', routes:['carolinian','piedmont','crescent'], routeNames:['Carolinian','Piedmont','Crescent'], walk:'🚕 Station is ~2 mi south of downtown. LeBauer Park (NC Folk Festival) needs a ~10 min rideshare or 40 min walk. Grab a Lyft.', note:'Major hub — Crescent (NYC→New Orleans) also stops here' },
+  'High Point':  { station:'High Point Station', time:'~1h 35min from Raleigh', routes:['carolinian','piedmont'], routeNames:['Carolinian','Piedmont'], walk:'🚶 Downtown High Point is ~10 min walk (0.5 mi) from the station.', note:'Furniture capital of the world — westbound' },
+  'Salisbury':   { station:'Salisbury Station', time:'~2h from Raleigh', routes:['carolinian','piedmont','crescent'], routeNames:['Carolinian','Piedmont','Crescent'], walk:'🚶 Historic downtown Salisbury is a 5 min walk (~0.3 mi). Cheerwine Festival grounds are within easy walking distance.', note:'Beautiful 1908 depot; Crescent also stops here' },
+  'Kannapolis':  { station:'Kannapolis Station', time:'~2h 15min from Raleigh', routes:['carolinian','piedmont'], routeNames:['Carolinian','Piedmont'], walk:'🚶 Downtown Kannapolis is a 5 min walk (~0.3 mi) from the station.', note:'Near the NASCAR Hall of Fame area' },
+  'Charlotte':   { station:'Charlotte Amtrak Station', time:'~2h 45min from Raleigh', routes:['carolinian','piedmont','crescent'], routeNames:['Carolinian','Piedmont','Crescent'], walk:'🚕 Station is ~2 mi north of uptown. Bank of America Stadium ~10 min Uber. Most festivals need a rideshare (5–15 min). LYNX Blue Line light rail nearby.', note:'Southern terminus of Piedmont; up to 5 trains daily' },
+  'Spencer':     { station:'Via Salisbury Station', time:'~2h from Raleigh', routes:['carolinian','piedmont'], routeNames:['Carolinian','Piedmont'], walk:'🚕 Alight at Salisbury — Spencer is ~2 mi away (~5 min rideshare or 40 min walk). No direct Spencer stop.', note:'Home of NC Transportation Museum' },
+  'Selma':       { station:'Selma Station', time:'~35 min from Raleigh', routes:['carolinian','silver-star'], routeNames:['Carolinian','Silver Star'], walk:'🚶 Downtown Selma is a 5 min walk (~0.3 mi) from the station.', note:'Southbound corridor toward Fayetteville & beyond' },
+  'Wilson':      { station:'Wilson Station', time:'~45 min from Raleigh', routes:['carolinian','silver-star'], routeNames:['Carolinian','Silver Star'], walk:'🚶 Downtown Wilson and festival grounds are ~5 min walk (0.3 mi) from the station.', note:'Northbound toward Rocky Mount, DC & New York' },
+  'Rocky Mount': { station:'Rocky Mount Station', time:'~1h from Raleigh', routes:['carolinian','silver-star','palmetto'], routeNames:['Carolinian','Silver Star','Palmetto'], walk:'🚶 Downtown Rocky Mount is a short 5–8 min walk (~0.4 mi) from the station.', note:'3 routes stop here — good connection point north' },
+  'Fayetteville':{ station:'Fayetteville Station', time:'~1h 10min from Raleigh', routes:['silver-star'], routeNames:['Silver Star'], walk:'🚶 Station is on Hay St — downtown Fayetteville and festival venues are ~10 min walk (0.5 mi). Dogwood Festival grounds ~15 min walk.', note:'One train daily each direction (NYC↔Miami route)' },
+};
+
+const NC={latMin:33.85,latMax:36.60,lngMin:-84.35,lngMax:-75.40};
+const SW=800,SH=400,SP=40;
+function geo(lat,lng){return{x:SP+((lng-NC.lngMin)/(NC.lngMax-NC.lngMin))*(SW-2*SP),y:SP+((NC.latMax-lat)/(NC.latMax-NC.latMin))*(SH-2*SP)}}
+const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function pd(d){return new Date(d+"T00:00:00")}
+function fdr(f){const d=pd(f.date);return f.endDate?MN[d.getMonth()]+" "+d.getDate()+" – "+f.endDate:MN[d.getMonth()]+" "+d.getDate()}
+function tc(t){return"theme-"+({Music:"music","Food & Drink":"food",Cultural:"cultural",Arts:"arts",Seasonal:"seasonal",Heritage:"heritage",Nature:"nature",Sports:"sports"}[t]||"cultural")}
+function tcolor(t){return{Music:"#c0392b","Food & Drink":"#e67e22",Cultural:"#3f51b5",Arts:"#8e24aa",Seasonal:"#00796b",Heritage:"#795548",Nature:"#2e7d32",Sports:"#1565c0"}[t]||"#666"}
+
+function isPast(f){const e=f.endDate?new Date(f.date.substring(0,4)+"-"+String(MN.indexOf(f.endDate.split(" ")[0])+1).padStart(2,"0")+"-"+f.endDate.split(" ")[1].replace(/\D/g,"").padStart(2,"0")+"T23:59:59"):new Date(f.date+"T23:59:59");return e<TODAY}
+
 /* ── State ── */
-let selectedFest=null, activeTheme='all', searchTerm='', sortCol='date', sortAsc=true;
-let colFilterMonth='', colFilterName='', colFilterLocation='', colFilterTheme='';
-const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-function pd(d){return new Date(d+'T00:00:00')}
-function fdr(f){const d=pd(f.date);return f.endDate?MN[d.getMonth()]+' '+d.getDate()+' \u2013 '+f.endDate:MN[d.getMonth()]+' '+d.getDate()}
-function tc(t){return'theme-'+({Music:'music','Food & Drink':'food',Cultural:'cultural',Arts:'arts',Seasonal:'seasonal',Heritage:'heritage',Nature:'nature',Sports:'sports'}[t]||'cultural')}
-function tcolor(t){return{Music:'#c0392b','Food & Drink':'#e67e22',Cultural:'#3f51b5',Arts:'#8e24aa',Seasonal:'#00796b',Heritage:'#795548',Nature:'#2e7d32',Sports:'#1565c0'}[t]||'#666'}
+let selectedFest=null,activeTheme="all",searchTerm="",sortCol="date",sortAsc=true;
+let colFilterMonth="",colFilterName="",colFilterLocation="",colFilterTheme="";
+let quickFilter="",hidePast=false,regionFilter="all";
+let userLat=null,userLng=null,nearMe=false;
+let favorites=new Set(JSON.parse(localStorage.getItem("ncfavs")||"[]"));
+function saveFavs(){localStorage.setItem("ncfavs",JSON.stringify([...favorites]))}
 
-function initMap(){
-  const svg=document.getElementById('mapSvg');
-  const pts=ncPoly.map(([lng,lat])=>{const p=geo(lat,lng);return p.x+','+p.y}).join(' ');
-  const obPts=outerBanks.map(([lng,lat])=>{const p=geo(lat,lng);return p.x+','+p.y}).join(' ');
+/* ── URL State ── */
+function readURL(){
+  const p=new URLSearchParams(location.search);
+  if(p.get("theme"))activeTheme=p.get("theme");
+  if(p.get("q"))searchTerm=p.get("q");
+  if(p.get("region"))regionFilter=p.get("region");
+  if(p.get("month"))colFilterMonth=p.get("month");
+}
+function writeURL(){
+  const p=new URLSearchParams();
+  if(activeTheme!=="all")p.set("theme",activeTheme);
+  if(searchTerm)p.set("q",searchTerm);
+  if(regionFilter!=="all")p.set("region",regionFilter);
+  if(colFilterMonth)p.set("month",colFilterMonth);
+  const url=location.pathname+(p.toString()?"?"+p.toString():"");
+  history.replaceState(null,"",url);
+}
+function shareApp(){
+  writeURL();
+  if(navigator.share){navigator.share({title:"NC Festivals 2026",url:location.href})}
+  else if(navigator.clipboard){navigator.clipboard.writeText(location.href).then(()=>showToast())}
+}
+function showToast(){const t=document.getElementById("shareToast");t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2500)}
 
-  // City detail layers — shown at increasing zoom levels
-  const citiesL2=[ // shown at zoom >= 1.8
-    {name:'Charlotte',lat:35.2271,lng:-80.8431},{name:'Greensboro',lat:36.0726,lng:-79.792},
-    {name:'Durham',lat:35.994,lng:-78.8986},{name:'Asheville',lat:35.5951,lng:-82.5515},
-    {name:'Wilmington',lat:34.2257,lng:-77.9447},{name:'Winston-Salem',lat:36.0999,lng:-80.2442},
-    {name:'Fayetteville',lat:35.0527,lng:-78.8784},
-  ];
-  const citiesL3=[ // shown at zoom >= 3.5
-    {name:'Cary',lat:35.7913,lng:-78.7811},{name:'Chapel Hill',lat:35.9132,lng:-79.0558},
-    {name:'High Point',lat:35.9557,lng:-80.0053},{name:'Concord',lat:35.4088,lng:-80.5795},
-    {name:'Boone',lat:36.2168,lng:-81.6746},{name:'Morehead City',lat:34.7229,lng:-76.726},
-    {name:'Hickory',lat:35.7343,lng:-81.3412},{name:'Burlington',lat:36.0957,lng:-79.4378},
-    {name:'Wilson',lat:35.7213,lng:-77.9153},{name:'Rocky Mount',lat:35.938,lng:-77.7905},
-  ];
-  const citiesL4=[ // shown at zoom >= 6
-    {name:'Apex',lat:35.7327,lng:-78.8503},{name:'Holly Springs',lat:35.6513,lng:-78.8336},
-    {name:'Huntersville',lat:35.4106,lng:-80.8429},{name:'Matthews',lat:35.1168,lng:-80.7237},
-    {name:'Salisbury',lat:35.671,lng:-80.4742},{name:'Lexington',lat:35.824,lng:-80.2534},
-    {name:'Sanford',lat:35.48,lng:-79.179},{name:'Goldsboro',lat:35.385,lng:-77.992},
-    {name:'Lumberton',lat:34.618,lng:-79.009},{name:'Hendersonville',lat:35.3187,lng:-82.4612},
-  ];
+/* ── Regions ── */
+const regions={mountains:{lngMax:-81.5},piedmont:{lngMin:-81.5,lngMax:-78.5},coast:{lngMin:-78.5}};
+const regionLabels={all:"📍 All Regions",mountains:"⛰ Mountains",piedmont:"🏙 Piedmont",coast:"🌊 Coast"};
+const regionOrder=["all","mountains","piedmont","coast"];
+function cycleRegion(){
+  const i=regionOrder.indexOf(regionFilter);
+  regionFilter=regionOrder[(i+1)%regionOrder.length];
+  document.getElementById("regionBtn").textContent=regionLabels[regionFilter];
+  document.getElementById("regionBtn").classList.toggle("active",regionFilter!=="all");
+  render();writeURL();
+}
+function inRegion(f){
+  if(regionFilter==="all")return true;
+  if(regionFilter==="mountains")return f.lng<=-81.5;
+  if(regionFilter==="piedmont")return f.lng>-81.5&&f.lng<=-78.5;
+  if(regionFilter==="coast")return f.lng>-78.5;
+  return true;
+}
 
-  // Interstate paths (shown at zoom >= 2.5)
-  const interstates=[
-    {id:'I-40',pts:[[35.994,-78.898],[35.95,-79.09],[36.072,-79.792],[35.994,-80.013],[35.57,-82.55]]},
-    {id:'I-85',pts:[[35.408,-80.579],[35.227,-80.843],[35.053,-80.898]]},
-    {id:'I-95',pts:[[35.385,-77.99],[35.053,-78.878],[34.618,-79.009],[34.32,-78.826]]},
-    {id:'I-77',pts:[[36.099,-80.244],[35.583,-80.87],[35.227,-80.843]]},
-    {id:'I-26',pts:[[35.595,-82.552],[35.468,-82.582]]},
-  ];
+/* ── Quick Filters ── */
+function setQuick(q){
+  quickFilter=quickFilter===q?"":q;
+  ["qWeekend","qMonth","qFavs"].forEach(id=>document.getElementById(id).classList.remove("active"));
+  if(quickFilter==="weekend")document.getElementById("qWeekend").classList.add("active");
+  if(quickFilter==="month")document.getElementById("qMonth").classList.add("active");
+  if(quickFilter==="favs")document.getElementById("qFavs").classList.add("active");
+  render();
+}
+function getWeekendRange(){
+  const d=new Date(TODAY);
+  const day=d.getDay();
+  const sat=new Date(d);sat.setDate(d.getDate()+(day<=6?6-day:6));sat.setHours(0,0,0,0);
+  const sun=new Date(sat);sun.setDate(sat.getDate()+1);sun.setHours(23,59,59,999);
+  if(day===0){sat.setDate(d.getDate());sun.setDate(d.getDate());}
+  return{start:sat,end:sun};
+}
+function inThisWeekend(f){
+  const{start,end}=getWeekendRange();
+  const fStart=pd(f.date);
+  const fEnd=f.endDate?new Date(f.date.substring(0,4)+"-"+String(MN.indexOf(f.endDate.split(" ")[0])+1).padStart(2,"0")+"-"+f.endDate.split(" ")[1].replace(/\D/g,"").padStart(2,"0")+"T23:59:59"):new Date(f.date+"T23:59:59");
+  return fStart<=end&&fEnd>=start;
+}
+function inThisMonth(f){const d=pd(f.date);return d.getMonth()===TODAY.getMonth()&&d.getFullYear()===TODAY.getFullYear()}
 
-  function cityDot(c,size,labelSize){
-    const p=geo(c.lat,c.lng);
-    return `<g>
-      <circle cx="${p.x}" cy="${p.y}" r="${size}" fill="#6b5c4e" stroke="white" stroke-width="0.8" opacity="0.7"/>
-      <text x="${p.x}" y="${p.y-size-1.5}" text-anchor="middle" font-size="${labelSize}" fill="#3a2e24" font-family="DM Sans,sans-serif" font-weight="600" letter-spacing="0.03em" opacity="0.8">${c.name}</text>
-    </g>`;
+/* ── Hide Past ── */
+function toggleHidePast(){hidePast=!hidePast;document.getElementById("hidePastBtn").classList.toggle("active",hidePast);render()}
+
+/* ── Near Me ── */
+function toggleNearMe(){
+  const btn=document.getElementById("nearMeBtn");
+  // If already active, turn off
+  if(nearMe){
+    nearMe=false;userLat=null;userLng=null;
+    btn.classList.remove("active");
+    btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>Near Me`;
+    render();return;
   }
-
-  function interstateLines(){
-    return interstates.map(r=>{
-      const pts2=r.pts.map(([lat,lng])=>{const p=geo(lat,lng);return`${p.x},${p.y}`}).join(' ');
-      const mid=r.pts[Math.floor(r.pts.length/2)];const mp=geo(mid[0],mid[1]);
-      return `<g opacity="0.45">
-        <polyline points="${pts2}" fill="none" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4,2"/>
-        <text x="${mp.x}" y="${mp.y-4}" text-anchor="middle" font-size="5.5" fill="#c0392b" font-family="DM Sans,sans-serif" font-weight="700">${r.id}</text>
-      </g>`;
-    }).join('');
+  // Check support
+  if(!navigator.geolocation){
+    nearMeFallback();return;
   }
+  // Show loading state
+  btn.innerHTML=`⏳ Locating…`;
+  btn.classList.add("active");
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      userLat=pos.coords.latitude;
+      userLng=pos.coords.longitude;
+      nearMe=true;
+      btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>Near Me`;
+      render();
+    },
+    err=>{
+      btn.classList.remove("active");
+      btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>Near Me`;
+      nearMeFallback();
+    },
+    {timeout:8000,enableHighAccuracy:false}
+  );
+}
+function nearMeFallback(){
+  const city=prompt("📍 Enter your city or zip code in NC (e.g. Raleigh, Asheville, 27601):");
+  if(!city)return;
+  // Simple NC city lookup
+  const cities={
+    "raleigh":[35.7796,-78.6382],"cary":[35.7913,-78.7811],"durham":[35.994,-78.8986],
+    "chapel hill":[35.9132,-79.0558],"charlotte":[35.2271,-80.8431],"greensboro":[36.0726,-79.792],
+    "winston-salem":[36.0999,-80.2442],"winston salem":[36.0999,-80.2442],
+    "asheville":[35.5951,-82.5515],"wilmington":[34.2257,-77.9447],
+    "fayetteville":[35.0527,-78.8784],"high point":[35.9557,-80.0053],
+    "concord":[35.4088,-80.5795],"apex":[35.7327,-78.8503],
+    "holly springs":[35.6513,-78.8336],"morrisville":[35.8245,-78.8258],
+    "wake forest":[35.9799,-78.5097],"garner":[35.7068,-78.6144],
+    "huntersville":[35.4106,-80.8429],"matthews":[35.1168,-80.7237],
+    "boone":[36.2168,-81.6746],"hickory":[35.7343,-81.3412],
+    "salisbury":[35.671,-80.4742],"burlington":[36.0957,-79.4378],
+    "rocky mount":[35.938,-77.7905],"wilson":[35.7213,-77.9153],
+    "hendersonville":[35.3187,-82.4612],"kannapolis":[35.4919,-80.6212],
+    "goldsboro":[35.385,-77.992],"jacksonville":[34.7540,-77.4302],
+    "mooresville":[35.5846,-80.8098],"sanford":[35.48,-79.179],
+    "pinehurst":[35.1954,-79.4692],"southern pines":[35.1732,-79.3920],
+    "outer banks":[35.9,-75.68],"obx":[35.9,-75.68],
+    "kill devil hills":[36.0307,-75.6549],"nags head":[35.9582,-75.6249],
+    "beaufort":[34.7182,-76.6638],"morehead city":[34.7229,-76.726],
+    "new bern":[35.1085,-77.0441],"kinston":[35.2626,-77.5816],
+    "elizabeth city":[36.3015,-76.2513],"edenton":[36.0582,-76.6071],
+  };
+  const key=city.toLowerCase().trim();
+  let coords=null;
+  // Check city name
+  for(const [k,v] of Object.entries(cities)){
+    if(key.includes(k)||k.includes(key)){coords=v;break;}
+  }
+  if(coords){
+    userLat=coords[0];userLng=coords[1];nearMe=true;
+    const btn=document.getElementById("nearMeBtn");
+    btn.classList.add("active");
+    btn.innerHTML=`📍 ${city.trim()}`;
+    render();
+  } else {
+    // Try geocoding via a public API
+    fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city+", North Carolina")}&format=json&limit=1`)
+      .then(r=>r.json())
+      .then(data=>{
+        if(data&&data[0]){
+          userLat=parseFloat(data[0].lat);
+          userLng=parseFloat(data[0].lon);
+          nearMe=true;
+          const btn=document.getElementById("nearMeBtn");
+          btn.classList.add("active");
+          btn.innerHTML=`📍 ${city.trim()}`;
+          render();
+        } else {
+          alert(`Couldn't find "${city}" in NC. Try a city name like Raleigh, Asheville, or Wilmington.`);
+        }
+      })
+      .catch(()=>alert("Location lookup failed. Try a major city name like Raleigh or Charlotte."));
+  }
+}
+function distKm(f){if(!userLat)return 9999;const R=6371,dLat=(f.lat-userLat)*Math.PI/180,dLng=(f.lng-userLng)*Math.PI/180,a=Math.sin(dLat/2)**2+Math.cos(userLat*Math.PI/180)*Math.cos(f.lat*Math.PI/180)*Math.sin(dLng/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
+function fmtDist(km){const mi=km*0.621371;return mi<0.3?"Right here":mi<1?"<1 mi away":Math.round(mi)+" mi away"}
 
-  svg.innerHTML=`<defs>
-    <linearGradient id="ncG" x1="10%" y1="0%" x2="90%" y2="100%">
-      <stop offset="0%" stop-color="#e8e2d8"/>
-      <stop offset="100%" stop-color="#d8d0c4"/>
-    </linearGradient>
-    <filter id="sh" x="-10%" y="-10%" width="130%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#a09080" flood-opacity="0.25"/>
-    </filter>
-    <clipPath id="ncClip"><polygon points="${pts}"/></clipPath>
-  </defs>
-
-  <!-- Background -->
-  <rect x="0" y="0" width="800" height="400" fill="#faf8f5"/>
-
-  <!-- Zoomable canvas group -->
-  <g id="mapCanvas" transform="translate(0,0) scale(1)">
-    <!-- NC state -->
-    <polygon points="${pts}" fill="url(#ncG)" stroke="#b0a496" stroke-width="1.6" filter="url(#sh)"/>
-    <polygon points="${pts}" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/>
-    <!-- Outer Banks -->
-    <polygon points="${obPts}" fill="#ddd7cc" stroke="#b0a496" stroke-width="1" opacity="0.9"/>
-
-    <!-- Region labels (always visible, hide at zoom > 2) -->
-    <g id="regionLabels">
-      <text x="102" y="195" text-anchor="middle" font-size="7.5" fill="#7a6a5a" font-family="DM Sans,sans-serif" font-weight="600" letter-spacing="0.08em" opacity="0.6" transform="rotate(-5,102,195)">MOUNTAINS</text>
-      <text x="450" y="200" text-anchor="middle" font-size="7.5" fill="#7a6a5a" font-family="DM Sans,sans-serif" font-weight="600" letter-spacing="0.08em" opacity="0.5">PIEDMONT</text>
-      <text x="650" y="265" text-anchor="middle" font-size="7.5" fill="#7a6a5a" font-family="DM Sans,sans-serif" font-weight="600" letter-spacing="0.08em" opacity="0.5">COAST</text>
-    </g>
-
-    <!-- Interstate routes — shown at zoom >= 2.5 -->
-    <g id="interstateLayer" opacity="0" style="transition:opacity 0.3s">${interstateLines()}</g>
-
-    <!-- City dots level 2 — shown at zoom >= 1.8 -->
-    <g id="cityL2" opacity="0" style="transition:opacity 0.3s">${citiesL2.map(c=>cityDot(c,2.2,6)).join('')}</g>
-
-    <!-- City dots level 3 — shown at zoom >= 3.5 -->
-    <g id="cityL3" opacity="0" style="transition:opacity 0.3s">${citiesL3.map(c=>cityDot(c,1.8,5.5)).join('')}</g>
-
-    <!-- City dots level 4 — shown at zoom >= 6 -->
-    <g id="cityL4" opacity="0" style="transition:opacity 0.3s">${citiesL4.map(c=>cityDot(c,1.5,5)).join('')}</g>
-
-    <g id="dotGroup"></g>
-  </g>`;
-
-  const themes=['Music','Food & Drink','Cultural','Arts','Heritage','Nature','Seasonal','Sports'];
-  document.getElementById('mapLegend').innerHTML=themes.map(t=>'<div class="legend-item"><span class="legend-dot" style="background:'+tcolor(t)+'"></span>'+t+'</div>').join('');
-  renderDots();
-  initZoom();
+/* ── Clear All ── */
+function clearAllFilters(){
+  searchTerm="";activeTheme="all";quickFilter="";regionFilter="all";
+  hidePast=false;colFilterMonth="";colFilterName="";colFilterLocation="";colFilterTheme="";nearMe=false;
+  document.getElementById("searchInput").value="";
+  document.getElementById("colFilterMonth").value="";
+  document.getElementById("colFilterName").value="";
+  document.getElementById("colFilterLocation").value="";
+  document.getElementById("colFilterTheme").value="";
+  document.getElementById("hidePastBtn").classList.remove("active");
+  document.getElementById("nearMeBtn").classList.remove("active");
+  document.getElementById("regionBtn").textContent=regionLabels["all"];
+  document.getElementById("regionBtn").classList.remove("active");
+  ["qWeekend","qMonth","qFavs"].forEach(id=>document.getElementById(id).classList.remove("active"));
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+  document.querySelector(".filter-btn[data-theme='all']").classList.add("active");
+  document.getElementById("clearBtn").style.display="none";
+  render();writeURL();
+}
+function updateClearBtn(){
+  const dirty=searchTerm||activeTheme!=="all"||quickFilter||regionFilter!=="all"||hidePast||colFilterMonth||colFilterName||colFilterLocation||colFilterTheme||nearMe;
+  document.getElementById("clearBtn").style.display=dirty?"":"none";
 }
 
-function renderDots(){
-  const dg=document.getElementById('dotGroup');
-  const filtered=getFiltered();
-  const fN=new Set(filtered.map(f=>f.name));
-  const sorted=[...festivals].sort((a,b)=>{
-    if(selectedFest){if(a.name===selectedFest.name)return 1;if(b.name===selectedFest.name)return -1}return 0;
-  });
-  let h='';
-  sorted.forEach(f=>{
-    const p=geo(f.lat,f.lng),inF=fN.has(f.name),isSel=selectedFest&&selectedFest.name===f.name;
-    const isMobile=window.innerWidth<=600;
-    const dotR=isMobile?7:5.5, selR=isMobile?11:9;
-    h+='<circle class="map-dot" cx="'+p.x+'" cy="'+p.y+'" r="'+(isSel?selR:dotR)+'" fill="'+tcolor(f.theme)+'" stroke="'+(isSel?'#1a1a2e':'rgba(255,255,255,0.85)')+'" stroke-width="'+(isSel?3:1.5)+'" opacity="'+(inF?1:0.12)+'" data-name="'+f.name.replace(/"/g,'&quot;')+'"/>';
-  });
-  /* Raleigh acorn marker */
-  const rp=geo(35.7796,-78.6382);
-  const isMobile=window.innerWidth<=600;
-  const acornW=isMobile?48:42, acornH=isMobile?48:42;
-  const acornCX=rp.x, acornCY=rp.y;
-  h+=`<g id="acornMarker" transform-origin="${acornCX} ${acornCY}" style="pointer-events:none;user-select:none;">
-    <image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAHJElEQVR4nL2X+atdVxXHP3s4w71vym3ymheTDulEYtVSRaEqKoiCSn8UKqLQn/yL/ElBKIIKRQRRRCloKUVEirWtjUlfkmZqknffdKcz7b2XP5xz5/daquCCzT33DGt913cNe22FYl6k/lm8PRU9+xoosK0Ul2cgAgKR1YgLS2rDzPXEgMxq/ZgiC/9dNqpBNJKmKQKsrKRL7y9++1+IXlgW0CijsbEBBa1WQmQsCibLzFwfz/L/CkSB0bWByM4bXG2vEUXJwjcfIkcjXTTaLLWwajikCp755BNsnepggI21E82TxTUFs2jXHu35MYgnEkA0qlHw/e8+Lw89+iiFE376s5dUd/8AsKQrq+TD4ZG6tNTJq6jzxo4NT5N4EUhY+J3e18Bzn7sgG+2Iv772Kl4ZcA6AJE1rEA1zSGicXNRTyxGMHAPiiLI2wMUnH+P9q1cIZcHrf7+sHNCyllE+AhNDmKmTsftHiJ6/nGVjijyNkzoMqjZugNW4ibovCPmIG9vbavxMeUdiNHgHAnHaapAboiiaWpwxp9TE+GyjCo0DYfKklRjKwqOAc2c22Dp1Up56/GF6d28SKY2YmH7u2L5+R93s9nGAmBhtIlwIeOcAQVuB4OtIzRCklqMzBgGagGnojIAvf/FZeeL8Q4wGfXr7XZQvUVXJ+toag2HO/f0eJ0+f5ROPPMaV92/zyquvK0+dTVEcU1YV4NFGYZSmqvyUkXkgUyZ0A2Y1jQhVxYs/fEFuX9smsYLFs3V6k527d1lfSTjc75FVDtER+72Mbm9A59QWjz51kd/94Y+qe9BD2whRULmqtqE1EuZyb7lcx0BME5YfvfiCXLv8DludE1gp2exscO/uHdZW2+zu7mKjBG0issKx1xty0B+Ru4DXEU9efJpX/vyaOhjliAalLc7XlaWj2knkCBSzbCjgs59+Uq5ducR6u00oRpjg2L9/hxRPFDynOh0Qz97uDof7exBKVtKIdmyJ8Pgi47FHzopuCHfOgYlAaYKbhsYu7oJjGYN5YH0dIxXDwz2UVWgrKJfTjiPeffsKG6fOUEpAfECCpywqssrjAhgTs33535w7/zit7asMytpIFEVUToPzjd2AXQQgTdMZt59Op8Olt97gRMsiFgZuRCSefnB01lbpdu8TtEEpjYignWAlYExUb0BWk6QxWSloC0E0VVVB8ChrEefGoVnelALT+eHNd95WD57Z4qB3SOVLDnYHBFcgoSIf9TEa0iSCKqPsD0m1Q+c5qVHkWZ8HHtzkjbfeUl5DFUBEwFcQAlTlJBJ2PjI1G4ImEFDA9vW7rKWGCxcusJ4oWo9UnO6sEIknhECmIpwXin6f4Cqc89y4fQ8XGx44+zDv3euyPxjghbm2bBactroJA3ONbdpVvcDe3oH61te+JKYccn6rQ0s7/KhP5Rz9PJCVFSM8EgKD/oiVlRUOS2Fzc5PX/3lZDfquATHOvGmSTnKyrpIw6aJjMIKukRrY2R2StlsYozh9ehOrFVWegS8gFBgpUaGizDOqqmJ9fZ2kvUJrZZVBVk416+VWMffouMkpNIxkDqrS45xDgid4h8JjlRBJiZWKRAk6eIqioPQBbSJs1KKsZjWayVy7OI/o6UWYCYkCVTNShXoKK8uSEALdbpc8H+G9p8xHuCKjGg2Q4LDW4n3g4LAPWuOCUAamoQ9h2XAjVjU3J1GbhalqB2wMtz64y9kTCfd3uiSSI9mQUAwxShOqCgkG7wVtIpSG1uoJdg8Hk2REmTnDSqm5gfsjBkmNKBjlcOm9bXLnGRYlWenJnceJoSgdzgVGWcHu4YDcCSQtdNziytXr02rUGpRqUC3PsHr2vHGUNCHlzX/dVp1Tp7l+6x6DwrPXL6iw5EHYH4w4GGV4bSmUhajFg2ce5m//eFfVukPTO9yEdCd+rpcew8j0ldXV9uTfj3/yC3X+wtPc6vY4KALv3z9kb1gR4hYZETu9nA/2Dnnm88/x0i9/pSYEjMF8yKFGjYcAYZwneiZP6o8TDbEC5eGJsy35zje/zs6tmwSXIcUA5xyehNwbPvOFr/Dzl3+jbuz08EA5dmthTxsPZDIePRY73CKQVppQZsVkJIiAVMMPvve85IN97ty8Sj7KuPipZ8mc5vd/+ovqZY5RELSNKFx1DBF6YgMmo2KYO8vOSVPzsYXYaqQKBF83unNnTvLtb3xVNjY2ePnXv1VXbnQJgAParTX62bD2WM3rOxLI0sB8BJB2O8U5R1m6pSk+NfVuHqi399xJva9MjNQ65yIzVzn1O3oOyHjcHy8gSSJGoxwTxagoRmxC3N5AVIJur5EJVIBtpwwrwesYZRNAkaT1IVxJU55zMl8nzczaFLBazmytQUQhyIwXCuIUyhyosEbX5ypt6vSXelKv9fn5yEzONvOMqA87fS2JAuS4k+Cylx+t92PY/n/JfwCAjYjG1CTZhQAAAABJRU5ErkJggg==" x="${rp.x-acornW/2}" y="${rp.y-acornH}" width="${acornW}" height="${acornH}" />
-    <text x="${acornCX}" y="${acornCY+10}" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1a2e" font-family="DM Sans,sans-serif" letter-spacing="0.06em" opacity="0.85">RALEIGH</text>
-  </g>`;
-  dg.innerHTML=h;
-  dg.querySelectorAll('.map-dot').forEach(dot=>{
-    dot.addEventListener('mouseenter',dotHover);
-    dot.addEventListener('mouseleave',dotLeave);
-    dot.addEventListener('click',dotClick);
-    dot.addEventListener('touchstart',dotTouch,{passive:true});
-  });
+/* ── Favorites ── */
+function toggleFav(name,e){
+  e.stopPropagation();
+  if(favorites.has(name))favorites.delete(name);else favorites.add(name);
+  saveFavs();render();renderFavsPanel();
+}
+function renderFavsPanel(){
+  const panel=document.getElementById("favsPanel");
+  if(favorites.size===0){panel.classList.remove("visible");panel.innerHTML="";return;}
+  panel.classList.add("visible");
+  const chips=[...favorites].map(n=>`<span class="fav-chip" onclick="removeFav('${n.replace(/'/g,"\'")}')"><span>❤️ ${n}</span><span class="remove">×</span></span>`).join("");
+  panel.innerHTML=`<h3>❤️ Saved Festivals (${favorites.size})</h3><div>${chips}</div>`;
+}
+function removeFav(name){favorites.delete(name);saveFavs();render();renderFavsPanel()}
+
+/* ── Add to Calendar ── */
+function addToCalendar(f,e){
+  e.stopPropagation();
+  const start=f.date.replace(/-/g,"");
+  let end=start;
+  if(f.endDate){
+    const parts=f.endDate.match(/(\w+)\s+(\d+)/);
+    if(parts){const m=String(MN.indexOf(parts[1])+1).padStart(2,"0"),d=parts[2].padStart(2,"0");end=f.date.substring(0,4)+m+d;}
+  }
+  const endNext=end.substring(0,6)+String(parseInt(end.substring(6))+1).padStart(2,"0");
+  const title=encodeURIComponent(f.name+" — "+f.location+", NC");
+  const details=encodeURIComponent(f.desc+(f.url?" "+f.url:""));
+  const loc=encodeURIComponent(f.location+", NC");
+  const url=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${endNext}&details=${details}&location=${loc}`;
+  window.open(url,"_blank");
 }
 
-/* Touch handling for iOS */
-let lastTouchedDot=null;
-/* ── Zoom & Pan Engine ──────────────────────────────────────────────────── */
-let zoomScale=1, zoomTx=0, zoomTy=0;
-const ZOOM_MIN=1, ZOOM_MAX=10, ZOOM_STEP=1.5;
-const SW2=800, SH2=400;
-
-function applyZoom(){
-  const canvas=document.getElementById('mapCanvas');
-  if(!canvas)return;
-  // Clamp translate so map doesn't wander off screen
-  const svg=document.getElementById('mapSvg');
-  const vw=svg.clientWidth||460, vh=svg.clientHeight||420;
-  const scW=SW2*zoomScale, scH=SH2*zoomScale;
-  const maxTx=0, minTx=Math.min(0,vw-scW);
-  const maxTy=0, minTy=Math.min(0,vh-scH);
-  zoomTx=Math.max(minTx,Math.min(maxTx,zoomTx));
-  zoomTy=Math.max(minTy,Math.min(maxTy,zoomTy));
-  canvas.setAttribute('transform',`translate(${zoomTx},${zoomTy}) scale(${zoomScale})`);
-  // Progressive detail
-  const s=zoomScale;
-  const L2=document.getElementById('cityL2');
-  const L3=document.getElementById('cityL3');
-  const L4=document.getElementById('cityL4');
-  const IS=document.getElementById('interstateLayer');
-  const RL=document.getElementById('regionLabels');
-  if(L2)L2.style.opacity=s>=1.8?Math.min(1,(s-1.8)/0.5):'0';
-  if(L3)L3.style.opacity=s>=3.5?Math.min(1,(s-3.5)/0.5):'0';
-  if(L4)L4.style.opacity=s>=6?Math.min(1,(s-6)/0.5):'0';
-  if(IS)IS.style.opacity=s>=2.5?Math.min(1,(s-2.5)/0.4):'0';
-  if(RL)RL.style.opacity=s>2.5?Math.max(0,1-(s-2.5)/0.5):'1';
-  // Scale dots inversely so they stay same visual size
-  const dotScale=1/zoomScale;
-  document.querySelectorAll('.map-dot').forEach(d=>{
-    const baseR=window.innerWidth<=600?7:5.5;
-    const selR=window.innerWidth<=600?11:9;
-    const isSel=selectedFest&&d.dataset.name===selectedFest.name;
-    d.setAttribute('r',(isSel?selR:baseR)*dotScale);
-    d.setAttribute('stroke-width',(isSel?3:1.5)*dotScale);
-  });
-  // Acorn zooms naturally with the canvas — no inverse scaling needed
-}
-
-function zoomToward(svgX,svgY,newScale){
-  newScale=Math.max(ZOOM_MIN,Math.min(ZOOM_MAX,newScale));
-  zoomTx=svgX-(svgX-zoomTx)*(newScale/zoomScale);
-  zoomTy=svgY-(svgY-zoomTy)*(newScale/zoomScale);
-  zoomScale=newScale;
-  applyZoom();
-}
-
-function initZoom(){
-  const svg=document.getElementById('mapSvg');
-  const ct=document.getElementById('mapContainer');
-
-  // Mouse wheel zoom
-  svg.addEventListener('wheel',function(e){
-    e.preventDefault();
-    const r=svg.getBoundingClientRect();
-    const scX=SW2/r.width, scY=SH2/r.height;
-    const svgX=(e.clientX-r.left)*scX;
-    const svgY=(e.clientY-r.top)*scY;
-    const factor=e.deltaY<0?ZOOM_STEP:1/ZOOM_STEP;
-    zoomToward(svgX,svgY,zoomScale*factor);
-  },{passive:false});
-
-  // Mouse drag pan
-  let dragging=false,dragX=0,dragY=0;
-  svg.addEventListener('mousedown',function(e){
-    if(e.target.classList.contains('map-dot'))return;
-    dragging=true;dragX=e.clientX;dragY=e.clientY;
-    svg.style.cursor='grabbing';
-  });
-  window.addEventListener('mousemove',function(e){
-    if(!dragging)return;
-    const r=svg.getBoundingClientRect();
-    const scX=SW2/r.width, scY=SH2/r.height;
-    zoomTx+=(e.clientX-dragX)*scX;
-    zoomTy+=(e.clientY-dragY)*scY;
-    dragX=e.clientX;dragY=e.clientY;
-    applyZoom();
-  });
-  window.addEventListener('mouseup',function(){dragging=false;svg.style.cursor=zoomScale>1?'grab':'default';});
-
-  // Touch pinch zoom
-  let lastDist=null,lastMidX=0,lastMidY=0;
-  svg.addEventListener('touchstart',function(e){
-    if(e.touches.length===2){lastDist=null;}
-  },{passive:true});
-  svg.addEventListener('touchmove',function(e){
-    if(e.touches.length!==2)return;
-    e.preventDefault();
-    const t1=e.touches[0],t2=e.touches[1];
-    const dist=Math.hypot(t2.clientX-t1.clientX,t2.clientY-t1.clientY);
-    const midX=(t1.clientX+t2.clientX)/2,midY=(t1.clientY+t2.clientY)/2;
-    if(lastDist!==null){
-      const r=svg.getBoundingClientRect();
-      const scX=SW2/r.width,scY=SH2/r.height;
-      const svgX=(midX-r.left)*scX,svgY=(midY-r.top)*scY;
-      zoomToward(svgX,svgY,zoomScale*(dist/lastDist));
-      zoomTx+=(midX-lastMidX)*scX;
-      zoomTy+=(midY-lastMidY)*scY;
-      applyZoom();
-    }
-    lastDist=dist;lastMidX=midX;lastMidY=midY;
-  },{passive:false});
-  svg.addEventListener('touchend',function(){lastDist=null;});
-
-  // Double-click to zoom in
-  svg.addEventListener('dblclick',function(e){
-    if(e.target.classList.contains('map-dot'))return;
-    const r=svg.getBoundingClientRect();
-    const scX=SW2/r.width,scY=SH2/r.height;
-    zoomToward((e.clientX-r.left)*scX,(e.clientY-r.top)*scY,zoomScale*ZOOM_STEP);
-  });
-
-  // Buttons
-  document.getElementById('zoomIn').addEventListener('click',()=>{
-    zoomToward(SW2/2,SH2/2,zoomScale*ZOOM_STEP);
-  });
-  document.getElementById('zoomOut').addEventListener('click',()=>{
-    zoomToward(SW2/2,SH2/2,zoomScale/ZOOM_STEP);
-  });
-  document.getElementById('zoomReset').addEventListener('click',()=>{
-    zoomScale=1;zoomTx=0;zoomTy=0;applyZoom();
-    svg.style.cursor='grab';
+/* ── Theme Counts ── */
+function updateCounts(){
+  const base=[...festivals].filter(f=>!isPast(f));
+  const themes=["Music","Food & Drink","Cultural","Arts","Heritage","Nature","Seasonal","Sports"];
+  document.getElementById("cnt-all").textContent=base.length;
+  themes.forEach(t=>{
+    const id="cnt-"+t.replace(/ & /,"");
+    const el=document.getElementById(id);
+    if(el)el.textContent=base.filter(f=>f.theme===t).length;
   });
 }
 
-function dotTouch(e){
-  const t=e.target||e.touches[0]?.target;
-  if(!t)return;
-  const f=festivals.find(x=>x.name===t.dataset.name);if(!f)return;
-  if(lastTouchedDot===f.name){selectFestival(f);lastTouchedDot=null;return;}
-  lastTouchedDot=f.name;
-  const tt=document.getElementById('mapTooltip'),ct=document.getElementById('mapContainer'),sv=document.getElementById('mapSvg'),sr=sv.getBoundingClientRect();
-  const cx=+t.getAttribute('cx'),cy=+t.getAttribute('cy');
-  const scX=sr.width/SW,scY=sr.height/SH;
-  const cw=ct.offsetWidth,ch=ct.offsetHeight;
-  let tx=cx*scX+14,ty=cy*scY-10;
-  if(tx+180>cw)tx=Math.max(5,cx*scX-190);
-  if(tx<5)tx=5;
-  if(ty<5)ty=5;
-  if(ty+80>ch)ty=ch-85;
-  tt.querySelector('.tt-name').textContent=f.name;
-  tt.querySelector('.tt-date').textContent=fdr(f);
-  tt.querySelector('.tt-loc').textContent=f.location;
-  tt.style.left=tx+'px';tt.style.top=ty+'px';tt.classList.add('visible');
-  setTimeout(()=>{tt.classList.remove('visible')},2500);
-}
-
-function dotHover(e){
-  const f=festivals.find(x=>x.name===e.target.dataset.name);if(!f)return;
-  const tt=document.getElementById('mapTooltip'),ct=document.getElementById('mapContainer'),sv=document.getElementById('mapSvg'),sr=sv.getBoundingClientRect();
-  const cx=+e.target.getAttribute('cx'),cy=+e.target.getAttribute('cy');
-  const scX=sr.width/SW,scY=sr.height/SH;
-  const cw=ct.offsetWidth,ch=ct.offsetHeight;
-  let tx=cx*scX+14,ty=cy*scY-10;
-  if(tx+180>cw)tx=Math.max(5,cx*scX-190);
-  if(tx<5)tx=5;
-  if(ty<5)ty=5;
-  if(ty+80>ch)ty=ch-85;
-  tt.querySelector('.tt-name').textContent=f.name;
-  tt.querySelector('.tt-date').textContent=fdr(f);
-  tt.querySelector('.tt-loc').textContent=f.location;
-  tt.style.left=tx+'px';tt.style.top=ty+'px';tt.classList.add('visible');
-}
-function dotLeave(){document.getElementById('mapTooltip').classList.remove('visible')}
-function dotClick(e){const f=festivals.find(x=>x.name===e.target.dataset.name);if(f)selectFestival(f)}
-
+/* ── Get Filtered ── */
 function getFiltered(){
   let d=[...festivals];
-  if(activeTheme!=='all')d=d.filter(f=>f.theme===activeTheme);
-  if(searchTerm){const q=searchTerm.toLowerCase();d=d.filter(f=>f.name.toLowerCase().includes(q)||f.location.toLowerCase().includes(q)||f.theme.toLowerCase().includes(q)||f.desc.toLowerCase().includes(q))}
-  if(colFilterMonth){d=d.filter(f=>{const m=MN[new Date(f.date+'T00:00:00').getMonth()];return m===colFilterMonth||(f.endDate&&f.endDate.startsWith(colFilterMonth))})}
+  if(hidePast)d=d.filter(f=>!isPast(f));
+  if(activeTheme!=="all")d=d.filter(f=>f.theme===activeTheme);
+  if(regionFilter!=="all")d=d.filter(f=>inRegion(f));
+  if(quickFilter==="weekend")d=d.filter(f=>inThisWeekend(f));
+  if(quickFilter==="month")d=d.filter(f=>inThisMonth(f));
+  if(quickFilter==="favs")d=d.filter(f=>favorites.has(f.name));
+  if(searchTerm){const q=searchTerm.toLowerCase();d=d.filter(f=>f.name.toLowerCase().includes(q)||f.location.toLowerCase().includes(q)||f.theme.toLowerCase().includes(q)||(f.desc&&f.desc.toLowerCase().includes(q)))}
+  if(colFilterMonth){d=d.filter(f=>{const m=MN[pd(f.date).getMonth()];return m===colFilterMonth||(f.endDate&&f.endDate.startsWith(colFilterMonth))})}
   if(colFilterName){const q=colFilterName.toLowerCase();d=d.filter(f=>f.name.toLowerCase().includes(q))}
   if(colFilterLocation){const q=colFilterLocation.toLowerCase();d=d.filter(f=>f.location.toLowerCase().includes(q))}
-  if(colFilterTheme){d=d.filter(f=>f.theme===colFilterTheme)}
-  d.sort((a,b)=>{let va,vb;if(sortCol==='date'){va=a.date;vb=b.date}else if(sortCol==='name'){va=a.name.toLowerCase();vb=b.name.toLowerCase()}else if(sortCol==='location'){va=a.location.toLowerCase();vb=b.location.toLowerCase()}else{va=a.theme;vb=b.theme}if(va<vb)return sortAsc?-1:1;if(va>vb)return sortAsc?1:-1;return 0});
+  if(colFilterTheme)d=d.filter(f=>f.theme===colFilterTheme);
+  d.sort((a,b)=>{
+    if(nearMe&&userLat){const da=distKm(a),db=distKm(b);return da-db;}
+    let va,vb;
+    if(sortCol==="date"){va=a.date;vb=b.date}
+    else if(sortCol==="name"){va=a.name.toLowerCase();vb=b.name.toLowerCase()}
+    else if(sortCol==="location"){va=a.location.toLowerCase();vb=b.location.toLowerCase()}
+    else{va=a.theme;vb=b.theme}
+    if(va<vb)return sortAsc?-1:1;if(va>vb)return sortAsc?1:-1;return 0;
+  });
   return d;
 }
 
+/* ── Render ── */
 function render(){
-  const data=getFiltered(),tbody=document.getElementById('festBody'),noRes=document.getElementById('noResults');
-  document.getElementById('resultCount').textContent=data.length+' festival'+(data.length!==1?'s':'');
-  if(!data.length){tbody.innerHTML='';noRes.style.display='block';renderDots();updateCard();return}
-  noRes.style.display='none';
+  updateClearBtn();
+  const data=getFiltered(),tbody=document.getElementById("festBody"),noRes=document.getElementById("noResults");
+  document.getElementById("resultCount").textContent=data.length+" festival"+(data.length!==1?"s":"");
+  if(!data.length){tbody.innerHTML="";noRes.style.display="block";renderDots();updateCard();return}
+  noRes.style.display="none";
   tbody.innerHTML=data.map((f,i)=>{
-    const d=pd(f.date),isSel=selectedFest&&selectedFest.name===f.name;
-    const linkHtml=f.url?'<a class="fest-link" href="'+f.url+'" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>':'';
-    const trainIcon=amtrakCities.has(f.location)?'<span class="train-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/><path d="M8 19l-2 3"/><path d="M16 19l2 3"/></svg>Amtrak</span>':'';
-    return '<tr class="'+(isSel?'selected':'')+'" style="animation-delay:'+i*0.02+'s" data-fname="'+f.name.replace(/"/g,'&quot;')+'"><td class="fest-date"><div class="month">'+MN[d.getMonth()]+'</div>'+fdr(f)+'</td><td><div class="fest-name">'+f.name+'</div><span class="fest-loc-inline">'+f.location+' '+trainIcon+'</span><div class="fest-desc">'+f.desc+'</div>'+linkHtml+'</td><td class="fest-location">'+f.location+trainIcon+'</td><td><span class="theme-tag '+tc(f.theme)+'">'+f.theme+'</span></td></tr>';
-  }).join('');
-  tbody.querySelectorAll('tr').forEach(tr=>{
-    tr.addEventListener('click',function(){
+    const d=pd(f.date);
+    const isSel=selectedFest&&selectedFest.name===f.name;
+    const past=isPast(f);
+    const isFav=favorites.has(f.name);
+    const linkHtml=f.url?`<a class="fest-link" href="${f.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>`:"";
+    const trainIcon=amtrakCities.has(f.location)?`<span class="train-badge" data-city="${f.location}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/><path d="M8 19l-2 3"/><path d="M16 19l2 3"/></svg>Amtrak</span>`:"";
+    const distHtml=nearMe&&userLat?`<span class="dist-badge">📍 ${fmtDist(distKm(f))}</span>`:"";
+    const pastHtml=past?`<span class="past-label">PAST</span>`:"";
+    return `<tr class="${isSel?"selected":""} ${past?"past-fest":""}" style="animation-delay:${i*.015}s" data-fname="${f.name.replace(/"/g,"&quot;")}">
+      <td class="fest-date"><div class="month">${MN[d.getMonth()]}</div>${fdr(f)}</td>
+      <td>
+        <div class="fest-name">${f.name}</div>
+        <span class="fest-loc-inline">${f.location} ${trainIcon}</span>
+        <div class="fest-desc" id="desc-${i}">${f.desc||""}</div>
+        <button class="expand-btn" onclick="toggleDesc(${i},event)" id="xbtn-${i}">More ▾</button>
+        <div class="row-actions">
+          <button class="fav-btn ${isFav?"active":""}" onclick="toggleFav('${f.name.replace(/'/g,"\'")}',event)">${isFav?"❤️":"🤍"} ${isFav?"Saved":"Save"}</button>
+          <button class="cal-btn" onclick="addToCalendar(festivals.find(x=>x.name==='${f.name.replace(/'/g,"\'")}'),event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Calendar</button>
+          ${linkHtml}${distHtml}${pastHtml}
+        </div>
+      </td>
+      <td class="fest-location">${f.location} ${trainIcon}</td>
+      <td><span class="theme-tag ${tc(f.theme)}">${f.theme}</span></td>
+    </tr>`;
+  }).join("");
+
+  tbody.querySelectorAll("tr").forEach(tr=>{
+    tr.addEventListener("click",function(){
+      if(event.target.closest(".fav-btn,.cal-btn,.fest-link,.train-badge,.expand-btn"))return;
       const f=festivals.find(x=>x.name===this.dataset.fname);
       if(f)selectFestival(f);
     });
   });
-  // Amtrak badge hover tooltips
-  tbody.querySelectorAll('.train-badge').forEach(badge=>{
-    const row=badge.closest('tr');
-    const f=row?festivals.find(x=>x.name===row.dataset.fname):null;
-    if(!f)return;
-    badge.addEventListener('mouseenter',function(e){
-      e.stopPropagation();
-      showAmtrakTT(f.location, badge);
-    });
-    badge.addEventListener('mouseleave',function(){
-      hideAmtrakTT();
-    });
-    badge.addEventListener('click',function(e){ e.stopPropagation(); });
+  // Amtrak badge events
+  tbody.querySelectorAll(".train-badge").forEach(badge=>{
+    badge.addEventListener("click",e=>{e.stopPropagation();showAmtrakTT(badge.dataset.city,badge)});
+    badge.addEventListener("mouseenter",e=>showAmtrakTT(badge.dataset.city,badge));
+    badge.addEventListener("mouseleave",hideAmtrakTT);
   });
   renderDots();updateCard();
 }
 
+function toggleDesc(i,e){
+  e.stopPropagation();
+  const d=document.getElementById("desc-"+i),b=document.getElementById("xbtn-"+i);
+  const exp=d.classList.toggle("expanded");
+  b.textContent=exp?"Less ▴":"More ▾";
+}
+
 function selectFestival(f){
   selectedFest=f;render();
-  const sel=document.querySelector('tr.selected');
-  if(sel)sel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  if(window.innerWidth>=1001){
+    const mb=document.getElementById("mapBody");
+    mb.classList.add("open");mb.style.display="block";
+    document.getElementById("mapChevron").textContent="▲";
+  }
+  const sel=document.querySelector("tr.selected");
+  if(sel)sel.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
 function updateCard(){
-  const c=document.getElementById('selectedCard');
+  const c=document.getElementById("selectedCard");
   if(selectedFest){
-    const trainNote=amtrakCities.has(selectedFest.location)?' · 🚆 Amtrak from Raleigh':'';
-    const linkHtml=selectedFest.url?'<a class="fest-link" href="'+selectedFest.url+'" target="_blank" rel="noopener" style="margin-top:6px;display:inline-flex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;margin-right:4px"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Visit Website</a>':'';
-    c.querySelector('.sc-name').textContent=selectedFest.name;
-    c.querySelector('.sc-meta').innerHTML=fdr(selectedFest)+'  \u00b7  '+selectedFest.location+trainNote;
-    c.querySelector('.sc-desc').textContent=selectedFest.desc;
-    c.querySelector('.sc-link').innerHTML=linkHtml;
-    c.classList.add('visible');
-  }else c.classList.remove('visible');
+    const trainNote=amtrakCities.has(selectedFest.location)?" · 🚆 Amtrak from Raleigh":"";
+    c.querySelector(".sc-name").textContent=selectedFest.name;
+    c.querySelector(".sc-meta").innerHTML=fdr(selectedFest)+" · "+selectedFest.location+trainNote;
+    c.querySelector(".sc-desc").textContent=selectedFest.desc||"";
+    const isFav=favorites.has(selectedFest.name);
+    const calBtn=`<button class="cal-btn" onclick="addToCalendar(selectedFest,event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Calendar</button>`;
+    const favBtn=`<button class="fav-btn ${isFav?"active":""}" onclick="toggleFav(selectedFest.name,event)">${isFav?"❤️":"🤍"} ${isFav?"Saved":"Save"}</button>`;
+    const linkBtn=selectedFest.url?`<a class="fest-link" href="${selectedFest.url}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Website</a>`:"";
+    c.querySelector(".sc-actions").innerHTML=favBtn+calBtn+linkBtn;
+    c.classList.add("visible");
+  }else c.classList.remove("visible");
 }
 
-document.getElementById('searchInput').addEventListener('input',e=>{searchTerm=e.target.value;render()});
+/* ── Map Toggle (mobile) ── */
+let mapOpen=false;
+function toggleMap(){
+  if(window.innerWidth>=1001)return;
+  mapOpen=!mapOpen;
+  const mb=document.getElementById("mapBody");
+  mb.classList.toggle("open",mapOpen);
+  mb.style.display=mapOpen?"block":"none";
+  document.getElementById("mapChevron").textContent=mapOpen?"▲":"▼";
+  if(mapOpen)setTimeout(renderDots,50);
+}
 
-/* Column filters */
-document.getElementById('colFilterMonth').addEventListener('change',e=>{colFilterMonth=e.target.value;render()});
-document.getElementById('colFilterName').addEventListener('input',e=>{colFilterName=e.target.value;render()});
-document.getElementById('colFilterLocation').addEventListener('input',e=>{colFilterLocation=e.target.value;render()});
-document.getElementById('colFilterTheme').addEventListener('change',e=>{colFilterTheme=e.target.value;render()});
-document.getElementById('themeFilters').addEventListener('click',e=>{
-  const btn=e.target.closest('.filter-btn');if(!btn)return;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');activeTheme=btn.dataset.theme;render();
+/* ── Map Zoom ── */
+let zoomScale=1,zoomTx=0,zoomTy=0;
+const ZOOM_MIN=1,ZOOM_MAX=10,ZOOM_STEP=1.5;
+function applyZoom(){
+  const canvas=document.getElementById("mapCanvas");if(!canvas)return;
+  const svg=document.getElementById("mapSvg");
+  const vw=svg.clientWidth||420,vh=svg.clientHeight||320;
+  const scW=SW*zoomScale,scH=SH*zoomScale;
+  zoomTx=Math.max(Math.min(0,vw-scW),Math.min(0,zoomTx));
+  zoomTy=Math.max(Math.min(0,vh-scH),Math.min(0,zoomTy));
+  canvas.setAttribute("transform",`translate(${zoomTx},${zoomTy}) scale(${zoomScale})`);
+  const s=zoomScale;
+  const show=(id,thresh)=>{const el=document.getElementById(id);if(el)el.style.opacity=s>=thresh?Math.min(1,(s-thresh)/.5):"0"};
+  show("cityL2",1.8);show("cityL3",3.5);show("cityL4",6);show("interstateLayer",2.5);
+  const rl=document.getElementById("regionLabels");if(rl)rl.style.opacity=s>2.5?Math.max(0,1-(s-2.5)/.5):"1";
+  const dotScale=1/zoomScale;
+  document.querySelectorAll(".map-dot").forEach(d=>{
+    const baseR=window.innerWidth<=600?7:5.5,selR=window.innerWidth<=600?11:9;
+    const isSel=selectedFest&&d.dataset.name===selectedFest.name;
+    d.setAttribute("r",(isSel?selR:baseR)*dotScale);
+    d.setAttribute("stroke-width",(isSel?3:1.5)*dotScale);
+  });
+}
+function zoomToward(svgX,svgY,newScale){
+  newScale=Math.max(ZOOM_MIN,Math.min(ZOOM_MAX,newScale));
+  zoomTx=svgX-(svgX-zoomTx)*(newScale/zoomScale);
+  zoomTy=svgY-(svgY-zoomTy)*(newScale/zoomScale);
+  zoomScale=newScale;applyZoom();
+}
+
+/* ── Map Init ── */
+function initMap(){
+  const svg=document.getElementById("mapSvg");
+  const pts=ncPoly.map(([lng,lat])=>{const p=geo(lat,lng);return p.x+","+p.y}).join(" ");
+  const obPts=outerBanks.map(([lng,lat])=>{const p=geo(lat,lng);return p.x+","+p.y}).join(" ");
+  const citiesL2=[{name:"Charlotte",lat:35.2271,lng:-80.8431},{name:"Greensboro",lat:36.0726,lng:-79.792},{name:"Durham",lat:35.994,lng:-78.8986},{name:"Asheville",lat:35.5951,lng:-82.5515},{name:"Wilmington",lat:34.2257,lng:-77.9447},{name:"Winston-Salem",lat:36.0999,lng:-80.2442},{name:"Fayetteville",lat:35.0527,lng:-78.8784}];
+  const citiesL3=[{name:"Cary",lat:35.7913,lng:-78.7811},{name:"Chapel Hill",lat:35.9132,lng:-79.0558},{name:"High Point",lat:35.9557,lng:-80.0053},{name:"Boone",lat:36.2168,lng:-81.6746},{name:"Morehead City",lat:34.7229,lng:-76.726},{name:"Burlington",lat:36.0957,lng:-79.4378},{name:"Wilson",lat:35.7213,lng:-77.9153},{name:"Rocky Mount",lat:35.938,lng:-77.7905}];
+  const citiesL4=[{name:"Apex",lat:35.7327,lng:-78.8503},{name:"Holly Springs",lat:35.6513,lng:-78.8336},{name:"Huntersville",lat:35.4106,lng:-80.8429},{name:"Salisbury",lat:35.671,lng:-80.4742},{name:"Hendersonville",lat:35.3187,lng:-82.4612},{name:"Kannapolis",lat:35.4088,lng:-80.5795}];
+  const interstates=[{id:"I-40",pts:[[35.994,-78.898],[35.95,-79.09],[36.072,-79.792],[35.994,-80.013],[35.57,-82.55]]},{id:"I-85",pts:[[35.408,-80.579],[35.227,-80.843],[35.053,-80.898]]},{id:"I-95",pts:[[35.385,-77.99],[35.053,-78.878],[34.618,-79.009],[34.32,-78.826]]},{id:"I-77",pts:[[36.099,-80.244],[35.583,-80.87],[35.227,-80.843]]}];
+  function cityDot(c,size,ls){const p=geo(c.lat,c.lng);return`<g><circle cx="${p.x}" cy="${p.y}" r="${size}" fill="#6b5c4e" stroke="white" stroke-width=".8" opacity=".7"/><text x="${p.x}" y="${p.y-size-1.5}" text-anchor="middle" font-size="${ls}" fill="#3a2e24" font-family="DM Sans,sans-serif" font-weight="600" opacity=".8">${c.name}</text></g>`}
+  function intLines(){return interstates.map(r=>{const pts2=r.pts.map(([lat,lng])=>{const p=geo(lat,lng);return`${p.x},${p.y}`}).join(" ");const mid=r.pts[Math.floor(r.pts.length/2)];const mp=geo(mid[0],mid[1]);return`<g opacity=".4"><polyline points="${pts2}" fill="none" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4,2"/><text x="${mp.x}" y="${mp.y-4}" text-anchor="middle" font-size="5.5" fill="#c0392b" font-family="DM Sans,sans-serif" font-weight="700">${r.id}</text></g>`}).join("")}
+  svg.innerHTML=`<defs><linearGradient id="ncG" x1="10%" y1="0%" x2="90%" y2="100%"><stop offset="0%" stop-color="#e8e2d8"/><stop offset="100%" stop-color="#d8d0c4"/></linearGradient><filter id="sh" x="-10%" y="-10%" width="130%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#a09080" flood-opacity=".25"/></filter><clipPath id="ncClip"><polygon points="${pts}"/></clipPath></defs>
+  <rect x="0" y="0" width="800" height="400" fill="#faf8f5"/>
+  <g id="mapCanvas" transform="translate(0,0) scale(1)">
+    <polygon points="${pts}" fill="url(#ncG)" stroke="#b0a496" stroke-width="1.6" filter="url(#sh)"/>
+    <polygon points="${pts}" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.2"/>
+    <polygon points="${obPts}" fill="#ddd7cc" stroke="#b0a496" stroke-width="1" opacity=".9"/>
+    <g id="regionLabels">
+      <text x="102" y="195" text-anchor="middle" font-size="7.5" fill="#7a6a5a" font-family="DM Sans,sans-serif" font-weight="600" letter-spacing=".08em" opacity=".6" transform="rotate(-5,102,195)">MOUNTAINS</text>
+      <text x="450" y="200" text-anchor="middle" font-size="7.5" fill="#7a6a5a" font-family="DM Sans,sans-serif" font-weight="600" letter-spacing=".08em" opacity=".5">PIEDMONT</text>
+      <text x="650" y="265" text-anchor="middle" font-size="7.5" fill="#7a6a5a" font-family="DM Sans,sans-serif" font-weight="600" letter-spacing=".08em" opacity=".5">COAST</text>
+    </g>
+    <g id="interstateLayer" opacity="0" style="transition:opacity .3s">${intLines()}</g>
+    <g id="cityL2" opacity="0" style="transition:opacity .3s">${citiesL2.map(c=>cityDot(c,2.2,6)).join("")}</g>
+    <g id="cityL3" opacity="0" style="transition:opacity .3s">${citiesL3.map(c=>cityDot(c,1.8,5.5)).join("")}</g>
+    <g id="cityL4" opacity="0" style="transition:opacity .3s">${citiesL4.map(c=>cityDot(c,1.5,5)).join("")}</g>
+    <g id="dotGroup"></g>
+  </g>`;
+  const themes=["Music","Food & Drink","Cultural","Arts","Heritage","Nature","Seasonal","Sports"];
+  document.getElementById("mapLegend").innerHTML=themes.map(t=>`<div class="legend-item" data-theme="${t}" onclick="legendFilter('${t}')"><span class="legend-dot" style="background:${tcolor(t)}"></span>${t}</div>`).join("");
+  renderDots();initZoom();
+}
+
+function legendFilter(theme){
+  activeTheme=activeTheme===theme?"all":theme;
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.toggle("active",b.dataset.theme===activeTheme));
+  document.querySelectorAll(".legend-item").forEach(li=>li.classList.toggle("active-filter",li.dataset.theme===activeTheme));
+  render();writeURL();
+}
+
+function renderDots(){
+  const dg=document.getElementById("dotGroup");if(!dg)return;
+  const filtered=getFiltered();
+  const fN=new Set(filtered.map(f=>f.name));
+  const sorted=[...festivals].sort((a,b)=>{if(selectedFest){if(a.name===selectedFest.name)return 1;if(b.name===selectedFest.name)return -1}return 0});
+  let h="";
+  sorted.forEach(f=>{
+    const p=geo(f.lat,f.lng),inF=fN.has(f.name),isSel=selectedFest&&selectedFest.name===f.name;
+    const isMobile=window.innerWidth<=600;
+    const dotR=isMobile?7:5.5,selR=isMobile?11:9;
+    h+=`<circle class="map-dot" cx="${p.x}" cy="${p.y}" r="${isSel?selR:dotR}" fill="${tcolor(f.theme)}" stroke="${isSel?"#1a1a2e":"rgba(255,255,255,.85)"}" stroke-width="${isSel?3:1.5}" opacity="${inF?1:.1}" data-name="${f.name.replace(/"/g,"&quot;")}"/>`;
+  });
+  // Raleigh acorn
+  const rp=geo(35.7796,-78.6382);
+  const isMobile=window.innerWidth<=600;
+  const aW=isMobile?44:38,aH=isMobile?44:38;
+  h+=`<g id="acornMarker" style="pointer-events:none;user-select:none;">
+    <image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAHJElEQVR4nL2X+atdVxXHP3s4w71vym3ymheTDulEYtVSRaEqKoiCSn8UKqLQn/yL/ElBKIIKRQRRRCloKUVEirWtjUlfkmZqknffdKcz7b2XP5xz5/daquCCzT33DGt913cNe22FYl6k/lm8PRU9+xoosK0Ul2cgAgKR1YgLS2rDzPXEgMxq/ZgiC/9dNqpBNJKmKQKsrKRL7y9++1+IXlgW0CijsbEBBa1WQmQsCibLzFwfz/L/CkSB0bWByM4bXG2vEUXJwjcfIkcjXTTaLLWwajikCp755BNsnepggI21E82TxTUFs2jXHu35MYgnEkA0qlHw/e8+Lw89+iiFE376s5dUd/8AsKQrq+TD4ZG6tNTJq6jzxo4NT5N4EUhY+J3e18Bzn7sgG+2Iv772Kl4ZcA6AJE1rEA1zSGicXNRTyxGMHAPiiLI2wMUnH+P9q1cIZcHrf7+sHNCyllE+AhNDmKmTsftHiJ6/nGVjijyNkzoMqjZugNW4ibovCPmIG9vbavxMeUdiNHgHAnHaapAboiiaWpwxp9TE+GyjCo0DYfKklRjKwqOAc2c22Dp1Up56/GF6d28SKY2YmH7u2L5+R93s9nGAmBhtIlwIeOcAQVuB4OtIzRCklqMzBgGagGnojIAvf/FZeeL8Q4wGfXr7XZQvUVXJ+toag2HO/f0eJ0+f5ROPPMaV92/zyquvK0+dTVEcU1YV4NFGYZSmqvyUkXkgUyZ0A2Y1jQhVxYs/fEFuX9smsYLFs3V6k527d1lfSTjc75FVDtER+72Mbm9A59QWjz51kd/94Y+qe9BD2whRULmqtqE1EuZyb7lcx0BME5YfvfiCXLv8DludE1gp2exscO/uHdZW2+zu7mKjBG0issKx1xty0B+Ru4DXEU9efJpX/vyaOhjliAalLc7XlaWj2knkCBSzbCjgs59+Uq5ducR6u00oRpjg2L9/hxRPFDynOh0Qz97uDof7exBKVtKIdmyJ8Pgi47FHzopuCHfOgYlAaYKbhsYu7oJjGYN5YH0dIxXDwz2UVWgrKJfTjiPeffsKG6fOUEpAfECCpywqssrjAhgTs33535w7/zit7asMytpIFEVUToPzjd2AXQQgTdMZt59Op8Olt97gRMsiFgZuRCSefnB01lbpdu8TtEEpjYignWAlYExUb0BWk6QxWSloC0E0VVVB8ChrEefGoVnelALT+eHNd95WD57Z4qB3SOVLDnYHBFcgoSIf9TEa0iSCKqPsD0m1Q+c5qVHkWZ8HHtzkjbfeUl5DFUBEwFcQAlTlJBJ2PjI1G4ImEFDA9vW7rKWGCxcusJ4oWo9UnO6sEIknhECmIpwXin6f4Cqc89y4fQ8XGx44+zDv3euyPxjghbm2bBactroJA3ONbdpVvcDe3oH61te+JKYccn6rQ0s7/KhP5Rz9PJCVFSM8EgKD/oiVlRUOS2Fzc5PX/3lZDfquATHOvGmSTnKyrpIw6aJjMIKukRrY2R2StlsYozh9ehOrFVWegS8gFBgpUaGizDOqqmJ9fZ2kvUJrZZVBVk416+VWMffouMkpNIxkDqrS45xDgid4h8JjlRBJiZWKRAk6eIqioPQBbSJs1KKsZjWayVy7OI/o6UWYCYkCVTNShXoKK8uSEALdbpc8H+G9p8xHuCKjGg2Q4LDW4n3g4LAPWuOCUAamoQ9h2XAjVjU3J1GbhalqB2wMtz64y9kTCfd3uiSSI9mQUAwxShOqCgkG7wVtIpSG1uoJdg8Hk2REmTnDSqm5gfsjBkmNKBjlcOm9bXLnGRYlWenJnceJoSgdzgVGWcHu4YDcCSQtdNziytXr02rUGpRqUC3PsHr2vHGUNCHlzX/dVp1Tp7l+6x6DwrPXL6iw5EHYH4w4GGV4bSmUhajFg2ce5m//eFfVukPTO9yEdCd+rpcew8j0ldXV9uTfj3/yC3X+wtPc6vY4KALv3z9kb1gR4hYZETu9nA/2Dnnm88/x0i9/pSYEjMF8yKFGjYcAYZwneiZP6o8TDbEC5eGJsy35zje/zs6tmwSXIcUA5xyehNwbPvOFr/Dzl3+jbuz08EA5dmthTxsPZDIePRY73CKQVppQZsVkJIiAVMMPvve85IN97ty8Sj7KuPipZ8mc5vd/+ovqZY5RELSNKFx1DBF6YgMmo2KYO8vOSVPzsYXYaqQKBF83unNnTvLtb3xVNjY2ePnXv1VXbnQJgAParTX62bD2WM3rOxLI0sB8BJB2O8U5R1m6pSk+NfVuHqi399xJva9MjNQ65yIzVzn1O3oOyHjcHy8gSSJGoxwTxagoRmxC3N5AVIJur5EJVIBtpwwrwesYZRNAkaT1IVxJU55zMl8nzczaFLBazmytQUQhyIwXCuIUyhyosEbX5ypt6vSXelKv9fn5yEzONvOMqA87fS2JAuS4k+Cylx+t92PY/n/JfwCAjYjG1CTZhQAAAABJRU5ErkJggg==" x="${rp.x-aW/2}" y="${rp.y-aH}" width="${aW}" height="${aH}"/>
+    <text x="${rp.x}" y="${rp.y+10}" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1a2e" font-family="DM Sans,sans-serif" letter-spacing=".06em" opacity=".85">RALEIGH</text>
+  </g>`;
+  dg.innerHTML=h;
+  dg.querySelectorAll(".map-dot").forEach(dot=>{
+    dot.addEventListener("mouseenter",dotHover);
+    dot.addEventListener("mouseleave",dotLeave);
+    dot.addEventListener("click",dotClick);
+    dot.addEventListener("touchstart",dotTouch,{passive:true});
+  });
+}
+
+let lastTouchedDot=null;
+function dotTouch(e){
+  const t=e.target;if(!t)return;
+  const f=festivals.find(x=>x.name===t.dataset.name);if(!f)return;
+  if(lastTouchedDot===f.name){selectFestival(f);lastTouchedDot=null;return;}
+  lastTouchedDot=f.name;
+  showMapTooltip(f,t);
+  setTimeout(()=>{document.getElementById("mapTooltip").classList.remove("visible")},2500);
+}
+function showMapTooltip(f,dot){
+  const tt=document.getElementById("mapTooltip"),ct=document.getElementById("mapContainer"),sv=document.getElementById("mapSvg"),sr=sv.getBoundingClientRect();
+  const cx=+dot.getAttribute("cx"),cy=+dot.getAttribute("cy");
+  const scX=sr.width/SW,scY=sr.height/SH;
+  const cw=ct.offsetWidth,ch=ct.offsetHeight;
+  let tx=cx*scX+14,ty=cy*scY-10;
+  if(tx+180>cw)tx=Math.max(5,cx*scX-190);
+  tx=Math.max(5,tx);ty=Math.max(5,ty);
+  if(ty+80>ch)ty=ch-85;
+  tt.querySelector(".tt-name").textContent=f.name;
+  tt.querySelector(".tt-date").textContent=fdr(f);
+  tt.querySelector(".tt-loc").textContent=f.location;
+  tt.style.left=tx+"px";tt.style.top=ty+"px";tt.classList.add("visible");
+}
+function dotHover(e){const f=festivals.find(x=>x.name===e.target.dataset.name);if(f)showMapTooltip(f,e.target)}
+function dotLeave(){document.getElementById("mapTooltip").classList.remove("visible")}
+function dotClick(e){const f=festivals.find(x=>x.name===e.target.dataset.name);if(f)selectFestival(f)}
+
+/* ── Zoom Controls ── */
+function initZoom(){
+  const svg=document.getElementById("mapSvg");
+  svg.addEventListener("wheel",e=>{
+    e.preventDefault();
+    const r=svg.getBoundingClientRect(),scX=SW/r.width,scY=SH/r.height;
+    zoomToward((e.clientX-r.left)*scX,(e.clientY-r.top)*scY,zoomScale*(e.deltaY<0?ZOOM_STEP:1/ZOOM_STEP));
+  },{passive:false});
+  let dragging=false,dragX=0,dragY=0;
+  svg.addEventListener("mousedown",e=>{if(e.target.classList.contains("map-dot"))return;dragging=true;dragX=e.clientX;dragY=e.clientY;svg.style.cursor="grabbing"});
+  window.addEventListener("mousemove",e=>{if(!dragging)return;const r=svg.getBoundingClientRect(),scX=SW/r.width,scY=SH/r.height;zoomTx+=(e.clientX-dragX)*scX;zoomTy+=(e.clientY-dragY)*scY;dragX=e.clientX;dragY=e.clientY;applyZoom()});
+  window.addEventListener("mouseup",()=>{dragging=false;if(document.getElementById("mapSvg"))document.getElementById("mapSvg").style.cursor="grab"});
+  let lastDist=null,lastMidX=0,lastMidY=0;
+  svg.addEventListener("touchmove",e=>{
+    if(e.touches.length!==2)return;e.preventDefault();
+    const t1=e.touches[0],t2=e.touches[1];
+    const dist=Math.hypot(t2.clientX-t1.clientX,t2.clientY-t1.clientY);
+    const midX=(t1.clientX+t2.clientX)/2,midY=(t1.clientY+t2.clientY)/2;
+    if(lastDist!==null){const r=svg.getBoundingClientRect(),scX=SW/r.width,scY=SH/r.height;zoomToward((midX-r.left)*scX,(midY-r.top)*scY,zoomScale*(dist/lastDist));zoomTx+=(midX-lastMidX)*scX;zoomTy+=(midY-lastMidY)*scY;applyZoom()}
+    lastDist=dist;lastMidX=midX;lastMidY=midY;
+  },{passive:false});
+  svg.addEventListener("touchend",()=>{lastDist=null});
+  svg.addEventListener("dblclick",e=>{if(e.target.classList.contains("map-dot"))return;const r=svg.getBoundingClientRect(),scX=SW/r.width,scY=SH/r.height;zoomToward((e.clientX-r.left)*scX,(e.clientY-r.top)*scY,zoomScale*ZOOM_STEP)});
+  document.getElementById("zoomIn").addEventListener("click",()=>zoomToward(SW/2,SH/2,zoomScale*ZOOM_STEP));
+  document.getElementById("zoomOut").addEventListener("click",()=>zoomToward(SW/2,SH/2,zoomScale/ZOOM_STEP));
+  document.getElementById("zoomReset").addEventListener("click",()=>{zoomScale=1;zoomTx=0;zoomTy=0;applyZoom()});
+}
+
+/* ── Amtrak Tooltip ── */
+let amtrakTT=document.getElementById("amtrakTooltip");
+function showAmtrakTT(city,el){
+  const info=amtrakInfo[city];if(!info)return;
+  const pills=info.routes.map((r,i)=>`<span class="at-route ${r}">${info.routeNames[i]}</span>`).join("");
+  amtrakTT.innerHTML=`<div class="at-header"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a8d5a2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/><path d="M8 19l-2 3"/><path d="M16 19l2 3"/></svg><span class="at-station">${info.station}</span></div><div class="at-time">🕐 ${info.time}</div><div class="at-routes">${pills}</div><div class="at-walk">${info.walk}</div><div class="at-note">${info.note}</div>`;
+  const r=el.getBoundingClientRect(),ttW=280;
+  let left=r.left,top=r.bottom+6;
+  if(left+ttW>window.innerWidth-10)left=window.innerWidth-ttW-10;
+  if(left<10)left=10;
+  if(top+220>window.innerHeight)top=r.top-225;
+  amtrakTT.style.left=left+"px";amtrakTT.style.top=top+"px";
+  amtrakTT.classList.add("visible");
+}
+function hideAmtrakTT(){amtrakTT.classList.remove("visible")}
+document.addEventListener("click",e=>{if(!e.target.closest(".train-badge"))hideAmtrakTT()});
+
+/* ── Resizer ── */
+(function(){
+  const resizer=document.getElementById("panelResizer");
+  const tp=document.querySelector(".table-panel");
+  const mp=document.getElementById("mapPanel");
+  if(!resizer||!tp||!mp)return;
+  let active=false,startX=0,startTW=0,startMW=0;
+  resizer.addEventListener("mousedown",e=>{active=true;startX=e.clientX;startTW=tp.getBoundingClientRect().width;startMW=mp.getBoundingClientRect().width;resizer.classList.add("dragging");document.body.style.cursor="col-resize";document.body.style.userSelect="none";e.preventDefault()});
+  window.addEventListener("mousemove",e=>{if(!active)return;const dx=e.clientX-startX,total=startTW+startMW,nTW=Math.max(280,Math.min(total-200,startTW+dx)),nMW=total-nTW;tp.style.flex=`0 0 ${nTW}px`;tp.style.width=`${nTW}px`;mp.style.flex=`0 0 ${nMW}px`;mp.style.width=`${nMW}px`;clearTimeout(window._rr);window._rr=setTimeout(renderDots,80)});
+  window.addEventListener("mouseup",()=>{active=false;resizer.classList.remove("dragging");document.body.style.cursor="";document.body.style.userSelect=""});
+})();
+
+/* ── Event Wiring ── */
+document.getElementById("searchInput").addEventListener("input",e=>{searchTerm=e.target.value;render();writeURL()});
+document.getElementById("themeFilters").addEventListener("click",e=>{
+  const btn=e.target.closest(".filter-btn");if(!btn)return;
+  document.querySelectorAll("#themeFilters .filter-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");activeTheme=btn.dataset.theme;
+  document.querySelectorAll(".legend-item").forEach(li=>li.classList.toggle("active-filter",li.dataset.theme===activeTheme));
+  render();writeURL();
 });
-document.querySelectorAll('thead th').forEach(th=>{
-  th.addEventListener('click',()=>{
+document.querySelectorAll("thead th[data-col]").forEach(th=>{
+  th.addEventListener("click",()=>{
     const col=th.dataset.col;
     if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=true}
-    document.querySelectorAll('thead th').forEach(t=>t.classList.remove('sorted'));
-    th.classList.add('sorted');
-    th.querySelector('.sort-arrow').textContent=sortAsc?'\u25B2':'\u25BC';
+    document.querySelectorAll("thead th").forEach(t=>t.classList.remove("sorted"));
+    th.classList.add("sorted");
+    th.querySelector(".sort-arrow").textContent=sortAsc?"▲":"▼";
     render();
   });
 });
+document.getElementById("colFilterMonth").addEventListener("change",e=>{colFilterMonth=e.target.value;render()});
+document.getElementById("colFilterName").addEventListener("input",e=>{colFilterName=e.target.value;render()});
+document.getElementById("colFilterLocation").addEventListener("input",e=>{colFilterLocation=e.target.value;render()});
+document.getElementById("colFilterTheme").addEventListener("change",e=>{colFilterTheme=e.target.value;render()});
+document.getElementById("mapContainer").addEventListener("click",e=>{
+  if(!e.target.classList.contains("map-dot")){document.getElementById("mapTooltip").classList.remove("visible");lastTouchedDot=null}
+});
+window.addEventListener("orientationchange",()=>setTimeout(renderDots,100));
+window.addEventListener("resize",()=>{clearTimeout(window._rr);window._rr=setTimeout(renderDots,150)});
 
-/* ── Panel Resizer ─────────────────────────────────────────────────────── */
-(function initResizer(){
-  const resizer=document.getElementById('panelResizer');
-  const tablePanel=document.querySelector('.table-panel');
-  const mapPanel=document.querySelector('.map-panel');
-  const layout=document.querySelector('.main-layout');
-  if(!resizer||!tablePanel||!mapPanel)return;
-
-  let isResizing=false, startX=0, startTableW=0, startMapW=0;
-
-  resizer.addEventListener('mousedown',function(e){
-    isResizing=true;
-    startX=e.clientX;
-    startTableW=tablePanel.getBoundingClientRect().width;
-    startMapW=mapPanel.getBoundingClientRect().width;
-    resizer.classList.add('dragging');
-    document.body.style.cursor='col-resize';
-    document.body.style.userSelect='none';
-    e.preventDefault();
-  });
-
-  window.addEventListener('mousemove',function(e){
-    if(!isResizing)return;
-    const dx=e.clientX-startX;
-    const totalW=startTableW+startMapW;
-    const newTableW=Math.max(280,Math.min(totalW-220,startTableW+dx));
-    const newMapW=totalW-newTableW;
-    tablePanel.style.flex=`0 0 ${newTableW}px`;
-    tablePanel.style.width=`${newTableW}px`;
-    mapPanel.style.flex=`0 0 ${newMapW}px`;
-    mapPanel.style.width=`${newMapW}px`;
-    // Re-render dots to recalculate positions after resize
-    clearTimeout(window._rr);
-    window._rr=setTimeout(renderDots,80);
-  });
-
-  window.addEventListener('mouseup',function(){
-    if(!isResizing)return;
-    isResizing=false;
-    resizer.classList.remove('dragging');
-    document.body.style.cursor='';
-    document.body.style.userSelect='';
-    renderDots();
-  });
-
-  // Touch support for resizer
-  resizer.addEventListener('touchstart',function(e){
-    const t=e.touches[0];
-    isResizing=true;
-    startX=t.clientX;
-    startTableW=tablePanel.getBoundingClientRect().width;
-    startMapW=mapPanel.getBoundingClientRect().width;
-    resizer.classList.add('dragging');
-  },{passive:true});
-
-  window.addEventListener('touchmove',function(e){
-    if(!isResizing||e.touches.length!==1)return;
-    const dx=e.touches[0].clientX-startX;
-    const totalW=startTableW+startMapW;
-    const newTableW=Math.max(280,Math.min(totalW-220,startTableW+dx));
-    const newMapW=totalW-newTableW;
-    tablePanel.style.flex=`0 0 ${newTableW}px`;
-    tablePanel.style.width=`${newTableW}px`;
-    mapPanel.style.flex=`0 0 ${newMapW}px`;
-    mapPanel.style.width=`${newMapW}px`;
-  },{passive:true});
-
-  window.addEventListener('touchend',function(){
-    isResizing=false;
-    resizer.classList.remove('dragging');
-    renderDots();
-  });
-})();
-
-initMap();render();
-
-/* Auto-scroll to first festival on or after today */
-(function scrollToToday(){
-  const today=new Date();
-  today.setHours(0,0,0,0);
+/* ── Auto-scroll to next upcoming ── */
+function scrollToToday(){
   const data=getFiltered();
-  const todayFest=data.find(f=>{ const d=pd(f.date); return d>=today; });
-  if(!todayFest) return;
-  // Highlight without selecting (so map card doesn't pop open)
-  const rows=document.querySelectorAll('#festBody tr');
+  const next=data.find(f=>!isPast(f));
+  if(!next)return;
+  const rows=document.querySelectorAll("#festBody tr");
   rows.forEach(tr=>{
-    if(tr.dataset.fname===todayFest.name){
-      tr.classList.add('today-row');
-      setTimeout(()=>tr.scrollIntoView({behavior:'smooth',block:'center'}),300);
+    if(tr.dataset.fname===next.name){
+      tr.classList.add("today-row");
+      setTimeout(()=>tr.scrollIntoView({behavior:"smooth",block:"center"}),350);
     }
   });
-})();
+}
 
-/* Dismiss tooltip on tap outside map dots (iOS) */
-document.getElementById('mapContainer').addEventListener('click',function(e){
-  if(!e.target.classList.contains('map-dot')){
-    document.getElementById('mapTooltip').classList.remove('visible');
-    lastTouchedDot=null;
-  }
-});
-
-/* Re-render dots on orientation change */
-window.addEventListener('orientationchange',function(){setTimeout(renderDots,100)});
-window.addEventListener('resize',function(){clearTimeout(window._rr);window._rr=setTimeout(renderDots,150)});
+/* ── Boot ── */
+readURL();
+hidePast=true;document.getElementById("hidePastBtn").classList.add("active");
+updateCounts();
+initMap();
+render();
+renderFavsPanel();
+scrollToToday();
 </script>
 </body>
 </html>
