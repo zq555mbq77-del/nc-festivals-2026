@@ -835,18 +835,70 @@ function removeFav(name){favorites.delete(name);saveFavs();render();renderFavsPa
 /* ── Add to Calendar ── */
 function addToCalendar(f,e){
   e.stopPropagation();
-  const start=f.date.replace(/-/g,"");
-  let end=start;
+
+  // Build start date (YYYYMMDD)
+  const startStr=f.date.replace(/-/g,"");
+
+  // Build end date — iCal end is exclusive (day after last day)
+  let endStr=startStr;
   if(f.endDate){
     const parts=f.endDate.match(/(\w+)\s+(\d+)/);
-    if(parts){const m=String(MN.indexOf(parts[1])+1).padStart(2,"0"),d=parts[2].padStart(2,"0");end=f.date.substring(0,4)+m+d;}
+    if(parts){
+      const m=String(MN.indexOf(parts[1])+1).padStart(2,"0");
+      const d=parts[2].padStart(2,"0");
+      endStr=f.date.substring(0,4)+m+d;
+    }
   }
-  const endNext=end.substring(0,6)+String(parseInt(end.substring(6))+1).padStart(2,"0");
-  const title=encodeURIComponent(f.name+" — "+f.location+", NC");
-  const details=encodeURIComponent(f.desc+(f.url?" "+f.url:""));
-  const loc=encodeURIComponent(f.location+", NC");
-  const url=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${endNext}&details=${details}&location=${loc}`;
-  window.open(url,"_blank");
+  // Add one day for iCal exclusive end
+  const endDate=new Date(endStr.substring(0,4)+"-"+endStr.substring(4,6)+"-"+endStr.substring(6,8)+"T00:00:00");
+  endDate.setDate(endDate.getDate()+1);
+  const endExclusive=endDate.toISOString().substring(0,10).replace(/-/g,"");
+
+  // Escape text for iCal (commas, semicolons, backslashes, newlines)
+  function esc(s){return(s||"").replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\n/g,"\\n")}
+
+  // Fold long lines per RFC 5545 (max 75 octets)
+  function fold(line){
+    const out=[];
+    while(line.length>75){out.push(line.substring(0,75));line=" "+line.substring(75);}
+    out.push(line);
+    return out.join("\r\n");
+  }
+
+  // Unique ID
+  const uid=f.name.replace(/\W+/g,"-").toLowerCase()+"-"+startStr+"@ncfestivals2026";
+
+  // Build iCal content
+  const lines=[
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//NC Festivals 2026//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "BEGIN:VEVENT",
+    fold("UID:"+uid),
+    fold("SUMMARY:"+esc(f.name)+" — "+esc(f.location)+", NC"),
+    "DTSTART;VALUE=DATE:"+startStr,
+    "DTEND;VALUE=DATE:"+endExclusive,
+    fold("DESCRIPTION:"+esc(f.desc)+(f.url?"\\n\\n"+esc(f.url):"")),
+    fold("LOCATION:"+esc(f.location)+", North Carolina"),
+    f.url?fold("URL:"+f.url):"",
+    "STATUS:CONFIRMED",
+    "TRANSP:TRANSPARENT",
+    "END:VEVENT",
+    "END:VCALENDAR"
+  ].filter(Boolean).join("\r\n");
+
+  // Download .ics file
+  const blob=new Blob([lines],{type:"text/calendar;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download=f.name.replace(/[^a-z0-9]/gi,"-").toLowerCase()+".ics";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
 /* ── Theme Counts ── */
